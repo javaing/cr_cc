@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.aliee.quei.mo.widget.view.statuslayout.StatusLayout
+        android:id="@+id/statuslayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+
+        <include layout="@layout/layout_common_list" />
+
+    </com.aliee.quei.mo.widget.view.statuslayout.StatusLayout>
+
+
+    <include layout="@layout/attach_layout" />
+
+    <include layout="@layout/recommend_attach_layout" />
+
+    <include
+        layout="@layout/video_auto_play_switch"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/top"
+        android:layout_width="50dp"
+        android:layout_gravity="bottom|right"
+        android:gravity="center"
+        android:layout_marginBottom="35dp"
+        android:background="@drawable/to_top_share"
+        android:layout_height="50dp">
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@mipmap/icon_to_top"
+            />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/video_tips"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:background="@drawable/bg_video_vip_tips"
+        android:textSize="15sp"
+        android:visibility="gone"
+        android:textColor="@color/white"
+        android:text="一日vip启动中"/>
+</FrameLayout>

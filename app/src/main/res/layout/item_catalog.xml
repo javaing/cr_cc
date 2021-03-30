@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:gravity="center_vertical"
+    android:padding="10dp"
+    android:background="@drawable/bg_item_catalog">
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:layout_height="match_parent"
+        android:id="@+id/chapterName"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/free"
+        android:textColor="#ff4fabf8"
+        android:text="@string/free"
+        android:textSize="13sp"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lock"
+        android:src="@mipmap/ic_lock_chapter"/>
+</LinearLayout>

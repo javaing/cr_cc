@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout style="@style/bg_welfare_item"
+              android:id="@+id/layoutIncome"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools">
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+        <TextView style="@style/welfare_item_title"
+                  android:layout_centerInParent="true"
+                  android:text="我的收益"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:gravity="center"
+                android:text="查看明细>>"
+                android:textColor="#ffff6933"
+                android:textSize="12sp"
+                android:id="@+id/btnDetails"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"/>
+    </RelativeLayout>
+    <View android:layout_width="match_parent" android:layout_height="1dp"
+          android:background="@color/colorDivider"/>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:padding="18dp">
+        <LinearLayout android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:gravity="center">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="金币余额"
+                    android:textColor="#ff333333"
+                    android:textSize="15sp"/>
+            <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:id="@+id/tvBalance"
+                    android:textColor="#fffc5173"
+                    android:textSize="24sp"/>
+            <TextView
+                    android:visibility="gone"
+                    android:layout_marginTop="10dp"
+                    style="@style/btn_welfare_stroke"
+                    android:text="收入明细"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:gravity="center">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="总收入"
+                    android:textColor="#ff333333"
+                    android:textSize="15sp"/>
+            <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:id="@+id/tvIncome"
+                    android:textColor="#fffc5173"
+                    android:textSize="24sp"/>
+            <TextView
+                    android:visibility="gone"
+                    android:layout_marginTop="10dp"
+                    style="@style/btn_welfare_stroke"
+                    android:text="收入明细"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.aliee.quei.mo.widget.view.statuslayout.StatusLayout
+        android:id="@+id/statuslayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <include layout="@layout/layout_common_list" />
+
+    </com.aliee.quei.mo.widget.view.statuslayout.StatusLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutModify"
+        android:layout_width="100dp"
+        android:layout_height="140dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="64dp"
+        android:background="@color/all_white"
+        android:visibility="invisible">
+
+        <ListView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</FrameLayout>

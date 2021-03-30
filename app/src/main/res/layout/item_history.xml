@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:paddingLeft="2dp"
+    android:paddingTop="5dp"
+    android:paddingRight="2dp"
+    android:paddingBottom="5dp">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="178dp"
+        android:layout_margin="2dp"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="2dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="178dp">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/ivCover"
+                android:layout_width="match_parent"
+                android:layout_height="178dp"
+                android:scaleType="fitXY"
+                app:riv_corner_radius="2dp" />
+
+            <ImageView
+                android:id="@+id/ivDel"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/bg_shelf_del"
+                android:scaleType="centerInside"
+                android:src="@mipmap/ic_del_shelf" />
+
+            <TextView
+                android:id="@+id/ivTagStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_tag_finished"
+                android:gravity="center"
+                android:paddingLeft="6dp"
+                android:paddingTop="1dp"
+                android:paddingRight="6dp"
+                android:paddingBottom="1dp"
+                android:text="完结"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/theme_color"
+        android:textSize="16sp"
+        tools:text="调jiao家政妇（双面保姆 贴心少爷）" />
+</LinearLayout>

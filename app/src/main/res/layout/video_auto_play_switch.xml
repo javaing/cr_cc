@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aliee.quei.mo.widget.view.AttachButton xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/auto_play_switch"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|right"
+    android:layout_marginRight="20dp"
+    android:layout_marginBottom="140dp"
+    android:background="@drawable/auto_play_bg"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="5dp"
+    android:visibility="visible"
+    app:customIsDrag="true">
+
+    <Switch
+        android:id="@+id/sw_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/tv_title"
+        android:checked="false"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="自动" />
+</com.aliee.quei.mo.widget.view.AttachButton>

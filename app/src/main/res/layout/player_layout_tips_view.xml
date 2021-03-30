@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:text="免费观看已用完，金币剩余%s\n如需继续观看请充值喔"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/btn_recharge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_recharge_shape"
+        android:paddingLeft="10dp"
+        android:paddingTop="4dp"
+        android:layout_marginTop="20dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="4dp"
+        android:text="去充值"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+</LinearLayout>

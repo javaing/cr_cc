@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="wrap_content"
+              android:layout_height="match_parent"
+android:background="@drawable/bg_dialog"
+android:paddingLeft="10dp"
+android:paddingRight="10dp">
+    <LinearLayout android:orientation="horizontal" android:layout_width="260dp"
+                  android:layout_height="50dp"
+                  android:background="@color/white"
+                  android:gravity="center_vertical"
+                  android:paddingLeft="15dp"
+                  android:paddingRight="15dp">
+        <TextView
+                android:drawableLeft="@mipmap/ic_header_tab"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="50dp"
+                android:text="@string/book_recommend"
+                android:gravity="center_vertical"
+                android:drawablePadding="6dp"
+                android:id="@+id/text"/>
+    </LinearLayout>
+    <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+    android:id="@+id/recyclerView">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <TextView android:layout_width="260dp" android:layout_height="40dp"
+              android:layout_marginBottom="10dp"
+    android:background="@drawable/bg_btn_continiue"
+    android:text="@string/contine_read"
+              android:id="@+id/btnDismiss"
+    android:gravity="center"/>
+</LinearLayout>

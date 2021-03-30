@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="145dp"
+    android:background="@color/all_white"
+    android:paddingLeft="12dp"
+    android:paddingRight="14dp">
+
+
+    <ImageView
+        android:id="@+id/img_bulletin"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="14dp"
+        android:scaleType="fitXY">
+
+    </ImageView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/img_bulletin"
+        >
+
+        <TextView
+            android:id="@+id/bulletin_Item"
+            android:layout_width="25dp"
+            android:layout_height="15dp"
+            android:background="@drawable/bg_bulletin_item"
+            android:gravity="center"
+            android:textColor="@color/bulletin_item"
+            android:textSize="10sp"
+            tools:text="活动" />
+
+            <TextView
+                android:id="@+id/bulletin_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:textColor="@color/bulletin_text"
+                android:textSize="10sp"
+                tools:text="连假看漫画拿豪礼" />
+
+            <TextView
+                android:id="@+id/bulletin_date"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/bulletin_text"
+                android:textSize="10sp"
+                tools:text="2020-06-03" />
+    </LinearLayout>
+</RelativeLayout>

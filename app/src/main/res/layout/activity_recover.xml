@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white">
+    <include layout="@layout/layout_title"/>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:layout_marginTop="10dp"
+              android:layout_marginLeft="10dp"
+              android:layout_marginRight="10dp"
+              android:padding="10dp"
+              android:background="@drawable/bg_info_box"
+              android:text="请查看您的微信支付记录中的订单信息, 复制商户单号（CT*******），粘贴至下方输入框，点击找回账号。"
+    />
+
+    <EditText android:layout_width="match_parent" android:layout_height="40dp"
+              android:layout_marginTop="10dp"
+              android:hint="商户单号"
+              android:layout_marginLeft="10dp"
+              android:layout_marginRight="10dp"
+              android:paddingLeft="10dp"
+              android:id="@+id/etOrderNo"
+              android:background="@drawable/bg_edit_trade_no"/>
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+              android:layout_marginTop="10dp"
+              android:layout_marginLeft="10dp"
+              android:layout_marginRight="10dp"
+              android:layout_gravity="center_horizontal"
+              android:padding="10dp"
+              android:background="@drawable/bg_comic_flow"
+              android:id="@+id/tvAccount"
+              android:text="您的账号为："
+              android:visibility="gone"/>
+
+
+    <TextView android:layout_width="match_parent" android:layout_height="40dp"
+              android:background="@drawable/bg_btn_recharge"
+              android:layout_margin="15dp"
+              android:text="找回"
+              android:gravity="center"
+              android:id="@+id/btnRecover"
+              android:textColor="@color/white"/>
+    <TextView
+            android:layout_margin="10dp" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="有关账户异常的说明:"/>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:layout_margin="10dp"
+              android:text="若通过订单号仍未找回账号，可联系客服为您找回您的账号。"/>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+              android:padding="10dp"
+              android:layout_gravity="center"
+              android:text="联系客服"
+              android:drawableLeft="@mipmap/ic_cs_dl"
+              android:drawablePadding="10dp"
+              android:id="@+id/customService"/>
+</LinearLayout>

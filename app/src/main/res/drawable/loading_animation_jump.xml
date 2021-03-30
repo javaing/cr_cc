@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+
+    <item
+        android:drawable="@mipmap/jump01"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump02"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump03"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump04"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump05"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump06"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump07"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump08"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump09"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump10"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump11"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump12"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump13"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump14"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump15"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump16"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump17"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump18"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump19"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump20"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump21"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump22"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump23"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump24"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump25"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump26"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump27"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump28"
+        android:duration="45" />
+    <item
+        android:drawable="@mipmap/jump29"
+        android:duration="45" />
+</animation-list>

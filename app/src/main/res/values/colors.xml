@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white">#ffffff</color>
+    <color name="yellow">#C59E29</color>
+    <color name="text_color_tab_selected">#f56336</color>
+    <color name="text_color_tab_normal">#8a8a8a</color>
+    <color name="colorDivider">#ebebeb</color>
+    <color name="text_color_999999">#999999</color>
+    <color name="text_color_D8D8D8">#F1EFEF</color>
+    <color name="theme_color">#f56336</color>
+    <color name="cs_background">#fbe9e3</color>
+    FBE9E3
+    <!--read-->
+
+    <color name="light_red">#EC4A48</color>
+    <color name="nb.read.menu.bg">#f56336</color>
+    <color name="color_disable">#aaaaaa</color>
+    <color name="text_color_grey">#666666</color>
+    <color name="text_color_212121">#212121</color>
+
+    <color name="indicator_shelf_banner_s">#f56336</color>
+    <color name="indicator_shelf_banner_n">#ccc</color>
+    <color name="track_seekbar_play">#f56336</color>
+
+    <color name="c40black">#4D000000</color>
+    <color name="bulletin_text">#525252</color>
+    <color name="bulletin_item">#FF3737</color>
+
+    <color name="recommend_text">#747474</color>
+    <color name="video_price_stroke">#DD8400</color>
+    <color name="video_tags_nor_color">#F4736F</color>
+    <color name="video_tags_selected_color">#EE2B29</color>
+
+</resources>

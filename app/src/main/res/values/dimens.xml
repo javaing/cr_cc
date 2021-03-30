@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!---->
+    '
+    <!--text-->
+    <!--二级标题-->
+
+    <!--小标签-->
+
+
+    <!--书籍的封面-->
+
+    <!--read-->
+
+    <!--read setting-->
+
+
+    <dimen name="min_panel_height">250dp</dimen>
+    <dimen name="max_panel_height">380dp</dimen>
+
+    <dimen name="min_keyboard_height">80dp</dimen>
+
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+
+    <dimen name="text_size_title_back">15sp</dimen>
+    <dimen name="text_size_welfare">18sp</dimen>
+
+    <dimen name="text_space">5dp</dimen>
+</resources>

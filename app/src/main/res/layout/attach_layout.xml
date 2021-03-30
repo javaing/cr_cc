@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aliee.quei.mo.widget.view.AttachButton xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/attach_view"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:layout_gravity="bottom|right"
+    android:layout_marginRight="20dp"
+    android:layout_marginBottom="80dp"
+    android:background="@color/transparent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:visibility="visible"
+    app:customIsDrag="true">
+
+
+    <ImageView
+        android:id="@+id/iv_attach"
+        android:layout_width="60dp"
+        android:layout_height="60dp"></ImageView>
+</com.aliee.quei.mo.widget.view.AttachButton>

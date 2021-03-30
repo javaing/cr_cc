@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:background="@drawable/border_bottom"
+        xmlns:tools="http://schemas.android.com/tools">
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tag"/>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="horizontal" android:layout_width="match_parent"
+                  android:layout_height="158dp"
+                  android:padding="15dp">
+        <com.makeramen.roundedimageview.RoundedImageView
+                android:layout_width="94dp"
+                android:layout_height="125dp"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                app:riv_corner_radius="2dp"
+                android:id="@+id/cover"/>
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:orientation="vertical">
+
+            <TextView
+                    android:id="@+id/bookTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="乡村多娇"
+                    android:textColor="#ff212121"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            <LinearLayout
+                    android:id="@+id/layout_bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:orientation="horizontal"
+                    android:layout_alignParentBottom="true">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="野龙"
+                        android:textColor="#ff4facf7"
+                        android:textSize="12sp"
+                        android:id="@+id/author"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/size"
+                        android:textColor="#ff999999"
+                        android:textSize="12sp"
+                        tools:text="88万字"
+                        android:layout_marginLeft="12dp"
+                />
+                <android.support.v4.widget.Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:background="@drawable/bg_novel_category"
+                        android:id="@+id/category"
+                        tools:text="乡村·激情"
+                        android:textSize="12sp"
+                        android:textColor="@color/theme_color"/>
+            </LinearLayout>
+
+            <TextView
+                    android:id="@+id/descr"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_above="@id/layout_bottom"
+                    android:layout_below="@id/bookTitle"
+                    android:ellipsize="end"
+                    android:lines="3"
+                    android:minLines="3"
+                    android:maxLines="3"
+                    android:lineSpacingExtra="5dp"
+                    tools:text="生如云的林村"
+                    android:textColor="#ff999999"
+                    android:textSize="12sp" />
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

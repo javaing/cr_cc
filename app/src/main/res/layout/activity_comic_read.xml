@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aliee.quei.mo.widget.comic.ReadViewFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.aliee.quei.mo.widget.view.statuslayout.StatusLayout
+        android:id="@+id/statuslayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+    </com.aliee.quei.mo.widget.view.statuslayout.StatusLayout>
+
+    <com.aliee.quei.mo.utils.extention.RecyclerViewEx
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#555555" />
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/layoutTopMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/theme_color"
+        tools:visibility="visible">
+
+        <RelativeLayout
+            android:id="@+id/header_ad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_head_ad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/ad_iv_head_close"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="15dp"
+                android:src="@mipmap/ic_close_float"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            android:minHeight="50dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+
+                <ImageButton
+                    android:id="@+id/titleBack"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="10dp"
+                    android:src="@mipmap/ic_reader_back" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_bookname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="marquee"
+                        android:singleLine="true"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/chapterName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="marquee"
+                        android:singleLine="true"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+
+                <ImageView
+                    android:id="@+id/menuMore"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:scaleType="center"
+                    android:src="@mipmap/ic_reader_more"
+                    android:visibility="invisible" />
+            </LinearLayout>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/pay_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="54dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/c40black"
+            android:visibility="visible" />
+        <!-- <FrameLayout
+                 android:layout_width="match_parent"
+                 android:layout_weight="1"
+                 android:layout_height="match_parent">
+
+             <ImageView
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:scaleType="fitXY"
+                     android:src="@mipmap/bg_pay_img"/>
+
+         </FrameLayout>-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_pay_layout"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="本章价格:70金币"
+                android:textColor="#999999"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:text="您的余额:0金币"
+                android:textColor="#999999"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_recharge"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_margin="20dp"
+                android:background="@drawable/bg_btn_pay"
+                android:gravity="center"
+                android:text="余额不足，立即充值"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_vip_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:text="开通VIP，免费阅读"
+                android:textColor="@color/light_red"
+                android:textSize="17sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/light_red" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutLight"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="54dp"
+        android:background="@color/c40black"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/lightMinus"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:scaleType="center"
+            android:src="@mipmap/ic_light_minus" />
+
+        <SeekBar
+            android:id="@+id/seekLight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:max="255"
+            android:maxHeight="2dp"
+            android:minHeight="2dp"
+            android:progressDrawable="@drawable/seekbar_bg"
+            android:thumb="@drawable/seekbar_thumb"
+            android:thumbOffset="10dp" />
+
+        <ImageView
+            android:id="@+id/lightPlus"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:scaleType="center"
+            android:src="@mipmap/ic_light_plus" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:background="@color/white" />
+
+        <TextView
+            android:id="@+id/autoLight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/check_auto_light"
+            android:drawablePadding="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/brightness_auto"
+            android:textColor="@color/text_color_tab_reader_controller" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutPlaySpeed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/c40black"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <com.zhouyou.view.seekbar.SignSeekBar
+            android:id="@+id/seekbar_speed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ssb_anim_duration="300"
+            app:ssb_auto_adjust_section_mark="true"
+            app:ssb_second_track_color="@color/track_seekbar_play"
+            app:ssb_second_track_size="6dp"
+            app:ssb_show_section_mark="true"
+            app:ssb_show_section_text="true"
+            app:ssb_show_thumb_shadow="true"
+            app:ssb_show_thumb_text="false"
+            app:ssb_sides_labels="@array/labels"
+            app:ssb_text_space="@dimen/text_space"
+            app:ssb_thumb_radius="5dp"
+            app:ssb_thumb_radius_on_dragging="7dp"
+            app:ssb_thumb_text_size="16sp"
+            app:ssb_touch_to_seek="true"
+            app:ssb_track_color="@color/color_gray"
+            app:ssb_track_size="5dp"
+            app:ssb_unusable_color="#ff0000" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/bottomMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        android:orientation="vertical"
+        tools:visibility="visible">
+
+
+        <!--<view style="@style/common_divider"/>-->
+
+        <include layout="@layout/layout_read_ad" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/menuCatalog"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:text="@string/catalog"
+                android:textColor="@color/text_color_tab_reader_controller"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorDivider" />
+
+            <TextView
+                android:id="@+id/menuPrev"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:text="@string/pre_chapter"
+                android:textColor="@color/text_color_tab_reader_controller"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorDivider" />
+
+            <TextView
+                android:id="@+id/menuNext"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:text="@string/next_chapter"
+                android:textColor="@color/text_color_tab_reader_controller"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorDivider" />
+
+            <TextView
+                android:id="@+id/menuFav"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:text="@string/collection"
+                android:textColor="@color/text_color_tab_reader_controller"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorDivider" />
+
+            <TextView
+                android:id="@+id/autoScroll"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:text="@string/auto_scroll"
+                android:textColor="@color/text_color_tab_reader_controller"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorDivider" />
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/comic_bottom_ad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/comic_iv_bottom_ad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/comic_ad_iv_bottom_close"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:src="@mipmap/ic_close_float"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/btn_home"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/bg_btn_read_home"
+        android:gravity="center"
+        android:text="首页"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_nums"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="4dp"
+        android:background="@color/c40black"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/all_white"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
+
+    <RelativeLayout
+        android:id="@+id/rl_read_ad"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/c40black"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_comic_read_ad"
+            android:layout_width="285dp"
+            android:layout_height="400dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/empty_string"
+            android:scaleType="fitXY" />
+
+        <ImageView
+            android:id="@+id/iv_comic_read_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_comic_read_ad"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:contentDescription="@string/empty_string"
+            android:scaleType="fitCenter"
+            app:srcCompat="@mipmap/ic_close_ticket_give" />
+
+    </RelativeLayout>
+
+</com.aliee.quei.mo.widget.comic.ReadViewFrameLayout>

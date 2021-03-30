@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="32dp"
+    android:gravity="center"
+    android:textSize="12sp"
+    android:maxLines="1"
+    android:textColor="@color/text_color_catalog"
+    android:background="@drawable/bg_catalog_grid">
+
+</android.support.v7.widget.AppCompatTextView>

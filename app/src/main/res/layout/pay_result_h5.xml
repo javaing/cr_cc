@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+    <include layout="@layout/layout_title"/>
+    <com.aliee.quei.mo.widget.view.statuslayout.StatusLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/statuslayout">
+        <LinearLayout
+                android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:id="@+id/imgStatus"
+                android:src="@mipmap/ic_pay_success"/>
+
+            <TextView
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pay_success"
+                android:textColor="#ff333333"
+                android:id="@+id/textStatus"
+                android:textSize="17sp"
+                />
+            <TextView
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="25dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/btnAction"
+                android:text="@string/done"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:background="@drawable/solid_theme_r2_selector"/>
+            <View android:layout_width="match_parent" android:layout_height="0dp"
+                  android:layout_weight="1"/>
+            <TextView
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:text="@string/guess_like"
+                    android:textColor="#ff333333"
+                    android:textSize="13sp"
+                    android:drawableLeft="@mipmap/ic_header_tab"
+                    android:drawablePadding="5dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+            />
+            <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginBottom="50dp"
+                                                    android:id="@+id/recyclerView"/>
+        </LinearLayout>
+    </com.aliee.quei.mo.widget.view.statuslayout.StatusLayout>
+</LinearLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="KPSwitchPanelLayout">
+        <attr name="ignore_recommend_height" format="boolean" />
+    </declare-styleable>
+
+    <!-- 可清空编辑框属性 -->
+    <declare-styleable name="ETWithDelete">
+        <attr name="delSrc" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="DottedLine">
+        <attr name="dotColor" format="color" />
+    </declare-styleable>
+
+    <!-- Declare custom theme attributes that allow changing which styles are
+         used for button bars depending on the API level.
+         ?android:attr/buttonBarStyle is new as of API 11 so this is
+         necessary to support previous API levels. -->
+    <declare-styleable name="ButtonBarContainerTheme">
+        <attr name="metaButtonBarStyle" format="reference" />
+        <attr name="metaButtonBarButtonStyle" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="MultiScrollNumber">
+        <attr name="primary_number" format="integer" />
+        <attr name="target_number" format="integer" />
+        <attr name="number_size" format="integer" />
+        <!--<attr name="number_color" format="color"/>-->
+    </declare-styleable>
+
+    <attr name="minScaleFactor" format="float"/>
+    <attr name="maxScaleFactor" format="float"/>
+    <attr name="autoScaleTime"  format="integer"/>
+
+    <declare-styleable name="ZoomRecyclerView">
+        <attr name="minScaleFactor" />
+        <attr name="maxScaleFactor" />
+        <attr name="autoScaleTime"  />
+    </declare-styleable>
+</resources>

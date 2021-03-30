@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.aliee.quei.mo">
+
+
+    <application
+        android:name="com.aliee.quei.mo.application.SophixStubApplication"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon">
+        <activity
+            android:name="com.aliee.quei.mo.ui.launch.activity.LaunchActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="comic.twcr.com"
+                    android:scheme="comic" />
+            </intent-filter>
+        </activity>
+
+        <activity-alias
+            android:name="com.roan.lyde.qoqo.ui.launch.activity.LaunchActivity_fake"
+            android:enabled="false"
+            android:icon="@mipmap/ic_fake1"
+            android:label="@string/app_name"
+            android:targetActivity="com.aliee.quei.mo.ui.launch.activity.LaunchActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name="com.aliee.quei.mo.ui.launch.activity.LaunchActivity_fake2"
+            android:enabled="false"
+            android:icon="@mipmap/ic_fake2"
+            android:label="@string/app_name2"
+            android:targetActivity="com.aliee.quei.mo.ui.launch.activity.LaunchActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name="com.aliee.quei.mo.ui.launch.activity.LaunchActivity_fake3"
+            android:enabled="false"
+            android:icon="@mipmap/ic_fake3"
+            android:label="@string/app_name3"
+            android:targetActivity="com.aliee.quei.mo.ui.launch.activity.LaunchActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity
+            android:name="com.aliee.quei.mo.ui.main.activity.ContentActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <activity
+            android:name="com.aliee.quei.mo.ui.main.activity.DailyLoginActivity"
+            android:theme="@style/Activity_dialoglike" />
+        <activity
+            android:name="com.aliee.quei.mo.ui.search.activity.SearchActivity"
+            android:launchMode="singleTop" />
+        <activity android:name="com.aliee.quei.mo.ui.ticket.activity.TicketActivity" />
+        <activity android:name="com.aliee.quei.mo.ui.catalog.activity.CatalogActivity" />
+        <activity
+            android:name="com.aliee.quei.mo.ui.web.activity.WebActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name="com.aliee.quei.mo.ui.web.activity.WebActivity2"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name="com.aliee.quei.mo.ui.upgradle.UpgradeActivity"
+            android:theme="@style/Transparent" />
+        <activity
+            android:name="com.aliee.quei.mo.ui.pay.activity.H5PayResultActivity"
+            android:launchMode="singleTask" />
+
+
+        <activity
+            android:name="com.aliee.quei.mo.ui.user.activity.RegisterActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name="com.aliee.quei.mo.ui.user.activity.LoginActivity"
+            android:launchMode="singleTask" />
+
+        <activity
+            android:name="com.aliee.quei.mo.ui.user.activity.ResetActivity"
+            android:launchMode="singleTask" />
+
+        <activity
+            android:name="com.aliee.quei.mo.ui.comic.activity.ComicDetailActivity"
+            android:theme="@style/AppTheme" />
+        <activity android:name="com.aliee.quei.mo.ui.comic.activity.ComicCategoryActivity" />
+        <activity
+            android:name="com.aliee.quei.mo.ui.comic.activity.ComicReadActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/readerActivity" />
+        <activity android:name="com.aliee.quei.mo.ui.comic.activity.MoreActivity" />
+        <activity android:name="com.aliee.quei.mo.ui.user.activity.BillActivity" />
+        <activity android:name="com.aliee.quei.mo.ui.user.activity.RecoverUserActivity" />
+        <activity android:name="com.aliee.quei.mo.ui.user.activity.RechargeActivity" />
+
+        <!--<receiver android:name="com.roan.lyde.qoqo.component.NotificationReceiver">
+            <intent-filter>
+                <action android:name="com.comic_c.mobile.notification" />
+            </intent-filter>
+        </receiver>-->
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.file.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider" />
+        </provider>
+
+        <activity android:name="com.aliee.quei.mo.ui.reserve.Reserve1Activity" />
+        <activity android:name="com.aliee.quei.mo.ui.reserve.Reserve2Activity" />
+        <activity android:name="com.aliee.quei.mo.ui.reserve.Reserve3Activity" />
+        <activity android:name="com.aliee.quei.mo.ui.reserve.Reserve4Activity" />
+        <activity android:name="com.aliee.quei.mo.ui.reserve.Reserve5Activity" />
+        <activity android:name="com.aliee.quei.mo.ui.reserve.Reserve6Activity" />
+        <activity android:name="com.aliee.quei.mo.ui.reserve.Reserve7Activity" />
+        <activity android:name="com.aliee.quei.mo.ui.reserve.Reserve8Activity" />
+        <activity android:name="com.aliee.quei.mo.ui.reserve.Reserve9Activity" />
+        <activity android:name="com.aliee.quei.mo.ui.reserve.ReserveaActivity" />
+
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
+
+        <activity android:name="com.aliee.quei.mo.ui.main.activity.BulletinActivity" />
+        <activity android:name="com.aliee.quei.mo.ui.main.activity.BulletinDetailActivity" />
+        <activity android:name="com.aliee.quei.mo.ui.comic.activity.RankingActivity" />
+        <activity android:name="com.aliee.quei.mo.ui.comic.activity.ReadFinishActivity" />
+        <activity android:name="com.aliee.quei.mo.ui.user.activity.CustomServiceActivity" />
+        <activity android:name="com.aliee.quei.mo.ui.user.activity.RecommendCodeActivity" />
+        <activity android:name="com.aliee.quei.mo.ui.user.activity.RecommendListActivity" />
+        <activity android:name="com.aliee.quei.mo.ui.user.activity.ExchangeActivity" />
+        <activity android:name="com.aliee.quei.mo.ui.welfare.activity.CoinListActivity" />
+        <activity
+            android:name=".ui.video.VideoDetailActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity
+            android:name=".ui.video.VideoRankActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.video.VideoRecommendActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.video.VideoSearchActivity"
+            android:launchMode="singleTop" />
+        <activity android:name=".ui.user.activity.ShareActivity" />
+
+        <activity android:name=".ui.video.VideoShareActivity" />
+
+        <activity android:name=".ui.launch.activity.LaunchAdActivity"/>
+
+    </application>
+
+    <!-- 网络相关 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+
+    <!-- 文件读写 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+</manifest>

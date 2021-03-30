@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:fitsSystemWindows="true">
+
+    <RelativeLayout
+            android:id="@+id/titleBar"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+        <TextView
+                android:id="@+id/titleText"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="注册"
+                android:maxWidth="200dp"
+                android:visibility="gone"
+                android:singleLine="true"
+                android:textColor="@color/white"
+                android:textSize="17sp"/>
+
+        <ImageView
+                android:visibility="visible"
+                android:id="@+id/r_titleBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:src="@mipmap/fanhui_bbb"
+                android:drawablePadding="6dp"
+                android:padding="10dp"
+                />
+
+        <TextView
+                android:visibility="invisible"
+                android:id="@+id/title_right_but"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:text="@string/skip"
+                android:textColor="@color/white"
+                android:textSize="15sp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/bg_register">
+
+        <TextView
+            android:id="@+id/tv_Register_bonus"
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:layout_marginLeft="39dp"
+            android:layout_marginTop="110dp"
+            android:layout_marginRight="43dp"
+            android:text="注册会员送 150金币"
+            android:textColor="@color/text_color_selector_white_btn"
+            android:textSize="18sp" />
+
+    <LinearLayout
+            android:id="@+id/layout_Phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="27dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="90dp"
+            android:layout_below="@id/tv_Register_bonus">
+
+        <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@mipmap/ic_login_user"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="5dp">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="#f44336"
+                    android:text="@string/user"
+                    android:visibility="gone"/>
+
+            <com.aliee.quei.mo.widget.view.ETextWithDelete
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    app:delSrc="@mipmap/ic_edit_del_1"
+                    android:inputType="number"
+                    android:maxLength="11"
+                    android:hint="@string/hint_phone"
+                    android:paddingLeft="12dp"
+                    android:id="@+id/editPhone"
+                    android:background="@drawable/bg_edit_login"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/layout_Pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="27dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/layout_Phone">
+
+        <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@mipmap/ic_login_pwd"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="5dp">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="#f44336"
+                    android:text="@string/password"
+                    android:visibility="gone"/>
+
+            <com.aliee.quei.mo.widget.view.ETextWithDelete
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    app:delSrc="@mipmap/ic_edit_del_1"
+                    android:inputType="textPassword"
+                    android:paddingLeft="12dp"
+                    android:hint="@string/hint_password"
+                    android:id="@+id/password1"
+                    android:background="@drawable/bg_edit_login"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <TextView
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_btn_login2"
+            android:gravity="center"
+            android:textColor="@color/text_color_selector_white_btn"
+            android:text="立即注册 新用戶赠送150金币"
+            android:layout_marginLeft="67dp"
+            android:layout_marginRight="50dp"
+            android:textSize="18sp"
+            android:enabled="false"
+            android:id="@+id/btnLogin"
+            android:layout_below="@id/layout_Pwd"/>
+
+    <TextView
+            android:padding="10dp"
+            android:id="@+id/goLogin"
+            android:text="@string/go_register"
+            android:textColor="@color/light_red"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/btnLogin"/>
+
+    <TextView
+        android:visibility="visible"
+        android:padding="5dp"
+        android:id="@+id/tvcsAssist"
+        android:text="@string/cs_assist"
+        android:textColor="#f44336"
+        android:textSize="14sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/goLogin"/>
+    </RelativeLayout>
+</LinearLayout>

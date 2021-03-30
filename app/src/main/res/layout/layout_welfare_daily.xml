@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout style="@style/bg_welfare_item"
+              android:id="@+id/layoutDailyTask" xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools">
+    <TextView style="@style/welfare_item_title"
+              android:text="日常任务"
+              android:layout_centerInParent="true"/>
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/colorDivider"/>
+    <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
+                                                   android:layout_height="wrap_content"
+                                                   android:id="@+id/rvDaily"/>
+</LinearLayout>

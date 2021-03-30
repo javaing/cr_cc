@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout style="@style/bg_welfare_item"
+              xmlns:tools="http://schemas.android.com/tools"
+              xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView style="@style/welfare_item_title"
+              android:text="新人大礼包"/>
+    <View android:layout_width="match_parent" android:layout_height="1dp"
+          android:background="@color/colorDivider"/>
+    <LinearLayout style="@style/welfare_task_item"
+    android:id="@+id/layoutFirstRecharge">
+        <LinearLayout style="@style/welfare_task_item_left">
+            <TextView style="@style/welfare_task_item_title"
+                      android:text="新人充值好礼，首次充值充多少送多少"
+                      android:id="@+id/tvFirstRecharge"
+                      android:textColor="@color/color_welfare"/>
+            <TextView style="@style/welfare_task_item_desc"
+                      android:text="任务已完成，请点击领取"
+                      android:textColor="#FF6933"/>
+        </LinearLayout>
+        <TextView style="@style/welfare_task_item_claim"
+                  android:text="可领取"
+        />
+    </LinearLayout>
+    <View android:layout_width="match_parent" android:layout_height="1dp"
+          android:background="@color/colorDivider"/>
+    <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
+                                                   android:layout_height="wrap_content"
+                                                   android:id="@+id/rvNewbie"/>
+</LinearLayout>

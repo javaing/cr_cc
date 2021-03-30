@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout style="@style/welfare_task_item" xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout style="@style/welfare_task_item_left">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal">
+            <TextView style="@style/welfare_task_item_title"
+                      android:id="@+id/tvTitle"
+                      android:text="每日阅读10分钟"/>
+            <TextView style="@style/welfare_task_item_title_amount"
+                      android:id="@+id/tvAmount"
+                      android:text="+200金币"/>
+        </LinearLayout>
+        <TextView style="@style/welfare_task_item_desc"
+                  android:id="@+id/tvStatus"
+                  android:text="已经完成1次，还可完成9次"/>
+    </LinearLayout>
+    <TextView style="@style/welfare_task_item_claim"
+              android:text="可领取"
+            android:id="@+id/btnClaim"
+    />
+</LinearLayout>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 应用主题色 -->
+    <color name="maincolor">#21b38a</color>
+    <!-- 白色 -->
+    <color name="all_white">#ffffff</color>
+ 	<!-- 黑色 -->
+    <color name="all_black">#000000</color>
+ 	<!-- 透明 -->
+    <color name="transparent">#00000000</color>
+ 	<!-- 浅灰 -->
+    <color name="lightgrey">#D6D6D6</color>
+    <color name="grey">#8B8989</color>
+    <color name="startcolor">#21b38a</color>
+    <color name="textcolor">#383838</color>
+    <color name="lite_blue">#ff359ff2</color>
+    <color name="robot_blue">#2256CB</color>
+    <color name="navpage">#FFE1E8EB</color>
+
+    <color name="color_gray">#B4B4B4</color>
+    <color name="color_green">#00b4aa</color>
+    <color name="color_red">#FF6A6E</color>
+    <color name="color_red_light">#FFB4B6</color>
+    <color name="color_blue">#03A9F4</color>
+    <color name="color_gray_light">#F5F5F5</color>
+    <color name="color_60">#F4A460</color>
+    <color name="color_99">#99F4A460</color>
+
+</resources>

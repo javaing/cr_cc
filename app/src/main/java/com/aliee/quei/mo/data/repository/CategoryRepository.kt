@@ -1,0 +1,38 @@
+package com.aliee.quei.mo.data.repository
+
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleOwner
+import com.aliee.quei.mo.data.BeanConstants
+import com.aliee.quei.mo.data.bean.CategoryBean
+import com.aliee.quei.mo.data.bean.ComicBookBean
+import com.aliee.quei.mo.data.bean.ListBean
+import com.aliee.quei.mo.data.service.CategoryService
+import com.aliee.quei.mo.net.retrofit.RetrofitClient
+import com.aliee.quei.mo.utils.rxjava.SchedulersUtil
+import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindUntilEvent
+import io.reactivex.Observable
+
+class CategoryRepository : BaseRepository(){
+    private val service = RetrofitClient.createService(CategoryService::class.java)
+
+    fun getCategory(lifecycleOwner: LifecycleOwner,sort : Int = BeanConstants.SORT_ASC) : Observable<List<CategoryBean>> {
+        return service.getCategory(sort)
+            .compose(SchedulersUtil.applySchedulers())
+            .bindUntilEvent(lifecycleOwner,Lifecycle.Event.ON_DESTROY)
+            .compose(handleBean())
+    }
+
+    fun getList(lifecycleOwner: LifecycleOwner,id : Int,sex : Int,status : Int,page : Int,pageSize : Int) : Observable<ListBean<ComicBookBean>> {
+        return service.getList(id,sex, status, page, pageSize)
+            .compose(SchedulersUtil.applySchedulers())
+            .bindUntilEvent(lifecycleOwner,Lifecycle.Event.ON_DESTROY)
+            .compose(handleBean())
+            .map {
+                val list = ListBean<ComicBookBean>()
+                list.pageSize = pageSize
+                list.page = page
+                list.list = it
+                list
+            }
+    }
+}

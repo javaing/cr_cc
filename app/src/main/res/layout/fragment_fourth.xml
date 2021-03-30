@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_srlBackgroundColor="@android:color/transparent"
+        app:srlDragRate="0.7"
+        app:srlEnablePreviewInEditMode="true"
+        app:srlHeaderHeight="90dp">
+
+        <com.scwang.smartrefresh.layout.header.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            app:layout_srlBackgroundColor="@color/theme_color"
+            app:layout_srlSpinnerStyle="Scale" />
+
+        <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/layoutHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="246dp"
+                    android:background="@color/theme_color">
+
+                    <ImageView
+                        android:id="@+id/bgHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/bg_mine_header" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingLeft="28dp"
+                        android:paddingTop="28dp"
+                        android:paddingRight="22dp">
+
+                        <RelativeLayout
+                            android:id="@+id/rl_header"
+                            android:layout_width="80dp"
+                            android:layout_height="85dp">
+
+                            <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                                android:id="@+id/headImg"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:src="@mipmap/ic_launcher1"
+                                app:riv_border_color="@color/white"
+                                app:riv_border_width="2dp"
+                                app:riv_corner_radius="50dp" />
+
+                            <ImageView
+                                android:id="@+id/imgSex"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentBottom="true"
+                                android:layout_marginBottom="5dp"
+                                android:src="@mipmap/ic_girl"
+                                android:visibility="gone" />
+
+                            <ImageView
+                                android:id="@+id/iconVip"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_centerHorizontal="true"
+                                android:src="@mipmap/ic_vip_head_decor"
+                                android:visibility="gone" />
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="15dp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/nickName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="2dp"
+                                android:text="@string/please_login"
+                                android:textColor="#212121"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/userId"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="@string/user_id"
+                                android:textColor="#212121"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tv_freetime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ll_header"
+                                android:textColor="#212121"
+                                android:layout_marginTop="10dp"
+                                android:text="今日免费观影剩余0次" />
+
+                            <TextView
+                                android:id="@+id/tv_vip_freetime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ll_header"
+                                android:textColor="#212121"
+                                android:layout_marginTop="10dp"
+                               />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/bg_mine_balance_block"
+                        android:orientation="horizontal"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="15dp">
+
+                        <LinearLayout
+                            android:id="@+id/layoutBalance"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:src="@mipmap/ic_balance_coins" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="6dp"
+                                    android:text="金币" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="40dp"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/balance"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="20dp"
+                                    android:textColor="@color/theme_color"
+                                    android:textSize="16sp"
+                                    tools:text="0" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="6dp"
+                                    android:text="余额"
+                                    android:textColor="#666666" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="@color/colorDivider" />
+
+                        <LinearLayout
+                            android:id="@+id/layoutTicket"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:src="@mipmap/ic_balance_vip" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="6dp"
+                                    android:text="会员" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/vipEndTime"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="20dp"
+                                    android:text="@string/not_vip"
+                                    android:textColor="@color/theme_color" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/vipEndTime"
+                                    android:layout_marginTop="8dp"
+                                    android:text="有效期至"
+                                    android:textColor="#666666" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutOpenVip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@mipmap/bg_vip_open"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:paddingLeft="100dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="啵啵VIP"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="开通后免费畅读千部VIP漫画"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:background="@drawable/bg_mine_btn_open_vip"
+                            android:drawableRight="@mipmap/ic_arrow_right"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="2dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="2dp"
+                            android:text="立即开通" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout style="@style/block_mine_info_">
+
+                    <LinearLayout
+                        android:id="@+id/layoutRecharge"
+                        style="@style/item_mine_info">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@mipmap/ic_account_dl" />
+
+                        <TextView
+                            style="@style/item_mine_info_name"
+                            android:text="充值中心" />
+
+                        <TextView
+                            style="@style/item_mine_info_value"
+                            android:text="@string/recharge_now"
+                            android:textColor="#E1483C"
+                            android:visibility="invisible" />
+                    </LinearLayout>
+
+                    <View style="@style/item_mine_info_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutBind"
+                        style="@style/item_mine_info">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@mipmap/ic_bind_dl" />
+
+                        <TextView
+                            style="@style/item_mine_info_name"
+                            android:text="手机登录" />
+
+                        <TextView
+                            android:id="@+id/bindStatus"
+                            style="@style/item_mine_info_value"
+                            android:text="@string/bind_phone_now"
+                            android:textColor="#E1483C" />
+                    </LinearLayout>
+
+                    <View style="@style/item_mine_info_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutRecord"
+                        android:visibility="gone"
+                        style="@style/item_mine_info">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@mipmap/ic_record_dl" />
+
+                        <TextView
+                            style="@style/item_mine_info_name"
+                            android:text="@string/reading_history" />
+
+                        <TextView
+                            style="@style/item_mine_info_value"
+                            android:textColor="#E1483C" />
+
+                        <ImageView style="@style/item_mine_info_value_arrow_right" />
+                    </LinearLayout>
+
+                    <View style="@style/item_mine_info_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutBillRecord"
+                        style="@style/item_mine_info">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@mipmap/ic_bill_dl" />
+
+                        <TextView
+                            style="@style/item_mine_info_name"
+                            android:text="@string/bill_detail" />
+
+                        <TextView
+                            style="@style/item_mine_info_value"
+                            android:textColor="#E1483C" />
+                    </LinearLayout>
+
+                    <View style="@style/item_mine_info_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutCustomService"
+                        style="@style/item_mine_info">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@mipmap/ic_cs_dl" />
+
+                        <TextView
+                            style="@style/item_mine_info_name"
+                            android:text="@string/custom_service_lady" />
+
+                        <TextView
+                            android:id="@+id/tv_cstitle"
+                            style="@style/item_mine_info_value"
+                            android:text="@string/wx_cstitle"
+                            android:textColor="#E1483C" />
+                    </LinearLayout>
+
+                    <View style="@style/item_mine_info_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutRecommendId"
+                        style="@style/item_mine_info">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@mipmap/ic_id" />
+
+                        <TextView
+                            style="@style/item_mine_info_name"
+                            android:text="@string/sharepromote" />
+
+                    </LinearLayout>
+
+                    <View style="@style/item_mine_info_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutMyBonus"
+                        style="@style/item_mine_info"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@mipmap/ic_gold" />
+
+                        <TextView
+                            style="@style/item_mine_info_name"
+                            android:text="@string/my_bonus" />
+
+                    </LinearLayout>
+
+                 <!--   <View style="@style/item_mine_info_divider" />-->
+
+                    <LinearLayout
+                        android:id="@+id/layoutExchange"
+                        android:visibility="gone"
+                        style="@style/item_mine_info">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@mipmap/ic_exchange" />
+
+                        <TextView
+                            style="@style/item_mine_info_name"
+                            android:text="@string/my_exchange" />
+
+                    </LinearLayout>
+
+                    <View style="@style/item_mine_info_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutSwitch"
+                        style="@style/item_mine_info"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@mipmap/ic_switch_user_dl" />
+
+                        <TextView
+                            style="@style/item_mine_info_name"
+                            android:text="@string/switch_account" />
+
+                        <TextView
+                            style="@style/item_mine_info_value"
+                            android:textColor="#E1483C" />
+                    </LinearLayout>
+
+                    <View style="@style/item_mine_info_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutModify"
+                        style="@style/item_mine_info"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@mipmap/ic_modify" />
+
+                        <TextView
+                            style="@style/item_mine_info_name"
+                            android:text="@string/modify_password" />
+
+                        <TextView
+                            android:id="@+id/tv_password"
+                            style="@style/item_mine_info_value"
+                            android:text=""
+                            android:textColor="#E1483C" />
+
+                    </LinearLayout>
+
+                    <View style="@style/item_mine_info_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutFind"
+                        style="@style/item_mine_info">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@mipmap/ic_switch_user_dl" />
+
+                        <TextView
+                            style="@style/item_mine_info_name"
+                            android:text="@string/find_lost_account" />
+
+                        <TextView
+                            style="@style/item_mine_info_value"
+                            android:textColor="#E1483C" />
+
+                    </LinearLayout>
+
+                    <View style="@style/item_mine_info_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/autoPlay"
+                        style="@style/item_mine_info">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@mipmap/icon_auto_play" />
+
+                        <TextView
+                            style="@style/item_mine_info_name"
+                            android:text="视频自动播放" />
+
+                        <TextView
+                            style="@style/item_mine_info_value"
+                            android:textColor="#E1483C" />
+
+                        <Switch
+                            android:id="@+id/sw_switch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginLeft="20dp"
+                            android:layout_toRightOf="@+id/tv_title"
+                            android:checked="false"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <View style="@style/item_mine_info_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutUpdate"
+                        style="@style/item_mine_info"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@mipmap/ic_user_remind" />
+
+                        <TextView
+                            style="@style/item_mine_info_name"
+                            android:text="@string/update_now" />
+
+                        <TextView
+                            style="@style/item_mine_info_value"
+                            android:textColor="#E1483C" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/apkVersion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+        <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:srlFinishDuration="0" />
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_ad_head"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="50dp"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/ad_mine_head"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_ad_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="54dp"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+
+        <ImageView
+            android:id="@+id/ad_mine_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
+    </LinearLayout>
+
+    <include layout="@layout/attach_layout"/>
+</FrameLayout>

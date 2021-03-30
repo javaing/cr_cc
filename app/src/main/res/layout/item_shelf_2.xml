@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingLeft="2dp"
+              android:paddingRight="2dp"
+              android:paddingTop="5dp"
+              android:paddingBottom="5dp"
+              android:gravity="center_vertical">
+    <android.support.v7.widget.CardView android:layout_width="match_parent"
+                                        android:layout_height="178dp"
+                                        android:layout_marginLeft="2dp"
+                                        android:layout_marginRight="2dp"
+                                        app:cardElevation="2dp"
+                                        app:cardCornerRadius="5dp">
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="178dp">
+        <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+                                                         android:layout_height="178dp"
+                                                         app:riv_corner_radius="2dp"
+                                                         android:scaleType="fitXY"
+                                                         android:id="@+id/ivCover"/>
+        <ImageView android:layout_width="40dp" android:layout_height="40dp"
+                   android:scaleType="centerInside"
+                   android:id="@+id/ivDel"
+                   android:background="@drawable/bg_shelf_del"
+                   android:layout_alignParentEnd="true"
+                   android:src="@mipmap/ic_del_shelf"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:gravity="center"
+                  android:textColor="@color/white"
+                  android:layout_alignParentBottom="true"
+                  android:layout_marginBottom="12dp"
+                  android:paddingTop="1dp"
+                  android:paddingBottom="1dp"
+                  android:paddingLeft="6dp"
+                  android:paddingRight="6dp"
+                  android:text="完结"
+                  android:textSize="12sp"
+                  android:id="@+id/ivTagStatus"
+                  android:background="@drawable/bg_tag_finished"/>
+    </RelativeLayout>
+    </android.support.v7.widget.CardView>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:textSize="16sp"
+                  android:id="@+id/tvTitle"
+                  android:maxLines="1"
+                  android:ellipsize="end"
+                  tools:text="调jiao家政妇（双面保姆 贴心少爷）"
+                  android:textColor="@color/theme_color"/>
+</LinearLayout>

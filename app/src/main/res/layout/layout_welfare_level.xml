@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent" android:layout_height="155dp"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="vertical"
+                android:id="@+id/layoutLevel" xmlns:android="http://schemas.android.com/apk/res/android">
+    <View android:layout_width="match_parent" android:layout_height="75dp"
+          android:background="@mipmap/bg_welfare_level"/>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="130dp"
+                  android:orientation="vertical"
+                  android:layout_marginTop="15dp"
+                  android:layout_marginLeft="15dp"
+                  android:layout_marginRight="15dp"
+                  android:background="@drawable/bg_welfare_level"
+                  android:padding="10dp">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal">
+            <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+                          android:orientation="horizontal">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="我的等级："
+                        android:textColor="#ff333333"
+                        android:textSize="15sp"
+                />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                          tools:text="Lv.1"
+                          android:id="@+id/tvLevel"
+                          android:textColor="@color/color_welfare"
+                          android:textSize="15sp"
+                          android:textStyle="italic"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+                          android:orientation="horizontal">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="称号："
+                        android:textColor="#ff333333"
+                        android:textSize="15sp"
+                />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                          tools:text="坚韧黑铁"
+                          android:textColor="@color/color_welfare"
+                          android:textSize="15sp"
+                          android:id="@+id/tvTitle"
+                          android:textStyle="italic"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal"
+                      android:layout_marginTop="10dp">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="距离下一等级："
+                    android:textColor="#ff666666"
+                    android:textSize="14sp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Lv.2"
+                    android:id="@+id/tvNextLevel"
+                    android:textColor="@color/color_welfare"
+                    android:textStyle="italic"
+                    android:textSize="14sp"/>
+        </LinearLayout>
+        <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="看书："
+                    android:textColor="#ff999999"
+                    android:textSize="13sp"
+            />
+            <RelativeLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+                <ProgressBar android:layout_width="match_parent" android:layout_height="5dp"
+                             android:id="@+id/pbChapter"
+                             android:layout_centerVertical="true"
+                             android:progressDrawable="@drawable/bg_progress_level"
+                             style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+                             android:progress="10"/>
+                <View android:layout_width="10dp" android:layout_height="10dp"
+                      android:layout_centerVertical="true"
+                      android:background="@drawable/bg_progress_level_header"/>
+            </RelativeLayout>
+
+            <TextView
+                    android:layout_marginStart="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="还需看书0章"
+                    android:id="@+id/tvChapterLeft"
+                    android:textColor="#ff999999"
+                    android:textSize="13sp"
+            />
+        </LinearLayout>
+        <LinearLayout
+                android:visibility="gone"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="登录："
+                    android:textColor="#ff999999"
+                    android:textSize="13sp"
+            />
+            <View android:layout_width="10dp" android:layout_height="10dp"
+                  android:background="@drawable/bg_progress_level_header"/>
+            <ProgressBar android:layout_width="0dp" android:layout_height="5dp"
+                         android:layout_weight="1"
+                         android:layout_marginLeft="-5dp"
+                         android:progressDrawable="@drawable/bg_progress_level"
+                         style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+                         android:progress="10"/>
+            <TextView
+                    android:layout_marginStart="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="还需登录10天"
+                    android:textColor="#ff999999"
+                    android:textSize="13sp"
+            />
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="6dp"
+                      android:orientation="horizontal"
+                      android:gravity="center_vertical">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="我的勋章："
+                    android:textColor="#ff333333"
+                    android:textSize="15sp"
+            />
+            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:id="@+id/ivLevel"
+            android:src="@mipmap/ic_level_1"/>
+            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                       android:src="@mipmap/ic_medal_x"
+                       android:layout_marginLeft="6dp"/>
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:orientation="horizontal"
+            android:id="@+id/layoutStar">
+                <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:src="@mipmap/ic_medal_star"
+                android:layout_marginLeft="5dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

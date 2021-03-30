@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/bg_welfare_item"
+android:padding="10dp">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="horizontal">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="本周阅读时长 28 分钟"
+                android:textColor="#ff333333"
+                android:textSize="15sp"/>
+        <Space android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="注：每周一凌晨重新计算"
+                android:textColor="#ffb3b3b3"
+                android:textSize="12sp"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="horizontal"
+                  android:layout_marginTop="10dp"
+    android:gravity="center_horizontal">
+        <!--<ImageView android:layout_width="94dp" android:layout_height="114dp"-->
+        <!--android:src="@mipmap/img_carve"/>-->
+        <include layout="@layout/item_week_duration_reward"/>
+        <include layout="@layout/item_week_duration_reward"/>
+        <include layout="@layout/item_week_duration_reward"/>
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                      android:orientation="vertical"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:gravity="center">
+            <LinearLayout android:layout_width="50dp" android:layout_height="50dp"
+                          android:orientation="vertical"
+                          android:background="@mipmap/bg_week_rewad_"
+                          android:gravity="center">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+"
+                        android:textColor="#ffbfbfbf"
+                        android:textSize="14sp"
+                />
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2888"
+                        android:textColor="#ffbfbfbf"
+                        android:textSize="12sp"
+                />
+            </LinearLayout>
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                          android:orientation="horizontal"
+                          android:gravity="center">
+                <View android:layout_width="24dp" android:layout_height="2dp"
+                      android:background="#ccc"/>
+                <TextView
+                        android:background="@drawable/bg_week_duraion_item_status"
+                        android:layout_width="10dp" android:layout_height="10dp"
+                        android:layout_margin="4dp"/>
+                <View android:layout_width="24dp" android:layout_height="2dp"
+                      android:background="#ccc"
+                android:visibility="invisible"/>
+            </LinearLayout>
+            <TextView
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:text="10分钟"
+                    android:textColor="#ff333333"
+                    android:textSize="12sp"
+            />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_marginTop="-38dp"
+                  android:paddingStart="34dp"
+                  android:gravity="center_horizontal|bottom">
+        <!--<ImageView android:layout_width="94dp" android:layout_height="114dp"-->
+        <!--android:src="@mipmap/img_carve"/>-->
+        <include layout="@layout/item_week_duration_reward"/>
+        <include layout="@layout/item_week_duration_reward"/>
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                      android:orientation="vertical"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:gravity="center">
+            <LinearLayout android:layout_width="50dp" android:layout_height="50dp"
+                          android:orientation="vertical"
+                          android:background="@mipmap/bg_week_rewad_"
+                          android:gravity="center">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+"
+                        android:textColor="#ffbfbfbf"
+                        android:textSize="14sp"
+                />
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2888"
+                        android:textColor="#ffbfbfbf"
+                        android:textSize="12sp"
+                />
+            </LinearLayout>
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                          android:orientation="horizontal"
+                          android:gravity="center">
+                <View android:layout_width="24dp" android:layout_height="2dp"
+                      android:background="#ccc"/>
+                <TextView
+                        android:background="@drawable/bg_week_duraion_item_status"
+                        android:layout_width="10dp" android:layout_height="10dp"
+                        android:layout_margin="4dp"/>
+                <View android:layout_width="24dp" android:layout_height="2dp"
+                      android:visibility="invisible"
+                      android:background="#ccc"/>
+            </LinearLayout>
+            <TextView
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:text="10分钟"
+                    android:textColor="#ff333333"
+                    android:textSize="12sp"
+            />
+        </LinearLayout>
+        <ImageView android:layout_width="94dp" android:layout_height="114dp"
+        android:src="@mipmap/img_carve"
+                   android:layout_marginLeft="-24dp"
+        android:layout_marginBottom="35dp"/>
+    </LinearLayout>
+</LinearLayout>

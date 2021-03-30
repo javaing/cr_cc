@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/border_bottom"
+              android:paddingEnd="15dp"
+              android:paddingTop="1dp"
+              android:paddingBottom="1dp"
+              android:gravity="center_vertical">
+
+    <ImageView
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:id="@+id/thumb"
+            android:scaleType="centerCrop"/>
+
+    <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginLeft="14dp"
+            android:gravity="center">
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:id="@+id/name"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/time"
+                android:visibility="gone"/>
+    </LinearLayout>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/coin_num"
+            android:textColor="#ff333333"
+            android:textSize="12sp"
+            android:id="@+id/price"
+            />
+</LinearLayout>
