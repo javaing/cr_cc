@@ -105,15 +105,9 @@ class ShelfAdapter2 : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     }
 
     fun setShelfItem(data: MutableList<ShelfBean>) {
-        //this.mShelfList.clear()
-        //this.mShelfList.addAll(data)
-        //notifyDataSetChanged()
-
-        val oldList = this.mShelfList.toList()
-        mShelfList.clear()
-        mShelfList.addAll(data)
-        val diffResult = DiffUtil.calculateDiff(ShelfDiffUtil(oldList, this.mShelfList))
-        diffResult.dispatchUpdatesTo(this)
+        this.mShelfList.clear()
+        this.mShelfList.addAll(data)
+        notifyDataSetChanged()
     }
 
 
@@ -130,24 +124,6 @@ class ShelfAdapter2 : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     fun addRecommend(list: List<RecommendBookBean>?) {
         list?:return
-//        recommendList.addAll(list)
-//        var index = 0
-//        recommendList.forEach {
-//            val m = index % 10
-//            if (m < 5) {
-//                it.showType = VIEW_TYPE_COMIC_LINEAR
-//            } else if (m < 8) {
-//                it.showType = ShopItemDecoration.VIEW_TYPE_COMIC_GRID_3
-//            } else {
-//                it.showType = ShopItemDecoration.VIEW_TYPE_COMIC_GRID_2
-//            }
-//            index ++
-//        }
-//        notifyDataSetChanged()
-
-
-        val oldList = this.recommendList.toList()
-        recommendList.clear()
         recommendList.addAll(list)
         var index = 0
         recommendList.forEach {
@@ -161,8 +137,7 @@ class ShelfAdapter2 : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
             }
             index ++
         }
-        val diffResult = DiffUtil.calculateDiff(BookDiffUtil(oldList, this.recommendList))
-        diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 
     inner class TitleHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {}

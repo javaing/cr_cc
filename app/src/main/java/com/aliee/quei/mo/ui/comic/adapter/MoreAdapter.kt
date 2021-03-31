@@ -16,13 +16,8 @@ class MoreAdapter : RecyclerView.Adapter<ComicLinearHolder>() {
 
     fun setData(list: MutableList<RecommendBookBean>?) {
         list ?: return
-        //this.mData = list
-        //notifyDataSetChanged()
-
-        val oldList = this.mData.toList()
         this.mData = list
-        val diffResult = DiffUtil.calculateDiff(BookDiffUtil(oldList, this.mData))
-        diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 
 
