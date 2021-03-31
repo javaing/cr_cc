@@ -983,7 +983,7 @@ class ComicReadActivity : BaseActivity() {
             override fun onResponse(response: Response) {
                 var resStr: String? = ""
                 try {
-                    resStr = response.body()!!.string()
+                    resStr = response.body?.string()
                     val json = JSONObject(resStr)
                     Log.d("tag", "json:$json")
 //                    Log.d("ComicReadActivity", "返回資料：" + resStr.toString())

@@ -91,7 +91,7 @@ abstract class BaseDialogFragment : DialogFragment(){
     override fun onStart() {
         super.onStart()
 
-        val window = dialog.window
+        val window = dialog?.window
         val params = window!!.attributes
         params.width = WindowManager.LayoutParams.WRAP_CONTENT // 宽度填充满屏
         window.attributes = params

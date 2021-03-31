@@ -221,6 +221,7 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
         newData = mData
+        Log.e("ShopAdapter", "setData")
         notifyDataSetChanged()
 
     }

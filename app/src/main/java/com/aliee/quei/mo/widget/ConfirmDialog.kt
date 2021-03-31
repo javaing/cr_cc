@@ -36,8 +36,8 @@ class ConfirmDialog : DialogFragment(){
     override fun onStart() {
         super.onStart()
         //点击window外的区域 是否消失
-        dialog.setCanceledOnTouchOutside(false)
-        val dialogWindow = dialog.window
+        dialog?.setCanceledOnTouchOutside(false)
+        val dialogWindow = dialog?.window
         dialogWindow!!.setGravity(Gravity.CENTER)
         val lp = dialogWindow.attributes
         val displayMetrics = activity!!.resources.displayMetrics

@@ -2,21 +2,26 @@ package com.aliee.quei.mo.net.imageloader.glide
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.annotation.Nullable
+import androidx.vectordrawable.graphics.drawable.Animatable2Compat
+import com.aliee.quei.mo.R
 import com.aliee.quei.mo.net.imageloader.ImageLoadListener
 import com.aliee.quei.mo.net.imageloader.ImageLoader
 import com.aliee.quei.mo.utils.ScreenUtils
-import com.aliee.quei.mo.utils.extention.getDrawable2
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import jp.wasabeef.glide.transformations.BlurTransformation
 import java.io.File
@@ -187,11 +192,36 @@ object GlideImageLoader : ImageLoader {
                 .into(imageView)
     }
 
+    val bitmpListener = object : RequestListener<Bitmap> {
+        override fun onLoadFailed(p0: GlideException?, p1: Any?, p2: com.bumptech.glide.request.target.Target<Bitmap>?, p3: Boolean): Boolean {
+            Log.e("Glide", "bitmpListener onLoadFailed:${p0.toString()}}")
+            return false
+        }
+        override fun onResourceReady(resource: Bitmap?, model: Any?, target: Target<Bitmap>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+            return false
+        }
+    }
+
+    val drawableListener = object : RequestListener<Drawable> {
+        override fun onLoadFailed(p0: GlideException?, p1: Any?, p2: Target<Drawable>?, p3: Boolean): Boolean {
+            Log.e("Glide", "drawableListener onLoadFailed:${p0.toString()}}")
+            return false
+        }
+        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+            return false
+        }
+    }
+
     override fun loadImage(imageView: ImageView, url: String) {
-        GlideApp.with(imageView.context)
-                .load(url)
-                .placeholder(imageView.getDrawable2())
-                .into(imageView)
+        try {
+            GlideApp.with(imageView.context)
+                    .load(url)
+                    .listener(drawableListener)
+                    .placeholder(R.drawable.img_default_cover)
+                    .into(imageView)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun loadImage(imageView: ImageView, resId: Int) {
@@ -204,7 +234,8 @@ object GlideImageLoader : ImageLoader {
     override fun loadImage(imageView: ImageView, file: File, loadingResId: Int, errorResId: Int) {
         GlideApp.with(imageView.context)
                 .asBitmap()
-                .placeholder(imageView.getDrawable2())
+                .listener(bitmpListener)
+                .placeholder(imageView.drawable)
                 .load(file)
                 .centerCrop()
                 .error(errorResId)
@@ -214,7 +245,7 @@ object GlideImageLoader : ImageLoader {
     override fun loadImage(imageView: ImageView, url: String, loadingResId: Int, errorResId: Int) {
         GlideApp.with(imageView.context)
                 .asBitmap()
-                .placeholder(imageView.getDrawable2())
+                .placeholder(R.drawable.img_default_cover)
                 .load(url)
                 .centerCrop()
                 .error(errorResId)

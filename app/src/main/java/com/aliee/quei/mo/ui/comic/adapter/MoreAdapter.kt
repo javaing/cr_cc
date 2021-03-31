@@ -3,6 +3,7 @@ package com.aliee.quei.mo.ui.comic.adapter
 import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import com.aliee.quei.mo.R
 import com.aliee.quei.mo.data.bean.AdInfo
 import com.aliee.quei.mo.data.bean.RecommendBookBean
@@ -15,9 +16,17 @@ class MoreAdapter : RecyclerView.Adapter<ComicLinearHolder>() {
 
     fun setData(list: MutableList<RecommendBookBean>?) {
         list ?: return
+        //this.mData = list
+        //notifyDataSetChanged()
+
+        val oldList = this.mData.toList()
         this.mData = list
-        notifyDataSetChanged()
+        val diffResult = DiffUtil.calculateDiff(BookDiffUtil(oldList, this.mData))
+        diffResult.dispatchUpdatesTo(this)
     }
+
+
+
 
     fun insertAd(index: Int, adInfo: AdInfo) {
        val recommendBookBean = RecommendBookBean("", adInfo.imgurl, -321, adInfo.desc, 1, "", adInfo.title, "")

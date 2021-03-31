@@ -239,7 +239,7 @@ dependencies {
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.5.8'
 
     //multidex
-    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
 
     //kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -253,12 +253,11 @@ dependencies {
     implementation "org.jetbrains.anko:anko-recyclerview-v7:$ANKO_VERSION"
 
     //support
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.android.material:material:1.3.0'
 
     //Gson
     implementation "com.google.code.gson:gson:$GSON_VERSION"
@@ -286,17 +285,18 @@ dependencies {
     }
     implementation "com.github.bumptech.glide:okhttp3-integration:$GLIDE_VERSION"
     implementation "com.github.bumptech.glide:recyclerview-integration:${GLIDE_VERSION}@aar"
-    implementation 'jp.wasabeef:glide-transformations:2.0.1'  //高斯模糊
+    implementation 'jp.wasabeef:glide-transformations:3.0.1'  //高斯模糊
 
     kapt "com.github.bumptech.glide:compiler:$GLIDE_VERSION"
 
 
     //lifecycles
-    implementation 'androidx.lifecycle:lifecycle-runtime:2.0.0'
-    implementation 'androidx.lifecycle:lifecycle-common-java8:2.0.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-    implementation 'androidx.lifecycle:lifecycle-reactivestreams:2.0.0'
-    kapt 'androidx.lifecycle:lifecycle-compiler:2.0.0'
+    implementation "android.arch.lifecycle:runtime:$ARCHITECTURE_VERSION"
+    implementation "android.arch.lifecycle:common-java8:$ARCHITECTURE_VERSION"
+    implementation "android.arch.lifecycle:extensions:$ARCHITECTURE_VERSION"
+    implementation "android.arch.lifecycle:reactivestreams:$ARCHITECTURE_VERSION"
+    //kapt "android.arch.lifecycle:compiler:$ARCHITECTURE_VERSION"
+
 
     compileOnly 'org.glassfish:javax.annotation:10.0-b28'
 
@@ -402,7 +402,7 @@ dependencies {
 
     implementation 'com.aliyun.ams:alicloud-android-hotfix:3.2.14'
 
-    implementation 'com.koushikdutta.ion:ion:2.+'
+    implementation 'com.koushikdutta.ion:ion:2.2.1'
 
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
 
@@ -422,14 +422,14 @@ dependencies {
 
      //可选，如需要缓存或者抖音预加载功能请引入此库
      implementation 'com.github.dueeeke.dkplayer:videocache:3.2.6'*/
-    implementation 'com.alibaba:fastjson:1.1.72.android'
+    implementation 'com.alibaba:fastjson:1.2.73'
     //指示器
     implementation 'com.github.hackware1993:MagicIndicator:1.5.0'
     implementation project(':dkplayer-java')
     implementation project(':dkplayer-ui')
     implementation project(path: ':dkplayer-players:ijk')
 
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.8.1'
 
     //implementation 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.20'
 

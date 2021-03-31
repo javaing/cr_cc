@@ -227,7 +227,7 @@ class AdVModel : BaseViewModel() {
 
                     override fun onResponse(call: Call, response: Response) {
                         if (response.isSuccessful) {
-                            val resp = response.body()!!.string()
+                            val resp = response.body?.string()
                             Log.d("tag", "adInfo --> id${adBean.zid},resp :${resp}")
                             val adInfo = Gson().fromJson<AdInfo>(resp, AdInfo::class.java)
                             if (adInfo != null) {

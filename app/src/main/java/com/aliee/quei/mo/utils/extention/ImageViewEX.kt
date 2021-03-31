@@ -24,9 +24,9 @@ import com.bumptech.glide.request.RequestOptions
  */
 
 
-fun ImageView.getDrawable2(): Drawable {
-    return this.drawable ?: this.context.getDrawable(R.drawable.img_bg_mine)
-}
+//fun ImageView.getDrawable2(): Drawable {
+//    return this.drawable ?: this.context.getDrawable(R.drawable.img_bg_mine)
+//}
 
 /**
  * 加载图片

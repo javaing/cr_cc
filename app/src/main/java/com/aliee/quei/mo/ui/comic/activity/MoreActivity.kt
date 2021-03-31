@@ -43,18 +43,18 @@ class MoreActivity : BaseActivity(){
 
     private fun initRefresh() {
         refreshLayout.setOnLoadMoreListener {
-            Log.e("more", "initRefresh OnLoad")
+            //Log.e("more", "initRefresh OnLoad")
             VM.loadMore(this)
         }
         refreshLayout.setOnRefreshListener {
-            Log.e("more", "initRefresh OnRefresh")
+            //Log.e("more", "initRefresh OnRefresh")
             VM.getByRid(this,rid)
         }
     }
 
     private fun initVM() {
         VM.listLiveData.observe(this, Observer {
-            Log.e("more", "listLiveData.observe")
+            //Log.e("more", "listLiveData.observe")
             when (it?.status) {
                 Status.Start -> showLoading()
                 Status.Success -> {
@@ -68,7 +68,7 @@ class MoreActivity : BaseActivity(){
             }
         })
         VM.comicListLiveData.observe(this, Observer {
-            Log.e("more", "comicListLiveData.observe")
+            //Log.e("more", "comicListLiveData.observe")
             when (it?.status) {
                 Status.Success -> {
                     adapter.add(it.data?.list)

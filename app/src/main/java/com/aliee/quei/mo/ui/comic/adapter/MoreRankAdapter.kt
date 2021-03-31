@@ -1,5 +1,6 @@
 package com.aliee.quei.mo.ui.comic.adapter
 
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import com.aliee.quei.mo.R
@@ -68,6 +69,7 @@ class MoreRankAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         mData.addAll(data)
         var index = 0
         notifyDataSetChanged()
+        Log.e("MoreRankAdapter", "seData")
     }
 
     fun add(data: List<RecommendBookBean>?) {

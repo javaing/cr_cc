@@ -4,6 +4,8 @@ import android.util.Base64
 import android.util.Log
 import com.aliee.quei.mo.utils.AES
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.ResponseBody.Companion.toResponseBody
 
 /**
  * glide 的图片解密okHttp拦截器
@@ -12,7 +14,7 @@ class ImgDecodeInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request();
         val originalResponse = chain.proceed(chain.request())
-        val body = originalResponse.body()
+        val body = originalResponse.body
         if (body == null) return originalResponse;
         var enc: ByteArray? = null
         val imageStr = body.bytes()
@@ -28,8 +30,8 @@ class ImgDecodeInterceptor : Interceptor {
             enc = aes.decrypt(imageStr, password.toByteArray())
         }
         if (enc == null || enc.isEmpty()) return originalResponse
-        val newBody = ResponseBody.create(MediaType.parse(originalResponse.headers().get("Content-Type")
-                ?: "image/png"), enc)
+        val newBody = enc.toResponseBody((originalResponse.headers.get("Content-Type")
+                ?: "image/png").toMediaTypeOrNull())
         return Response.Builder()
                 .code(200)
                 .request(originalRequest)

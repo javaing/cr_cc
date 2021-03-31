@@ -101,7 +101,7 @@ class LaunchVModel : BaseViewModel() {
                     override fun onResponse(call: Call, response: Response) {
                         if (response.isSuccessful) {
                             val type = object : TypeToken<List<DomainBean>>() {}.type
-                            val domainList = GsonProvider.gson.fromJson<List<DomainBean>>(response.body()!!.charStream(), type)
+                            val domainList = GsonProvider.gson.fromJson<List<DomainBean>>(response.body?.charStream(), type)
                             if (domainList.isEmpty()) {
                                 failed.invoke()
                                 return
@@ -157,7 +157,7 @@ class LaunchVModel : BaseViewModel() {
                             val type = object : TypeToken<List<DomainBean>>() {}.type
 
                             val domainList =
-                                    GsonProvider.gson.fromJson<List<DomainBean>>(response.body()!!.charStream(), type)
+                                    GsonProvider.gson.fromJson<List<DomainBean>>(response.body?.charStream(), type)
                             if (domainList.isEmpty()) {
                                 failed.invoke()
                                 return

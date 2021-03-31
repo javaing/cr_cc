@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import androidx.recyclerview.widget.DiffUtil
 import com.aliee.quei.mo.R
 import com.aliee.quei.mo.data.bean.RecommendBookBean
 import com.aliee.quei.mo.router.ARouterManager
@@ -16,10 +17,19 @@ class ChpaterEndRecommendAdapter : RecyclerView.Adapter<ComicGrid3Holder>(){
     private val mData = mutableListOf<RecommendBookBean>()
 
     fun setData (list : List<RecommendBookBean>) {
+        //mData.clear()
+        //mData.addAll(list)
+        //notifyDataSetChanged()
+
+        val oldList = this.mData.toList()
         mData.clear()
         mData.addAll(list)
-        notifyDataSetChanged()
+        val diffResult = DiffUtil.calculateDiff(BookDiffUtil(oldList, this.mData))
+        diffResult.dispatchUpdatesTo(this)
     }
+
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComicGrid3Holder {
         val v = parent.context.inflate(R.layout.item_comic_grid_3,parent,false)
         return ComicGrid3Holder(v)

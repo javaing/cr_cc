@@ -188,6 +188,7 @@ class ReadAdapter constructor(private val context: Context) : RecyclerView.Adapt
         val dp1 = ScreenUtils.dpToPx(1)
 
         init {
+            subAdapter.setHasStableIds(true)
             recyclerView.adapter = subAdapter
             recyclerView.layoutManager = GridLayoutManager(itemView.context, 3)
             recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {

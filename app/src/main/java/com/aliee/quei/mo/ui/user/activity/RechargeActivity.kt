@@ -467,7 +467,7 @@ class RechargeActivity : BaseActivity(), PayWayDialog.OnPayWayChooseListener, Pa
             override fun onResponse(response: Response) {
                 var resStr: String? = ""
                 try {
-                    resStr = response.body()!!.string()
+                    resStr = response.body?.string()
                     val json = JSONObject(resStr)
 //                    Log.d("RechargeActivity", "返回資料：" + resStr.toString())
                     val rtnCode = json.getString("code")

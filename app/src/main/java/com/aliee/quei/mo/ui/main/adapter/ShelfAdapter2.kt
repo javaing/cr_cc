@@ -5,10 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import com.aliee.quei.mo.R
 import com.aliee.quei.mo.data.BeanConstants
 import com.aliee.quei.mo.data.bean.RecommendBookBean
 import com.aliee.quei.mo.data.bean.ShelfBean
+import com.aliee.quei.mo.ui.comic.adapter.BookDiffUtil
+import com.aliee.quei.mo.ui.comic.adapter.ShelfDiffUtil
 import com.aliee.quei.mo.ui.common.ShopItemDecoration
 import com.aliee.quei.mo.ui.common.adapter.ComicGrid2Holder
 import com.aliee.quei.mo.ui.common.adapter.ComicGrid3Holder
@@ -102,10 +105,18 @@ class ShelfAdapter2 : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     }
 
     fun setShelfItem(data: MutableList<ShelfBean>) {
-        this.mShelfList.clear()
-        this.mShelfList.addAll(data)
-        notifyDataSetChanged()
+        //this.mShelfList.clear()
+        //this.mShelfList.addAll(data)
+        //notifyDataSetChanged()
+
+        val oldList = this.mShelfList.toList()
+        mShelfList.clear()
+        mShelfList.addAll(data)
+        val diffResult = DiffUtil.calculateDiff(ShelfDiffUtil(oldList, this.mShelfList))
+        diffResult.dispatchUpdatesTo(this)
     }
+
+
 
     fun toggleRemoveBtn() : Boolean{
         if (mShelfList.isEmpty()) {

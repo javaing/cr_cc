@@ -3,14 +3,15 @@ package com.aliee.quei.mo.ui.comic.adapter
 import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
 import com.aliee.quei.mo.data.bean.RecommendBookBean
+import com.aliee.quei.mo.data.bean.ShelfBean
 
-class BookDiffUtil(
-        val oldList: List<RecommendBookBean>, val newList: List<RecommendBookBean>
+class ShelfDiffUtil(
+        val oldList: List<ShelfBean>, val newList: List<ShelfBean>
 ) : DiffUtil.Callback() {
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        Log.e("MoreAdapter", "sameID :" + (oldList[oldItemPosition].id == newList[newItemPosition].id))
-        return oldList[oldItemPosition].id == newList[newItemPosition].id
+        Log.e("ShelfBean", "sameID :" + (oldList[oldItemPosition].bookid == newList[newItemPosition].bookid))
+        return oldList[oldItemPosition].bookid == newList[newItemPosition].bookid
     }
 
     override fun getOldListSize(): Int = oldList.size

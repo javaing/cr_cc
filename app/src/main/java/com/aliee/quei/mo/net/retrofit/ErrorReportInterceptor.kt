@@ -10,14 +10,14 @@ import java.io.IOException
 
 class ErrorReportInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val url = chain.request().url();
+        val url = chain.request().url
         var params = ""
-        val body = chain.request().body()
+        val body = chain.request().body
         try {
             if (body is FormBody) {
 //            body.toString()
 //            body.cont
-                val size = body.size()
+                val size = body.size
                 for (i in 0 until size) {
                     params += body.name(i) + "=" + body.value(i) + "&"
                 }

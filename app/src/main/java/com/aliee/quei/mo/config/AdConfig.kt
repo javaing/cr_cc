@@ -58,7 +58,7 @@ object AdConfig {
 
             override fun onResponse(call: Call, response: Response) {
                 if (response.isSuccessful) {
-                    val resp = response.body()!!.string()
+                    val resp = response.body?.string()
                     val adInfo = Gson().fromJson<AdInfo>(resp, AdInfo::class.java)
                     val option = Gson().fromJson<Option>(adInfo.optionstr, Option::class.java)
                     Log.d("tag", "adInfo --> id${adBean.zid},resp :${resp}，adInfo:${adInfo.toString()}")
