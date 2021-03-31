@@ -1,5 +1,6 @@
 package com.aliee.quei.mo.ui.comic.activity
 
+import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Autowired
@@ -42,24 +43,32 @@ class MoreActivity : BaseActivity(){
 
     private fun initRefresh() {
         refreshLayout.setOnLoadMoreListener {
+            Log.e("more", "initRefresh OnLoad")
             VM.loadMore(this)
         }
         refreshLayout.setOnRefreshListener {
+            Log.e("more", "initRefresh OnRefresh")
             VM.getByRid(this,rid)
         }
     }
 
     private fun initVM() {
         VM.listLiveData.observe(this, Observer {
+            Log.e("more", "listLiveData.observe")
             when (it?.status) {
                 Status.Start -> showLoading()
                 Status.Success -> {
                     adapter.setData(it.data)
                 }
-                Status.Complete -> disLoading()
+                Status.Complete -> {
+                    disLoading()
+                    refreshLayout.finishRefresh()
+                    refreshLayout.finishLoadMore()
+                }
             }
         })
         VM.comicListLiveData.observe(this, Observer {
+            Log.e("more", "comicListLiveData.observe")
             when (it?.status) {
                 Status.Success -> {
                     adapter.add(it.data?.list)
