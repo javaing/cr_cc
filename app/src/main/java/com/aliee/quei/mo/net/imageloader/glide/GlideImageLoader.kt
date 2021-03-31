@@ -12,6 +12,7 @@ import android.widget.LinearLayout
 import com.aliee.quei.mo.net.imageloader.ImageLoadListener
 import com.aliee.quei.mo.net.imageloader.ImageLoader
 import com.aliee.quei.mo.utils.ScreenUtils
+import com.aliee.quei.mo.utils.extention.getDrawable2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -189,7 +190,7 @@ object GlideImageLoader : ImageLoader {
     override fun loadImage(imageView: ImageView, url: String) {
         GlideApp.with(imageView.context)
                 .load(url)
-                .placeholder(imageView.drawable)
+                .placeholder(imageView.getDrawable2())
                 .into(imageView)
     }
 
@@ -203,7 +204,7 @@ object GlideImageLoader : ImageLoader {
     override fun loadImage(imageView: ImageView, file: File, loadingResId: Int, errorResId: Int) {
         GlideApp.with(imageView.context)
                 .asBitmap()
-                .placeholder(imageView.drawable)
+                .placeholder(imageView.getDrawable2())
                 .load(file)
                 .centerCrop()
                 .error(errorResId)
@@ -213,7 +214,7 @@ object GlideImageLoader : ImageLoader {
     override fun loadImage(imageView: ImageView, url: String, loadingResId: Int, errorResId: Int) {
         GlideApp.with(imageView.context)
                 .asBitmap()
-                .placeholder(imageView.drawable)
+                .placeholder(imageView.getDrawable2())
                 .load(url)
                 .centerCrop()
                 .error(errorResId)

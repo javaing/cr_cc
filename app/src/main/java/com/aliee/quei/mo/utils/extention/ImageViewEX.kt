@@ -1,6 +1,7 @@
 package com.aliee.quei.mo.utils.extention
 
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,10 @@ import com.bumptech.glide.request.RequestOptions
  * @Description:
  */
 
+
+fun ImageView.getDrawable2(): Drawable {
+    return this.drawable ?: this.context.getDrawable(R.drawable.img_bg_mine)
+}
 
 /**
  * 加载图片
