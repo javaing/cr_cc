@@ -21,7 +21,7 @@
         android:layout_height="match_parent"
         android:background="#555555" />
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/layoutTopMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
                 android:visibility="gone" />
         </RelativeLayout>
 
-        <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.appcompat.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -112,8 +112,8 @@
                     android:src="@mipmap/ic_reader_more"
                     android:visibility="invisible" />
             </LinearLayout>
-        </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:id="@+id/pay_layout"

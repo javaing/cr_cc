@@ -1,19 +1,17 @@
 package com.aliee.quei.mo.widget.view.bottombar;
 
 import android.content.Context;
-import android.support.annotation.DrawableRes;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.DrawableRes;
+import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.aliee.quei.mo.R;
-import com.aliee.quei.mo.utils.ScreenUtils;
 import com.aliee.quei.mo.utils.extention.ImageViewEXKt;
 
 

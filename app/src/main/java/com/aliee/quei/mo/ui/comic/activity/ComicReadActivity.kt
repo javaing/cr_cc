@@ -1,16 +1,16 @@
 package com.aliee.quei.mo.ui.comic.activity
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import android.content.Intent
 
 import android.graphics.Color
 import android.net.Uri
 import android.os.Handler
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -951,7 +951,7 @@ class ComicReadActivity : BaseActivity() {
             hideMenu()
         }
 
-        override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                 readPaused = false

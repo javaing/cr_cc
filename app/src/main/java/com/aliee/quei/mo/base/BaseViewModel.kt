@@ -1,6 +1,6 @@
 package com.aliee.quei.mo.base
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.aliee.quei.mo.base.response.UIDataBean
 
 /**

@@ -1,9 +1,9 @@
 package com.aliee.quei.mo.ui.launch.vm
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.MediatorLiveData
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MediatorLiveData
 import android.util.Log
 import com.elvishew.xlog.BuildConfig
 import com.google.gson.reflect.TypeToken

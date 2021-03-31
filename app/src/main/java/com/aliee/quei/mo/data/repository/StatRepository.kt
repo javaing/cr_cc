@@ -1,7 +1,7 @@
 package com.aliee.quei.mo.data.repository
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import com.aliee.quei.mo.data.local.ReadStatBean
 import com.aliee.quei.mo.data.service.StatService
 import com.aliee.quei.mo.database.DatabaseProvider

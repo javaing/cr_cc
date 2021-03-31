@@ -1,7 +1,7 @@
 package com.aliee.quei.mo.data.repository
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import android.util.Log
 import com.aliee.quei.mo.data.bean.AdBean
 import com.aliee.quei.mo.data.bean.AdInfo

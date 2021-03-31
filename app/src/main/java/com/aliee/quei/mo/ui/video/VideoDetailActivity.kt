@@ -1,6 +1,6 @@
 package com.aliee.quei.mo.ui.video
 
-import android.support.v7.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import android.text.Html
 import android.util.Log
 import android.view.View

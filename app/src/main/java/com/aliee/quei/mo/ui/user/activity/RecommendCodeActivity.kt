@@ -1,6 +1,6 @@
 package com.aliee.quei.mo.ui.user.activity
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context

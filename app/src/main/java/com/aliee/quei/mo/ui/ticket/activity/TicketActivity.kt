@@ -1,9 +1,9 @@
 package com.aliee.quei.mo.ui.ticket.activity
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.graphics.Rect
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.aliee.quei.mo.R
 import com.aliee.quei.mo.base.BaseActivity
@@ -50,7 +50,7 @@ class TicketActivity : BaseActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(outRect: Rect?, itemPosition: Int, parent: RecyclerView?) {
+            override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView) {
                 super.getItemOffsets(outRect, itemPosition, parent)
                 outRect?.top = ScreenUtils.dpToPx(20)
             }

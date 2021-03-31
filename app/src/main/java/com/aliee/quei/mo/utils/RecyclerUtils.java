@@ -1,6 +1,6 @@
 package com.aliee.quei.mo.utils;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class RecyclerUtils {
     //目标项是否在最后一个可见项之后

@@ -1,9 +1,9 @@
 package com.aliee.quei.mo.ui.video.fragment
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.SimpleItemAnimator
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.elvishew.xlog.XLog
 import com.google.gson.Gson
 import com.aliee.quei.mo.R

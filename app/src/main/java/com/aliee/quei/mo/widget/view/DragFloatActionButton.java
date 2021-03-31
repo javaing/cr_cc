@@ -2,7 +2,7 @@ package com.aliee.quei.mo.widget.view;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.support.design.widget.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;

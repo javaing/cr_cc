@@ -118,7 +118,7 @@
 
         </LinearLayout>
     </LinearLayout>
-    <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
+    <androidx.recyclerview.widget.RecyclerView android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:id="@+id/rvSign"/>
     <TextView android:layout_width="match_parent" android:layout_height="40dp"

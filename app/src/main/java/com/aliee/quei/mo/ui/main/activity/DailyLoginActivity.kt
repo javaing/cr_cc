@@ -1,9 +1,9 @@
 package com.aliee.quei.mo.ui.main.activity
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.Observer
-import android.support.v7.widget.GridLayoutManager
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import com.alibaba.android.arouter.facade.annotation.Autowired
@@ -88,7 +88,7 @@ class DailyLoginActivity : BaseActivity() {
 
     private fun initWidget() {
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = GridLayoutManager(this,3)
+        recyclerView.layoutManager = GridLayoutManager(this, 3)
         frameLayout.click { finish() }
         close.click {
             layoutDailyReward.startAnimation(mTopOutAnim)

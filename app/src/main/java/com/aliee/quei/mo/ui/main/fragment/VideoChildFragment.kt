@@ -1,8 +1,8 @@
 package com.aliee.quei.mo.ui.main.fragment
 
 import android.app.AlertDialog
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.graphics.Rect
@@ -10,10 +10,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
@@ -258,9 +258,9 @@ class VideoChildFragment : BaseFragment() {
         })
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 //处理滑动到倒数第5个开始自动加载
-                val manager = recyclerView!!.layoutManager as LinearLayoutManager
+                val manager = recyclerView.layoutManager as LinearLayoutManager
                 val lastVisibleItemPosition = manager.findLastVisibleItemPosition()
                 val itemCount = manager.itemCount
                 if (lastVisibleItemPosition == itemCount - startLoadMorePosition && dy > 0 && currentItemPosition !== lastVisibleItemPosition) {

@@ -1,6 +1,6 @@
 package com.aliee.quei.mo.base.response
 
-import android.arch.lifecycle.MediatorLiveData
+import androidx.lifecycle.MediatorLiveData
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo

@@ -1,8 +1,8 @@
 package com.aliee.quei.mo.ui.user.vm
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.MediatorLiveData
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MediatorLiveData
 import com.aliee.quei.mo.base.BaseViewModel
 import com.aliee.quei.mo.base.response.StatusResourceObserver
 import com.aliee.quei.mo.base.response.UIDataBean

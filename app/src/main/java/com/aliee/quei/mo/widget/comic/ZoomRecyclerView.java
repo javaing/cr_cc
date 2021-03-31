@@ -3,8 +3,8 @@ package com.aliee.quei.mo.widget.comic;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -242,7 +242,8 @@ public class ZoomRecyclerView extends RecyclerView {
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
-        canvas.save(Canvas.MATRIX_SAVE_FLAG);
+        //canvas.save(Canvas.MATRIX_SAVE_FLAG);
+        canvas.save();
         if (mScaleFactor == 1.0f) {
             mDeltaX = 0.0f;
             mDeltaY = 0.0f;

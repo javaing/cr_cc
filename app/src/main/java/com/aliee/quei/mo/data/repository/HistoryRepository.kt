@@ -1,7 +1,7 @@
 package com.aliee.quei.mo.data.repository
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import com.aliee.quei.mo.component.EventReadHistoryUpdated
 import com.aliee.quei.mo.data.bean.HistoryBean
 import com.aliee.quei.mo.data.exception.RequestException

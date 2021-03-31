@@ -2,15 +2,16 @@ package com.aliee.quei.mo.ui.main.fragment
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
-import android.support.v4.widget.TextViewCompat
-import android.support.v7.widget.*
+import androidx.core.widget.TextViewCompat
+import androidx.appcompat.widget.*
 import android.util.TypedValue
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.recyclerview.widget.*
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.aliee.quei.mo.R
 import com.aliee.quei.mo.application.ReaderApplication
@@ -354,7 +355,7 @@ class WelfareFragment : BaseFragment() {
         rvSign.isNestedScrollingEnabled = false
         rvSign.addItemDecoration(object : RecyclerView.ItemDecoration() {
             val spacing = ScreenUtils.dpToPx(10)
-            override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView?) {
+            override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView) {
                 super.getItemOffsets(outRect, itemPosition, parent)
                 val column = itemPosition % 7
                 outRect.left = spacing - column * spacing / 7 // spacing - column * ((1f / spanCount) * spacing)

@@ -1,8 +1,8 @@
 package com.aliee.quei.mo.ui.main.fragment
 
 import android.app.AlertDialog
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.graphics.Rect
@@ -10,10 +10,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
@@ -251,8 +251,8 @@ class LongVideoFragment : BaseFragment() {
         })
 
         recyclerView.addOnChildAttachStateChangeListener(object : RecyclerView.OnChildAttachStateChangeListener {
-            override fun onChildViewAttachedToWindow(@NonNull view: View?) {}
-            override fun onChildViewDetachedFromWindow(@NonNull view: View?) {
+            override fun onChildViewAttachedToWindow(@NonNull view: View) {}
+            override fun onChildViewDetachedFromWindow(@NonNull view: View) {
                 Log.d("tag", "view:${view?.toString()}")
                 viewStatus(view)
             }

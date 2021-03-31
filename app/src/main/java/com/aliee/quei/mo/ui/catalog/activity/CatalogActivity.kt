@@ -1,10 +1,10 @@
 package com.aliee.quei.mo.ui.catalog.activity
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.graphics.Rect
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -115,7 +115,7 @@ class CatalogActivity : BaseActivity(){
     private fun initRecyclerView() {
         val list = realm.where(CatalogItemBean::class.java).equalTo("bookid",bookid).findAll().sort("sort")
         listAdapter = CatalogListAdapter(list)
-        recyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.addItemDecoration(CommonDivider())
         recyclerView.adapter = listAdapter
         listAdapter.setCurrent(-1)
@@ -125,9 +125,9 @@ class CatalogActivity : BaseActivity(){
         }
 
         gridAdapter = CatalogGridAdapter(list)
-        grid.layoutManager = GridLayoutManager(this,3)
+        grid.layoutManager = GridLayoutManager(this, 3)
         grid.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(outRect: Rect?, itemPosition: Int, parent: RecyclerView?) {
+            override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView) {
                 super.getItemOffsets(outRect, itemPosition, parent)
                 val column = itemPosition % 3
                 when(column){

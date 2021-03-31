@@ -1,6 +1,6 @@
 package com.aliee.quei.mo.ui.user.activity
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher

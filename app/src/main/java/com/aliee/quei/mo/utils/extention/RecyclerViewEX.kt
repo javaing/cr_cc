@@ -2,8 +2,9 @@ package com.aliee.quei.mo.utils.extention
 
 import android.content.Context
 import android.graphics.Canvas
-import android.support.annotation.NonNull
-import android.support.v7.widget.RecyclerView
+import androidx.annotation.NonNull
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
@@ -27,15 +28,15 @@ class RecyclerViewEx : RecyclerView {
     private var width = 0f
     private var height = 0f
 
-    constructor(context: Context?) : super(context) {
+    constructor(context: Context) : super(context) {
         if (!isInEditMode) mScaleDetector = ScaleGestureDetector(getContext(), ScaleListener())
     }
 
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         if (!isInEditMode) mScaleDetector = ScaleGestureDetector(getContext(), ScaleListener())
     }
 
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         if (!isInEditMode) mScaleDetector = ScaleGestureDetector(getContext(), ScaleListener())
     }
 
@@ -136,6 +137,20 @@ class RecyclerViewEx : RecyclerView {
     companion object {
         private const val INVALID_POINTER_ID = -1
     }
+}
+
+fun <T> RecyclerView.Adapter<*>.autoNotify(oldList: List<T>, newList: List<T>, compare: (T, T) -> Boolean) {
+    val diff = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return compare(oldList[oldItemPosition], newList[newItemPosition])
+        }
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
+        override fun getOldListSize() = oldList.size
+        override fun getNewListSize() = newList.size
+    })
+    diff.dispatchUpdatesTo(this)
 }
 
 

@@ -1,10 +1,10 @@
 package com.aliee.quei.mo.ui.search.fragment
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import android.graphics.Rect
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -98,7 +98,7 @@ class SearchVideoFragment : BaseFragment() {
         recyclerView.adapter = adapter
         recyclerView.isNestedScrollingEnabled = false
         recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(outRect: Rect?, itemPosition: Int, parent: RecyclerView?) {
+            override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView) {
                 val viewType = adapter.getItemViewType(itemPosition)
                 if (viewType == SearchVideoAdapter.VIEW_TYPE_RECOMMEND_TITLE) {
                     outRect?.top = ScreenUtils.dpToPx(10)

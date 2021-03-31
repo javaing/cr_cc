@@ -1,6 +1,6 @@
 package com.aliee.quei.mo.ui.comic.activity
 
-import android.support.v4.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentPagerAdapter
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.aliee.quei.mo.R
 import com.aliee.quei.mo.base.BaseActivity

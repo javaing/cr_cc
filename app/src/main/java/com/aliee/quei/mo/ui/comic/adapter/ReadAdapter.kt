@@ -4,8 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -191,7 +191,7 @@ class ReadAdapter constructor(private val context: Context) : RecyclerView.Adapt
             recyclerView.adapter = subAdapter
             recyclerView.layoutManager = GridLayoutManager(itemView.context, 3)
             recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
-                override fun getItemOffsets(outRect: Rect?, itemPosition: Int, parent: RecyclerView?) {
+                override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView) {
                     val column = itemPosition % 3
                     when (column) {
                         0 -> outRect?.right = dp1 * 2

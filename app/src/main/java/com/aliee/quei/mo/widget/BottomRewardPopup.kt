@@ -3,7 +3,7 @@ package com.aliee.quei.mo.widget
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
-import android.arch.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle
 import android.graphics.PixelFormat
 import android.view.Gravity
 import android.view.View

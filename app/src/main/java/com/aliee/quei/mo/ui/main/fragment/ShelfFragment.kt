@@ -1,10 +1,10 @@
 package com.aliee.quei.mo.ui.main.fragment
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import android.util.Log
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.aliee.quei.mo.R

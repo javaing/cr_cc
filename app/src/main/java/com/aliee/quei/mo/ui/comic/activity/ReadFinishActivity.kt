@@ -1,7 +1,7 @@
 package com.aliee.quei.mo.ui.comic.activity
 
-import android.arch.lifecycle.Observer
-import android.support.v7.widget.GridLayoutManager
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.aliee.quei.mo.R
@@ -43,7 +43,7 @@ class ReadFinishActivity : BaseActivity(){
 
     private fun initRecyclerView() {
         recyclerView.adapter = adapter
-        val layoutManager = GridLayoutManager(this,3)
+        val layoutManager = GridLayoutManager(this, 3)
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
             override fun getSpanSize(position: Int): Int {
                 if (position == 0)return 3

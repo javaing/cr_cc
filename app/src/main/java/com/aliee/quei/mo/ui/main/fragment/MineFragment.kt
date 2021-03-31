@@ -1,14 +1,14 @@
 package com.aliee.quei.mo.ui.main.fragment
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageInfo
 import android.net.Uri
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -252,7 +252,7 @@ class MineFragment : BaseFragment() {
                 }
             }
         }
-        launchVModel.registerTokenLiveData.observe(this, android.arch.lifecycle.Observer {
+        launchVModel.registerTokenLiveData.observe(this, androidx.lifecycle.Observer {
             when (it?.status) {
                 Status.Success -> {
                     userInfoVModel.loadUseInfo(this)

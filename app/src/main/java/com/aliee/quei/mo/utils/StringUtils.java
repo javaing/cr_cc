@@ -1,6 +1,6 @@
 package com.aliee.quei.mo.utils;
 
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 
 import com.aliee.quei.mo.application.ReaderApplication;
 

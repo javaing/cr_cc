@@ -1,9 +1,9 @@
 package com.aliee.quei.mo.ui.reserve
 
-import android.arch.lifecycle.Observer
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.OrientationHelper
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.OrientationHelper
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.aliee.quei.mo.R
 import com.aliee.quei.mo.base.BaseActivity
@@ -77,7 +77,7 @@ class Reserve2Activity : BaseActivity() {
     private fun initRecyclerView() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.addItemDecoration(DividerItemDecoration(this,OrientationHelper.VERTICAL))
+        recyclerView.addItemDecoration(DividerItemDecoration(this, OrientationHelper.VERTICAL))
     }
 
     private fun initTitle() {

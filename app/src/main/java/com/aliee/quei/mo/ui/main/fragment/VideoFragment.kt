@@ -1,8 +1,8 @@
 package com.aliee.quei.mo.ui.main.fragment
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.Context
-import android.support.v4.view.ViewPager
+import androidx.viewpager.widget.ViewPager
 import android.util.Log
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.dueeeke.videoplayer.player.VideoViewManager

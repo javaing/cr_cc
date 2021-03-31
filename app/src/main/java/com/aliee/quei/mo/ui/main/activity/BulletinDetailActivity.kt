@@ -2,7 +2,7 @@ package com.aliee.quei.mo.ui.main.activity
 
 
 import android.app.ActionBar
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.util.Log

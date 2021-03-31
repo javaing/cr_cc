@@ -1,7 +1,7 @@
 package com.aliee.quei.mo.ui.search.fragment
 
-import android.arch.lifecycle.Observer
-import android.support.v7.widget.LinearLayoutManager
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.aliee.quei.mo.R
 import com.aliee.quei.mo.base.BaseFragment
@@ -44,7 +44,7 @@ class SearchResultFragment : BaseFragment(){
     }
 
     private fun initRecycler() {
-        recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL,false)
+        recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(CommonDivider())
     }

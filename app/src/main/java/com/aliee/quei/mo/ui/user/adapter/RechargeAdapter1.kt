@@ -2,7 +2,7 @@ package com.aliee.quei.mo.ui.user.adapter
 
 import android.annotation.SuppressLint
 import android.graphics.Paint
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.text.TextUtils
 import android.util.Log
 import android.view.View

@@ -1,6 +1,6 @@
 package com.aliee.quei.mo.ui.pay.adapter
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import com.aliee.quei.mo.config.PayWayConfig
 import com.aliee.quei.mo.data.bean.PayWayBean

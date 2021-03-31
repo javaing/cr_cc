@@ -1,11 +1,11 @@
 package com.aliee.quei.mo.ui.main.adapter
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle
 import android.graphics.Color
-import android.support.v4.view.PagerAdapter
-import android.support.v4.view.ViewPager
-import android.support.v7.widget.RecyclerView
+import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
+import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.Gravity
 import android.view.View

@@ -1,6 +1,6 @@
 package com.aliee.quei.mo.ui.comic.adapter
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout

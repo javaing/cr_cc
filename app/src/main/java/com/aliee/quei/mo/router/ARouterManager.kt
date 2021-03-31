@@ -1,7 +1,7 @@
 package com.aliee.quei.mo.router
 
 import android.content.Context
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.util.Log
 import com.alibaba.android.arouter.launcher.ARouter
 import com.aliee.quei.mo.ui.comic.fragment.CategoryFragment

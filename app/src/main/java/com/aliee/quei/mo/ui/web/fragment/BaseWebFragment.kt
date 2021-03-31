@@ -6,7 +6,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.support.v7.widget.PopupMenu
+import androidx.appcompat.widget.PopupMenu
 import android.text.TextUtils
 import android.view.View
 import android.view.ViewGroup

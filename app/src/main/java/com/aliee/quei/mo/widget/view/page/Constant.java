@@ -1,6 +1,6 @@
 package com.aliee.quei.mo.widget.view.page;
 
-import android.support.annotation.StringDef;
+import androidx.annotation.StringDef;
 
 import com.aliee.quei.mo.utils.FileUtils;
 

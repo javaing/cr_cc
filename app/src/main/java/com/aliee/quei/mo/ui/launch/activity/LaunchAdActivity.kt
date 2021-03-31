@@ -3,8 +3,8 @@ package com.aliee.quei.mo.ui.launch.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.view.PagerAdapter
-import android.support.v4.view.ViewPager.OnPageChangeListener
+import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup

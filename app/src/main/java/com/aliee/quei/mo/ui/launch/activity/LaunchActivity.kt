@@ -9,8 +9,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.provider.Settings
-import android.support.v4.app.NotificationManagerCompat
-import android.support.v7.app.AlertDialog
+import androidx.core.app.NotificationManagerCompat
+import androidx.appcompat.app.AlertDialog
 import android.util.Log
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Autowired
@@ -184,7 +184,7 @@ class LaunchActivity : BaseActivity() {
         val notificationManager: NotificationManagerCompat = NotificationManagerCompat.from(this);
         val isOpend = notificationManager.areNotificationsEnabled()
         if (isOpend) {
-            VM.prepareLiveData.observe(this, android.arch.lifecycle.Observer {
+            VM.prepareLiveData.observe(this, androidx.lifecycle.Observer {
                 when (it?.status) {
                     Status.Success -> {
                         enterApp()
@@ -220,7 +220,7 @@ class LaunchActivity : BaseActivity() {
                     }
                     .setNegativeButton(getString(android.R.string.cancel)) { dialog, which ->
                         dialog.dismiss()
-                        VM.prepareLiveData.observe(this, android.arch.lifecycle.Observer {
+                        VM.prepareLiveData.observe(this, androidx.lifecycle.Observer {
                             when (it?.status) {
                                 Status.Success -> {
                                     enterApp()
@@ -234,7 +234,7 @@ class LaunchActivity : BaseActivity() {
     }
 
     private fun byPass() {
-        VM.prepareLiveData.observe(this, android.arch.lifecycle.Observer {
+        VM.prepareLiveData.observe(this, androidx.lifecycle.Observer {
             when (it?.status) {
                 Status.Success -> {
                     enterApp()

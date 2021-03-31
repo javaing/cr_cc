@@ -3,7 +3,7 @@ package com.aliee.quei.mo.net.retrofit;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.aliee.quei.mo.application.ReaderApplication;

@@ -1,7 +1,7 @@
 package com.aliee.quei.mo.ui.video
 
-import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.view.ViewPager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
 import android.view.ViewGroup
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.aliee.quei.mo.R

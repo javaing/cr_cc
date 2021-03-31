@@ -1,7 +1,7 @@
 package com.aliee.quei.mo.data.repository
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import android.util.Log
 import com.google.gson.Gson
 import com.aliee.quei.mo.base.response.UIDataBean

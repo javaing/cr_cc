@@ -1,8 +1,8 @@
 package com.aliee.quei.mo.ui.video.view;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.dueeeke.videoplayer.controller.ControlWrapper;
 import com.dueeeke.videoplayer.controller.IControlComponent;
-import com.dueeeke.videoplayer.player.VideoView;
 import com.aliee.quei.mo.R;
 
 public class VideoTimeView extends FrameLayout implements IControlComponent {

@@ -12,7 +12,7 @@ import com.aliee.quei.mo.R;
  * 时间:2019-08-01
  * 描述:
  */
-public class RotateTextView extends android.support.v7.widget.AppCompatTextView {
+public class RotateTextView extends androidx.appcompat.widget.AppCompatTextView {
     /**
      * 默认选择45°角
      */

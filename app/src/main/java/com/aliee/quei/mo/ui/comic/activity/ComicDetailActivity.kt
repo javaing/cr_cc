@@ -1,9 +1,9 @@
 package com.aliee.quei.mo.ui.comic.activity
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.Observer
-import android.support.v7.widget.LinearLayoutManager
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.util.Log
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route

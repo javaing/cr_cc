@@ -1,6 +1,6 @@
 package com.aliee.quei.mo.ui.comic.fragment
 
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.aliee.quei.mo.R
 import com.aliee.quei.mo.base.BaseFragment

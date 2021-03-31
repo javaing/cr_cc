@@ -2,8 +2,8 @@ package com.aliee.quei.mo.ui.main.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
@@ -12,8 +12,8 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Handler
-import android.support.v4.app.ActivityCompat
-import android.support.v7.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.appcompat.app.AlertDialog
 import android.util.Log
 import android.view.View
 import android.view.WindowManager

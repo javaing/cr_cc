@@ -1,7 +1,7 @@
 package com.aliee.quei.mo.ui.comic.vm
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.MediatorLiveData
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MediatorLiveData
 import com.aliee.quei.mo.base.BaseViewModel
 import com.aliee.quei.mo.base.response.ListStatusResourceObserver
 import com.aliee.quei.mo.base.response.StatusResourceObserver

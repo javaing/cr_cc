@@ -1,7 +1,7 @@
 package com.aliee.quei.mo.utils.extention
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import android.graphics.Typeface
 import android.view.View
 import android.view.ViewGroup

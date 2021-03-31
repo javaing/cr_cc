@@ -4,7 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.scwang.smartrefresh.layout.util.DensityUtil
 
@@ -24,7 +24,7 @@ class CommonDivider constructor(private val marginLeft : Int = DensityUtil.dp2px
         _paint.style = Paint.Style.FILL_AND_STROKE
         _paint.color = color
     }
-    override fun onDraw(canvas: Canvas?, parent: RecyclerView?, state: RecyclerView.State?) {
+    override fun onDraw(canvas: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDraw(canvas, parent, state)
         canvas?.let {
             canvas.save()
@@ -53,8 +53,8 @@ class CommonDivider constructor(private val marginLeft : Int = DensityUtil.dp2px
         }
     }
 
-    override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         super.getItemOffsets(outRect, view, parent, state)
-        outRect?.set(0,0,0,height)
+        outRect.set(0,0,0,height)
     }
 }

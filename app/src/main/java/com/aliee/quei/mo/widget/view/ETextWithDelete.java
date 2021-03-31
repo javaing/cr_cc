@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -22,7 +22,7 @@ import com.scwang.smartrefresh.layout.util.DensityUtil;
  * @date: 2016-02-28
  * @time: 23:34
  */
-public class ETextWithDelete extends android.support.v7.widget.AppCompatEditText implements View.OnFocusChangeListener {
+public class ETextWithDelete extends androidx.appcompat.widget.AppCompatEditText implements View.OnFocusChangeListener {
     private Drawable drawable;
     private Context mContext;
     private EditText tmpEditText;

@@ -1,7 +1,7 @@
 package com.aliee.quei.mo.ui.upgradle
 
 import android.app.DownloadManager
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.database.ContentObserver

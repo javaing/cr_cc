@@ -1,6 +1,6 @@
 package com.aliee.quei.mo.ui.user.activity
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.aliee.quei.mo.R
 import com.aliee.quei.mo.base.BaseActivity

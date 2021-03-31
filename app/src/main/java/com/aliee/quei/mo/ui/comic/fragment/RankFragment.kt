@@ -1,7 +1,7 @@
 package com.aliee.quei.mo.ui.comic.fragment
 
-import android.arch.lifecycle.Observer
-import android.support.v7.widget.LinearLayoutManager
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.util.Log
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route

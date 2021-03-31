@@ -1,6 +1,6 @@
 package com.aliee.quei.mo.widget
 
-import android.support.v4.view.ViewPager
+import androidx.viewpager.widget.ViewPager
 import android.view.View
 
 class DepthScaleTransformer constructor(private val minScale : Float = 0.8f, private var maxRotate : Float = 30f): ViewPager.PageTransformer {

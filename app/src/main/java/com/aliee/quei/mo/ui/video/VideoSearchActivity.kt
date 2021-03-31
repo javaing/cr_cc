@@ -1,8 +1,8 @@
 package com.aliee.quei.mo.ui.video
 
 import android.content.Intent
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.SimpleItemAnimator
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher

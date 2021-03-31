@@ -1,7 +1,7 @@
 package com.aliee.quei.mo.utils.rxjava
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import com.trello.rxlifecycle2.LifecycleTransformer
 import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindUntilEvent
 import io.reactivex.Flowable

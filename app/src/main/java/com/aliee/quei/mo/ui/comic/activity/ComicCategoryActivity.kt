@@ -1,7 +1,7 @@
 package com.aliee.quei.mo.ui.comic.activity
 
-import android.arch.lifecycle.Observer
-import android.support.v4.app.FragmentPagerAdapter
+import androidx.lifecycle.Observer
+import androidx.fragment.app.FragmentPagerAdapter
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup

@@ -1,9 +1,9 @@
 package com.aliee.quei.mo.ui.pay.activity
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.Intent
 import android.net.Uri
-import android.support.v7.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -66,7 +66,7 @@ class H5PayResultActivity : BaseActivity(){
     }
 
     private fun initRecyclerView() {
-        recyclerView.layoutManager = GridLayoutManager(this,3)
+        recyclerView.layoutManager = GridLayoutManager(this, 3)
         recyclerView.adapter = adapter
     }
 

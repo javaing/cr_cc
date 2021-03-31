@@ -1,7 +1,7 @@
 package com.aliee.quei.mo.ui.common
 
 import android.graphics.Rect
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import com.aliee.quei.mo.utils.ScreenUtils
 
 class ShopItemDecoration : RecyclerView.ItemDecoration(){
@@ -13,11 +13,11 @@ class ShopItemDecoration : RecyclerView.ItemDecoration(){
 
     }
     val dp1 = ScreenUtils.dpToPx(2)
-    override fun getItemOffsets(outRect: Rect?, itemPosition: Int, parent: RecyclerView) {
+    override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView) {
         val adapter = parent.adapter
-        val viewType = adapter.getItemViewType(itemPosition)
+        val viewType = adapter?.getItemViewType(itemPosition)
         if (viewType == VIEW_TYPE_COMIC_GRID_3 || viewType == VIEW_TYPE_HISTORY || viewType == VIEW_TYPE_SHELF) {
-            outRect?.top = ScreenUtils.dpToPx(6)
+            outRect.top = ScreenUtils.dpToPx(6)
             var startPosition = 0
             for (i in itemPosition downTo 0) {
                 val prevViewType = adapter.getItemViewType(i)
@@ -29,9 +29,9 @@ class ShopItemDecoration : RecyclerView.ItemDecoration(){
 //                    XLog.st(1).e("grid3 StartPosition = $startPosition")
             val column = (itemPosition - startPosition) % 3
             when (column) {
-                0 -> outRect?.left = dp1 * 3
+                0 -> outRect.left = dp1 * 3
                 1 -> {
-                    outRect?.right = dp1
+                    outRect.right = dp1
                     outRect?.left = dp1
                 }
                 2 -> outRect?.right = dp1 * 3

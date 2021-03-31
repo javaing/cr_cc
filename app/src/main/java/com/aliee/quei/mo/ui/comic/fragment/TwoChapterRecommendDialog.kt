@@ -1,6 +1,6 @@
 package com.aliee.quei.mo.ui.comic.fragment
 
-import android.support.v7.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.aliee.quei.mo.R
 import com.aliee.quei.mo.base.BaseDialogFragment
 import com.aliee.quei.mo.data.bean.RecommendBookBean
@@ -15,7 +15,7 @@ class TwoChapterRecommendDialog : BaseDialogFragment(){
     }
 
     override fun initView() {
-        recyclerView.layoutManager = GridLayoutManager(activity,2)
+        recyclerView.layoutManager = GridLayoutManager(activity, 2)
         recyclerView.adapter = adapter
         btnDismiss.click { dismiss() }
     }

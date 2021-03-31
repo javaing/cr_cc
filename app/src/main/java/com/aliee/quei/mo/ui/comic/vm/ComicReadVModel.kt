@@ -2,9 +2,9 @@ package com.aliee.quei.mo.ui.comic.vm
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.MediatorLiveData
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MediatorLiveData
 import com.bumptech.glide.Glide
 import com.elvishew.xlog.XLog
 import com.aliee.quei.mo.application.ReaderApplication

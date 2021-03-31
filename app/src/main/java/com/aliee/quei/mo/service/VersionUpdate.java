@@ -13,8 +13,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.provider.Settings;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.FileProvider;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.FileProvider;
 
 import com.aliee.quei.mo.BuildConfig;
 import com.aliee.quei.mo.R;

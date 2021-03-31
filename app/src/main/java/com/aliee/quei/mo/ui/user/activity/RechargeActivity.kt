@@ -1,12 +1,12 @@
 package com.aliee.quei.mo.ui.user.activity
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import android.content.Intent
 import android.net.Uri
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.GridLayoutManager
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.GridLayoutManager
 import android.util.Log
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route

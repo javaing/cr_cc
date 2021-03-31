@@ -5,7 +5,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.ColorDrawable
-import android.support.annotation.StyleRes
+import androidx.annotation.StyleRes
 import com.aliee.quei.mo.R
 import com.aliee.quei.mo.utils.extention.getResDrawable
 import io.reactivex.Observable
