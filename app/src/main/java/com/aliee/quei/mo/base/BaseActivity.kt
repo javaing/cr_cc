@@ -25,7 +25,6 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import org.apache.commons.lang3.CharSetUtils.count
 import java.util.concurrent.TimeUnit
 
 

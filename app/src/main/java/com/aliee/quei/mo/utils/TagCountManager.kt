@@ -1,11 +1,10 @@
 package com.aliee.quei.mo.utils
 
-import android.util.Log
 import com.aliee.quei.mo.component.CommonDataProvider
 import com.aliee.quei.mo.data.bean.Tag
 import com.aliee.quei.mo.data.bean.TagCount
 import com.aliee.quei.mo.data.bean.Tags
-import org.apache.commons.lang3.RandomUtils
+import kotlin.random.Random
 
 object TagCountManager {
 
@@ -63,6 +62,6 @@ object TagCountManager {
         val tagCounts = CommonDataProvider.instance.getTagScore() ?: return null
         tagCounts.sortByDescending { it.count }
         val tags = tagCounts.subList(0,5)
-        return tags[RandomUtils.nextInt(0,tags.size)]
+        return tags[Random.nextInt(0,tags.size)]
     }
 }

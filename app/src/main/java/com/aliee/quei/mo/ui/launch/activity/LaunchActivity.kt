@@ -53,7 +53,7 @@ import kotlin.concurrent.thread
 /**
  * Created by Administrator on 2018/4/18 0018.
  */
-@Route(path = Path.PATH_LAUNCH_ACTIVITY)
+//@Route(path = Path.PATH_LAUNCH_ACTIVITY)
 class LaunchActivity : BaseActivity() {
     private var isShowAd = false
 
