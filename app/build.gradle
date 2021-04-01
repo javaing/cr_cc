@@ -213,23 +213,8 @@ android {
 
 }
 
-static def releaseTime() {
-    return new Date().format("yyyy-MM-dd-HH-mm", TimeZone.getDefault())//包含时分秒
-}
-
-static def debugTime() {
-    return new Date().format("yyyy", TimeZone.getDefault())
-}
-
 realm {
     syncEnabled = true
-}
-
-kotlin {
-    experimental {
-        //启用协程
-//        coroutines 'enable'
-    }
 }
 
 dependencies {
