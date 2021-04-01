@@ -291,14 +291,14 @@ dependencies {
 
 
     //lifecycles
-    implementation "android.arch.lifecycle:runtime:$ARCHITECTURE_VERSION"
-    implementation "android.arch.lifecycle:common-java8:$ARCHITECTURE_VERSION"
-    implementation "android.arch.lifecycle:extensions:$ARCHITECTURE_VERSION"
-    implementation "android.arch.lifecycle:reactivestreams:$ARCHITECTURE_VERSION"
+//    implementation "android.arch.lifecycle:runtime:$ARCHITECTURE_VERSION"
+//    implementation "android.arch.lifecycle:common-java8:$ARCHITECTURE_VERSION"
+//    implementation "android.arch.lifecycle:extensions:$ARCHITECTURE_VERSION"
+//    implementation "android.arch.lifecycle:reactivestreams:$ARCHITECTURE_VERSION"
     //kapt "android.arch.lifecycle:compiler:$ARCHITECTURE_VERSION"
 
 
-    compileOnly 'org.glassfish:javax.annotation:10.0-b28'
+    //compileOnly 'org.glassfish:javax.annotation:10.0-b28'
 
     //xLog
     implementation 'com.elvishew:xlog:1.6.1'
