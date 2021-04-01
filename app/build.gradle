@@ -376,7 +376,7 @@ dependencies {
 
 //    implementation project(':7moor')
 
-    implementation 'com.lijiankun24:shadowlayout:1.1.0'
+    //implementation 'com.lijiankun24:shadowlayout:1.1.0'
 
     implementation 'com.tencent:mmkv:1.0.15'
 
@@ -387,7 +387,7 @@ dependencies {
     kapt 'com.alibaba:arouter-compiler:1.2.2'
     annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
 
-    implementation 'com.jaeger.statusbaruitl:library:1.1.1'
+    //implementation 'com.jaeger.statusbaruitl:library:1.1.1'
     implementation 'jp.wasabeef:glide-transformations:3.0.1'
     implementation 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
 
