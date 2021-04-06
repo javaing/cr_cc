@@ -15,6 +15,7 @@
 bin/
 gen/
 out/
+app/optionalLogin
 
 # Gradle files
 .gradle/
