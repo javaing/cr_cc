@@ -377,14 +377,19 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class BannerHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val pager = itemView.find<UltraViewPager>(R.id.pager)
-        private val categoryBtn = itemView.find<View>(R.id.category)
-        private val rankBtn = itemView.find<View>(R.id.rank)
-        private val recharge = itemView.find<View>(R.id.recharge)
-        private val bulletin = itemView.find<View>(R.id.bulletin)
+        //private val categoryBtn = itemView.find<View>(R.id.category)
+        private val tvHomePage = itemView.find<View>(R.id.tvHomePage)
+        private val tvHomeSerial = itemView.find<View>(R.id.tvHomeSerial)
+        private val tvHomeFinish = itemView.find<View>(R.id.tvHomeFinish)
+        private val tvHomeRanking = itemView.find<View>(R.id.tvHomeRanking)
+        private val tvHomeJapan = itemView.find<View>(R.id.tvHomeJapan)
+        private val tvHomeBulletin = itemView.find<View>(R.id.tvHomeBulletin)
+        private val tvHomeFree = itemView.find<View>(R.id.tvHomeFree)
+        private val tvHomeRecharge = itemView.find<View>(R.id.tvHomeRecharge)
         private var tvShare = itemView.find<View>(R.id.tvShare)
         private var ivSearch = itemView.find<View>(R.id.ivSearch)
         private var ivModify = itemView.find<View>(R.id.ivModify)
-        private val cateFree = itemView.find<View>(R.id.cateFree)
+        //private val cateFree = itemView.find<View>(R.id.cateFree)
         private var indicatorColorSelected = itemView.context.resources.getColor(R.color.indicator_shelf_banner_s)
         private var indicatorColorNormal = itemView.context.resources.getColor(R.color.indicator_shelf_banner_n)
 //        lateinit var arrayAdapter: ArrayAdapter<*>
@@ -420,24 +425,24 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 e.printStackTrace()
             }
 
-            rankBtn.click {
+            tvHomeRanking.click {
                 ARouterManager.goRankActivity(it.context)
             }
-            cateFree.click {
+            tvHomeFree.click {
                 ARouterManager.goMoreActivity(
                         it.context,
                         BeanConstants.RecommendPosition.FREE.title,
                         BeanConstants.RecommendPosition.FREE.rid
                 )
             }
-            categoryBtn.click {
-                ARouterManager.goComicCategoryActivity(it.context)
-            }
-            recharge.click {
+//            categoryBtn.click {
+//                ARouterManager.goComicCategoryActivity(it.context)
+//            }
+            tvHomeRecharge.click {
                 ARouterManager.goRechargeActivity(it.context, "", 0)
             }
 
-            bulletin.click {
+            tvHomeBulletin.click {
                 ARouterManager.goBulletinActivity(it.context)
             }
 

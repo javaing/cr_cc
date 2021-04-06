@@ -9,9 +9,8 @@
     <color name="colorDivider">#ebebeb</color>
     <color name="text_color_999999">#999999</color>
     <color name="text_color_D8D8D8">#F1EFEF</color>
-    <color name="theme_color">#f56336</color>
+    <color name="theme_color">#000000</color>
     <color name="cs_background">#fbe9e3</color>
-    FBE9E3
     <!--read-->
 
     <color name="light_red">#EC4A48</color>

@@ -1,40 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white">
+   >
 
     <LinearLayout
+        android:id="@+id/llCatelory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/theme_color"
         android:orientation="vertical"
         android:paddingTop="25dp">
 
-        <LinearLayout
+        <RelativeLayout
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="10dp"
             android:visibility="visible">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/app_name"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
+            <ImageView
+                android:id="@+id/ivLogo"
+                android:layout_width="122dp"
+                android:layout_height="30dp"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/logo_02" />
 
-            <Space
-                android:layout_width="0dp"
+            <include
+                android:layout_below="@+id/ivLogo"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                layout="@layout/layout_category" />
+
 
             <TextView
                 android:id="@+id/tvShare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/share"
+                android:layout_alignParentRight="true"
                 android:textColor="@color/all_white"
                 android:textSize="15dp"
                 android:visibility="gone" />
@@ -43,8 +47,10 @@
                 android:id="@+id/ivSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_alignParentRight="true"
                 android:contentDescription="@string/empty_string"
-                android:padding="10dp"
                 android:src="@mipmap/ic_search_dl" />
 
             <ImageView
@@ -52,16 +58,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:layout_marginTop="3dp"
                 android:contentDescription="@string/empty_string"
                 android:src="@mipmap/ic_menu_overflow"
                 android:visibility="gone" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="40dp"
             android:background="@color/theme_color" />
 
         <ImageView
@@ -71,21 +78,13 @@
             android:src="@mipmap/img_wave" />
     </LinearLayout>
 
-    <LinearLayout
+    <com.tmall.ultraviewpager.UltraViewPager
+        android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:orientation="vertical">
+        android:layout_marginTop="120dp"
+        android:layout_height="200dp"
+        android:layout_below="@+id/llCatelory"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
 
-        <com.tmall.ultraviewpager.UltraViewPager
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp" />
-
-        <include layout="@layout/layout_category" />
-    </LinearLayout>
-
-</RelativeLayout>
+</FrameLayout>

@@ -9,14 +9,11 @@
 
 
     <TextView
-        android:layout_weight="1"
         android:id="@+id/rank"
-        android:layout_marginLeft="12dp"
         style="@style/shop.category.new"
         android:text="@string/serialize" />
 
     <TextView
-        android:layout_weight="1"
         android:id="@+id/fin"
         android:layout_marginLeft="12dp"
         style="@style/shop.category.new"

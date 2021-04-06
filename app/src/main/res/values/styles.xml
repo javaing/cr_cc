@@ -175,10 +175,12 @@
     </style>
 
     <style name="shop.category.name">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textColor">#666</item>
+        <item name="android:textSize">14.33sp</item>
+        <item name="android:textColor">#CACACA</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">18dp</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="shop.category.new">
@@ -234,7 +236,7 @@
         <item name="android:textColor">#ff333333</item>
     </style>
 
-    <color name="background_window">#f2f2f2</color>
+    <color name="background_window">#000000</color>
     <color name="color_welfare">#FC5173</color>
 
     <style name="Theme_AudioDialog" parent="@android:style/Theme.Dialog" >

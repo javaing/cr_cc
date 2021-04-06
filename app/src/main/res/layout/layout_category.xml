@@ -1,101 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:gravity="center"
     android:orientation="horizontal"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp">
+    android:paddingTop="18dp"
+    android:paddingLeft="10dp"
+    android:paddingBottom="18dp">
 
     <LinearLayout
-        android:id="@+id/rank"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@mipmap/ic_rank" />
-
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
         <TextView
+            android:id="@+id/tvHomePage"
             style="@style/shop.category.name"
-            android:text="@string/ranking" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/cateFree"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@mipmap/ic_vip_books" />
+            android:text="@string/home_homepage" />
 
         <TextView
+            android:id="@+id/tvHomeSerial"
+            style="@style/shop.category.name"
+            android:text="@string/home_serial" />
+
+        <TextView
+            android:id="@+id/tvHomeFinish"
+            style="@style/shop.category.name"
+            android:text="@string/home_finish" />
+
+        <TextView
+            android:id="@+id/tvHomeRanking"
+            style="@style/shop.category.name"
+            android:text="@string/home_ranking" />
+
+        <TextView
+            android:id="@+id/tvHomeJapan"
+            style="@style/shop.category.name"
+            android:text="@string/home_japancomic" />
+
+        <TextView
+            android:id="@+id/tvHomeFree"
             style="@style/shop.category.name"
             android:text="@string/free" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/category"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@mipmap/ic_recommend_books" />
 
         <TextView
+            android:id="@+id/tvHomeRecharge"
             style="@style/shop.category.name"
-            android:text="@string/category" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/recharge"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@mipmap/ic_recharge" />
+            android:text="@string/home_recharge" />
 
         <TextView
+            android:id="@+id/tvHomeBulletin"
             style="@style/shop.category.name"
-            android:text="@string/recharge" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/bulletin"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="visible">
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@mipmap/ic_bulletin" />
-
-        <TextView
-            style="@style/shop.category.name"
+            android:layout_marginLeft="18dp"
             android:text="@string/bulletin" />
+
     </LinearLayout>
-</LinearLayout>
+</HorizontalScrollView>
