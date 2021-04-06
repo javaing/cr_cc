@@ -353,73 +353,34 @@ class ShopFragment : BaseFragment() {
 
     fun changeIcon(position: Int) {
         if (position == 0) {
-            activity!!.packageManager.setComponentEnabledSetting(ComponentName("com.due.ff.cc", "com.due.ff.cc.ui.launch.activity.LaunchActivity"),
-                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                    PackageManager.DONT_KILL_APP);
-
-            activity!!.packageManager.setComponentEnabledSetting(
-                    ComponentName("com.due.ff.cc", "com.due.ff.cc.ui.launch.activity.LaunchActivity_fake"),
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
-
-            activity!!.packageManager.setComponentEnabledSetting(
-                    ComponentName("com.due.ff.cc", "com.due.ff.cc.ui.launch.activity.LaunchActivity_fake2"),
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
-
-            activity!!.packageManager.setComponentEnabledSetting(
-                    ComponentName("com.due.ff.cc", "com.due.ff.cc.ui.launch.activity.LaunchActivity_fake3"),
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
+            setComponentState("LaunchActivity", PackageManager.COMPONENT_ENABLED_STATE_ENABLED)
+            setComponentState("LaunchActivity_fake")
+            setComponentState("LaunchActivity_fake2")
+            setComponentState("LaunchActivity_fake3")
         } else if (position == 1) {
-            activity!!.packageManager.setComponentEnabledSetting(ComponentName("com.due.ff.cc", "com.due.ff.cc.ui.launch.activity.LaunchActivity"),
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                    PackageManager.DONT_KILL_APP);
-
-            activity!!.packageManager.setComponentEnabledSetting(
-                    ComponentName("com.due.ff.cc", "com.due.ff.cc.ui.launch.activity.LaunchActivity_fake"),
-                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
-
-            activity!!.packageManager.setComponentEnabledSetting(
-                    ComponentName("com.due.ff.cc", "com.due.ff.cc.ui.launch.activity.LaunchActivity_fake2"),
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
-
-            activity!!.packageManager.setComponentEnabledSetting(
-                    ComponentName("com.due.ff.cc", "com.due.ff.cc.ui.launch.activity.LaunchActivity_fake3"),
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
+            setComponentState("LaunchActivity")
+            setComponentState("LaunchActivity_fake", PackageManager.COMPONENT_ENABLED_STATE_ENABLED)
+            setComponentState("LaunchActivity_fake2")
+            setComponentState("LaunchActivity_fake3")
 
         } else if (position == 2) {
-            activity!!.packageManager.setComponentEnabledSetting(ComponentName("com.due.ff.cc", "com.due.ff.cc.ui.launch.activity.LaunchActivity"),
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                    PackageManager.DONT_KILL_APP);
-
-            activity!!.packageManager.setComponentEnabledSetting(
-                    ComponentName("com.due.ff.cc", "com.due.ff.cc.ui.launch.activity.LaunchActivity_fake"),
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
-
-            activity!!.packageManager.setComponentEnabledSetting(
-                    ComponentName("com.due.ff.cc", "com.due.ff.cc.ui.launch.activity.LaunchActivity_fake2"),
-                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
-
-            activity!!.packageManager.setComponentEnabledSetting(
-                    ComponentName("com.due.ff.cc", "com.due.ff.cc.ui.launch.activity.LaunchActivity_fake3"),
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
+            setComponentState("LaunchActivity")
+            setComponentState("LaunchActivity_fake")
+            setComponentState("LaunchActivity_fake2", PackageManager.COMPONENT_ENABLED_STATE_ENABLED)
+            setComponentState("LaunchActivity_fake3")
 
         } else if (position == 3) {
-            activity!!.packageManager.setComponentEnabledSetting(ComponentName("com.due.ff.cc", "com.due.ff.cc.ui.launch.activity.LaunchActivity"),
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                    PackageManager.DONT_KILL_APP);
-
-            activity!!.packageManager.setComponentEnabledSetting(
-                    ComponentName("com.due.ff.cc", "com.due.ff.cc.ui.launch.activity.LaunchActivity_fake"),
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
-
-            activity!!.packageManager.setComponentEnabledSetting(
-                    ComponentName("com.due.ff.cc", "com.due.ff.cc.ui.launch.activity.LaunchActivity_fake2"),
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
-
-            activity!!.packageManager.setComponentEnabledSetting(
-                    ComponentName("com.due.ff.cc", "com.due.ff.cc.ui.launch.activity.LaunchActivity_fake3"),
-                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
-
+            setComponentState("LaunchActivity")
+            setComponentState("LaunchActivity_fake")
+            setComponentState("LaunchActivity_fake2")
+            setComponentState("LaunchActivity_fake3", PackageManager.COMPONENT_ENABLED_STATE_ENABLED)
         }
+    }
+
+    fun setComponentState( activityName:String, enalbeDisable:Int =PackageManager.COMPONENT_ENABLED_STATE_DISABLED ) {
+        activity!!.packageManager.setComponentEnabledSetting(
+                ComponentName("com.due.ff.cc", "com.due.ff.cc.ui.launch.activity.$activityName"),
+                enalbeDisable, PackageManager.DONT_KILL_APP)
     }
 
     fun copyText() {
