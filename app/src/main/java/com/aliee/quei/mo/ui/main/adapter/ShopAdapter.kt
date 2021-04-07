@@ -75,6 +75,13 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         const val VIEW_TYPE_ITEM_LINEAR = 3
         const val VIEW_TYPE_LAND_IMG = 4
         const val VIEW_TYPE_AD = 5
+
+        const val VIEW_TYPE_HOTRANK = 6     //热门排行
+        const val VIEW_TYPE_CATEGORY = 7    //分类精选
+        const val VIEW_TYPE_FREE = 8        //免费漫画推荐
+        const val VIEW_TYPE_WEEKLY = 9      //每周更新
+        const val VIEW_TYPE_GUESSLIKE = 10  //猜你喜欢
+        const val VIEW_TYPE_BULLETIN = 11   //公告
     }
 
     fun setData(list: MutableList<RecommendListBean>?, adMap: MutableMap<String, AdInfo>) {
@@ -88,33 +95,11 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             if (BeanConstants.RecommendPosition.getByRid(it.rid) == BeanConstants.RecommendPosition.BANNER) {
                 //插入banner广告
-                val adInfo = adMap["bannerAd"]
-                if (adInfo != null) {
-                    val recommendBookBean = RecommendBookBean("", "", AdConfig.BANNER_DEF_ID, "", 0, adInfo!!.imgurl, "", "")
-                    recommendBookBean.adCallbackUrl = adInfo!!.callbackurl
-                    recommendBookBean.adClickUrl = adInfo!!.clickurl
-                    bean.list!!.add(0, recommendBookBean)
-                }
-                //填充数据
-                mData.add(bean)
+                fillBannerData(adMap, bean)
             } else {
                 if (bean.list != null && bean.list.isNotEmpty()) {
                     mData.add(TitleBean(bean.rid, bean.name))
-                    var max = 6
-                    when (bean.rid) {
-                        BeanConstants.RecommendPosition.HOT_RECOMMEND.rid -> max = 9 //精品荟萃  9
-                        BeanConstants.RecommendPosition.LATELY_UPDATE.rid -> {
-                            //新书推荐 6
-                            val adInfo = adMap["flowObsQu"]
-                            max = if (adInfo != null) {
-                                5
-                            } else {
-                                6
-                            }
-                        }
-                        BeanConstants.RecommendPosition.WEEK_POPULAR.rid -> max = 3 //新人 4
-                        BeanConstants.RecommendPosition.WEEK_TOP10.rid -> max = Int.MAX_VALUE //免费
-                    }
+                    var max = getItemMax(bean, adMap)
                     if (bean.rid == BeanConstants.RecommendPosition.WEEK_TOP10.rid) {
                         bean.list.forEach {
                             it.showType = VIEW_TYPE_ITEM_LINEAR
@@ -221,9 +206,32 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
         newData = mData
-        Log.e("ShopAdapter", "setData")
         notifyDataSetChanged()
+    }
 
+    private fun getItemMax(bean: RecommendListBean, adMap: MutableMap<String, AdInfo>): Int {
+        return when (bean.rid) {
+            BeanConstants.RecommendPosition.HOT_RECOMMEND.rid -> 9 //精品荟萃  9
+            BeanConstants.RecommendPosition.LATELY_UPDATE.rid -> {
+                //新书推荐 6
+                if(adMap["flowObsQu"] != null) 5 else 6
+            }
+            BeanConstants.RecommendPosition.WEEK_POPULAR.rid -> 3 //新人 4
+            BeanConstants.RecommendPosition.WEEK_TOP10.rid -> Int.MAX_VALUE //免费
+            else -> 6
+        }
+    }
+
+    private fun fillBannerData(adMap: MutableMap<String, AdInfo>, bean: RecommendListBean) {
+        val adInfo = adMap["bannerAd"]
+        if (adInfo != null) {
+            val recommendBookBean = RecommendBookBean("", "", AdConfig.BANNER_DEF_ID, "", 0, adInfo!!.imgurl, "", "")
+            recommendBookBean.adCallbackUrl = adInfo!!.callbackurl
+            recommendBookBean.adClickUrl = adInfo!!.clickurl
+            bean.list!!.add(0, recommendBookBean)
+        }
+        //填充数据
+        mData.add(bean)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

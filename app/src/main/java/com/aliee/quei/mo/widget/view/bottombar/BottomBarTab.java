@@ -79,9 +79,9 @@ public class BottomBarTab extends RelativeLayout {
     @Override
     public void setSelected(boolean selected) {
         super.setSelected(selected);
-        if (mTabPosition == 2){
-            return;
-        }
+//        if (mTabPosition == 2){
+//            return;
+//        }
         if (selected) {
             if (iconNormal == -1) {
                 ImageViewEXKt.load(mIcon, iconSelectedUrl);
@@ -105,14 +105,14 @@ public class BottomBarTab extends RelativeLayout {
             setSelected(true);
         }
 
-        if (position == 2) {
-           ViewGroup.LayoutParams params = mIcon.getLayoutParams();
-            params.width = 100;
-            params.height = 100;
-            mIcon.setLayoutParams(params);
-            mTvTitle.setVisibility(View.GONE);
-            Glide.with(this).asGif().load(R.mipmap.video_icon).into(mIcon);
-        }
+//        if (position == 2) {
+//           ViewGroup.LayoutParams params = mIcon.getLayoutParams();
+//            params.width = 100;
+//            params.height = 100;
+//            mIcon.setLayoutParams(params);
+//            mTvTitle.setVisibility(View.GONE);
+//            Glide.with(this).asGif().load(R.mipmap.video_icon).into(mIcon);
+//        }
     }
 
     public int getTabPosition() {

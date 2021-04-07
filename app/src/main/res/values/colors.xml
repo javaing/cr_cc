@@ -4,14 +4,40 @@
     <color name="colorAccent">#FF4081</color>
     <color name="white">#ffffff</color>
     <color name="yellow">#C59E29</color>
-    <color name="text_color_tab_selected">#f56336</color>
     <color name="text_color_tab_normal">#8a8a8a</color>
     <color name="colorDivider">#ebebeb</color>
     <color name="text_color_999999">#999999</color>
     <color name="text_color_D8D8D8">#F1EFEF</color>
-    <color name="theme_color">#000000</color>
+
     <color name="cs_background">#fbe9e3</color>
     <!--read-->
+
+
+    <!-- 应用主题色 -->
+    <color name="maincolor">#21b38a</color>
+    <!-- 白色 -->
+    <color name="all_white">#ffffff</color>
+    <!-- 黑色 -->
+    <color name="all_black">#000000</color>
+    <!-- 透明 -->
+    <color name="transparent">#00000000</color>
+    <!-- 浅灰 -->
+    <color name="lightgrey">#D6D6D6</color>
+    <color name="grey">#8B8989</color>
+    <color name="startcolor">#21b38a</color>
+    <color name="textcolor">#383838</color>
+    <color name="lite_blue">#ff359ff2</color>
+    <color name="robot_blue">#2256CB</color>
+    <color name="navpage">#FFE1E8EB</color>
+
+    <color name="color_gray">#B4B4B4</color>
+    <color name="color_green">#00b4aa</color>
+    <color name="color_red">#FF6A6E</color>
+    <color name="color_red_light">#FFB4B6</color>
+    <color name="color_blue">#03A9F4</color>
+    <color name="color_gray_light">#F5F5F5</color>
+    <color name="color_60">#F4A460</color>
+    <color name="color_99">#99F4A460</color>
 
     <color name="light_red">#EC4A48</color>
     <color name="nb.read.menu.bg">#f56336</color>
@@ -31,5 +57,16 @@
     <color name="video_price_stroke">#DD8400</color>
     <color name="video_tags_nor_color">#F4736F</color>
     <color name="video_tags_selected_color">#EE2B29</color>
+
+
+
+    <!--new skin-->
+    <color name="theme_color">#000000</color>
+    <color name="main_text">@color/all_white</color>
+    <color name="text_money">#FF0000</color>
+    <color name="text_color_tab_selected">#F11424</color>
+    <color name="hometop_tab_selected">#FF292A</color>
+    <color name="home_section_title_div">#F51526</color>
+
 
 </resources>
