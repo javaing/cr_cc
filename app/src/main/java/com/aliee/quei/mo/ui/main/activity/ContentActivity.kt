@@ -833,23 +833,28 @@ class ContentActivity : BaseActivity() {
     private fun initBottomBar() {
         listFragment.add(ARouterManager.getShopFragment(this))
         // listFragment.add(ARouterManager.getNewShopFragment(this,0))
-        bottomBar.addItem(BottomBarTab(this, R.mipmap.tab_shop, R.mipmap.tab_shop_s, "书城"))
+        bottomBar.addItem(BottomBarTab(this, R.mipmap.icon_01, R.mipmap.icon_01s, "书城"))
 //        bottomBar.addItem(BottomBarTab(this,R.mipmap.tab_category,R.mipmap.tab_category_s,"分类"))
         listFragment.add(ARouterManager.getMyComicFragment(this, 0))
-        bottomBar.addItem(BottomBarTab(this, R.mipmap.tab_shelf, R.mipmap.tab_shelf_s, "阅读记录"))
+        bottomBar.addItem(BottomBarTab(this, R.mipmap.icon_02, R.mipmap.icon_02s, "阅读记录"))
 //        listFragment.add(ARouterManager.getWelfareFragment(this))
 //        bottomBar.addItem(BottomBarTab(this,R.mipmap.tab_welfare,R.mipmap.tab_welfare_s,"今日福利"))
 
         listFragment.add(ARouterManager.getVideoFragment(this))
-        val videoBottomBar = BottomBarTab(this, R.mipmap.tab_video, R.mipmap.tab_video_s, "视频")
+        val videoBottomBar = BottomBarTab(this, R.mipmap.icon_03, R.mipmap.icon_03s, "视频")
         // videoBottomBar.showMessageNew()
         bottomBar.addItem(videoBottomBar)
 
-        listFragment.add(ARouterManager.getLongVideoFragment(this))
-        bottomBar.addItem(BottomBarTab(this, R.mipmap.tab_video, R.mipmap.tab_video_s, "长视频"))
-
         listFragment.add(ARouterManager.getMineFragment(this))
-        bottomBar.addItem(BottomBarTab(this, R.mipmap.tab_mine, R.mipmap.tab_mine_s, "我的"))
+        bottomBar.addItem(BottomBarTab(this, R.mipmap.icon_04, R.mipmap.icon_04s, "我的"))
+
+
+        listFragment.add(ARouterManager.getLongVideoFragment(this))
+        bottomBar.addItem(BottomBarTab(this, R.mipmap.icon_05, R.mipmap.icon_05s, "客服"))
+        //listFragment.add(ARouterManager.getLongVideoFragment(this))
+        //bottomBar.addItem(BottomBarTab(this, R.mipmap.tab_video, R.mipmap.tab_video_s, "长视频"))
+
+
 
 
 //        listFragment.add(CategoryFragment())

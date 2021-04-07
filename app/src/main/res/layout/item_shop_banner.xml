@@ -51,7 +51,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_alignParentRight="true"
                 android:contentDescription="@string/empty_string"
-                android:src="@mipmap/ic_search_dl" />
+                android:src="@mipmap/icon_search" />
 
             <ImageView
                 android:id="@+id/ivModify"
