@@ -25,5 +25,7 @@
     <color name="color_gray_light">#F5F5F5</color>
     <color name="color_60">#F4A460</color>
     <color name="color_99">#99F4A460</color>
+    <color name="main_text">@color/all_white</color>
+    <color name="text_money">#FF0000</color>
 
 </resources>

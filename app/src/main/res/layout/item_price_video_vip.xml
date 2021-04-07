@@ -13,7 +13,6 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="12dp"
         android:orientation="vertical"
-        app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="2dp"
         app:cardElevation="5dp">
 
@@ -66,7 +65,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/boxing_black"
+                        android:textColor="@color/main_text"
                         android:textSize="14sp"
                         android:text="超值特惠原价" />
 
@@ -74,14 +73,14 @@
                         android:id="@+id/tv_price2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/boxing_black"
+                        android:textColor="@color/main_text"
                         android:textSize="14sp"
                         android:text="50" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/boxing_black"
+                        android:textColor="@color/main_text"
                         android:textSize="14sp"
                         android:text="元" />
 
@@ -90,7 +89,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:text="特惠价"
-                        android:textColor="@color/boxing_black"
+                        android:textColor="@color/main_text"
                         android:textSize="14sp" />
 
                     <TextView
@@ -98,7 +97,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="39"
-                        android:textColor="@color/boxing_black"
+                        android:textColor="@color/main_text"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -106,7 +105,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="元"
-                        android:textColor="@color/boxing_black"
+                        android:textColor="@color/main_text"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -135,7 +134,7 @@
                         android:paddingLeft="3dp"
                         android:paddingRight="3dp"
                         android:text="热销"
-                        android:textColor="@color/white"
+                        android:textColor="@color/main_text"
                         android:textSize="12sp" />
 
                     <TextView
@@ -147,7 +146,7 @@
                         android:paddingLeft="3dp"
                         android:paddingRight="3dp"
                         android:text="推荐"
-                        android:textColor="@color/white"
+                        android:textColor="@color/main_text"
                         android:textSize="12sp" />
                 </LinearLayout>
 

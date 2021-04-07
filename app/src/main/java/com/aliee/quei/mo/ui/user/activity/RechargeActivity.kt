@@ -15,7 +15,6 @@ import com.aliee.quei.mo.base.BaseActivity
 import com.aliee.quei.mo.base.response.Status
 import com.aliee.quei.mo.component.CommonDataProvider
 import com.aliee.quei.mo.component.EventRechargeSuccess
-import com.aliee.quei.mo.component.EventRechargeUser
 import com.aliee.quei.mo.data.Global
 import com.aliee.quei.mo.data.Global.KEY_HAS_OPEN_H5_PAY
 import com.aliee.quei.mo.data.Global.KEY_TRADE_NO
@@ -29,7 +28,6 @@ import com.aliee.quei.mo.router.Path
 import com.aliee.quei.mo.ui.launch.vm.LaunchVModel
 import com.aliee.quei.mo.ui.pay.dialog.PayWayDialog
 import com.aliee.quei.mo.ui.pay.dialog.PayWayTestDialog
-import com.aliee.quei.mo.ui.user.adapter.RechargeAdapter
 import com.aliee.quei.mo.ui.user.adapter.RechargeAdapter1
 import com.aliee.quei.mo.ui.user.vm.RechargeVModel
 import com.aliee.quei.mo.utils.SharedPreUtils
@@ -47,7 +45,6 @@ import okhttp3.Response
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
-import java.net.URLEncoder
 import java.util.concurrent.TimeUnit
 
 

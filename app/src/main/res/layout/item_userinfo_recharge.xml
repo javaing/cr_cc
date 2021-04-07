@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
@@ -25,7 +24,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@mipmap/ic_launcher1"
-                app:riv_border_color="@color/white"
                 app:riv_border_width="2dp"
                 app:riv_corner_radius="50dp" />
 
@@ -64,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
                 android:text="@string/please_login"
-                android:textColor="#212121"
+                android:textColor="@color/main_text"
                 android:textSize="16sp" />
 
             <TextView
@@ -73,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/user_id"
-                android:textColor="#212121"
+                android:textColor="@color/main_text"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -83,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
             android:text="@string/complaint"
-            android:textColor="@color/theme_color"
+            android:textColor="@color/main_text"
             android:textSize="15sp"
             android:visibility="visible"/>
 
@@ -93,7 +91,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/bg_mine_balance_block"
         android:orientation="horizontal"
         android:paddingTop="8dp"
         android:paddingBottom="15dp">
@@ -121,6 +118,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
+                    android:textColor="@color/main_text"
                     android:text="金币" />
             </LinearLayout>
 
@@ -135,8 +133,8 @@
                     android:id="@+id/balance"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
-                    android:textColor="@color/theme_color"
                     android:textSize="16sp"
+                    android:textColor="@color/main_text"
                     tools:text="0" />
 
                 <TextView
@@ -144,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:text="余额"
-                    android:textColor="#666666" />
+                    android:textColor="@color/main_text" />
             </LinearLayout>
 
         </LinearLayout>
@@ -154,7 +152,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:background="@color/colorDivider" />
+            android:background="@color/text_money" />
 
         <LinearLayout
             android:id="@+id/layoutTicket"
@@ -179,6 +177,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
+                    android:textColor="@color/main_text"
+                    android:textSize="14.33sp"
                     android:text="会员" />
             </LinearLayout>
 
@@ -194,8 +194,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:text="@string/not_vip"
-                    android:textColor="@color/theme_color"
-                    android:textSize="16sp" />
+                    android:textColor="@color/main_text"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -203,7 +203,8 @@
                     android:layout_below="@id/vipEndTime"
                     android:layout_marginTop="8dp"
                     android:text="有效期至"
-                    android:textColor="#666666" />
+                    android:textSize="12sp"
+                    android:textColor="@color/main_text" />
             </LinearLayout>
 
         </LinearLayout>

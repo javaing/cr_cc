@@ -1,48 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:gravity="center"
-              android:background="@color/white">
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:gravity="center"
+    >
 
-    <View
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="@color/colorDivider"/>
+    <ImageView
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:src="@mipmap/ic_balance_coins"
+        android:id="@+id/icon"/>
 
-    <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:background="@color/white">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="书币充值"
+        android:textColor="@color/main_text"
+        android:textSize="14sp"
+        android:id="@+id/text"/>
 
-        <View
-                android:layout_width="50dp"
-                android:layout_height="1dp"
-                android:background="@color/colorDivider"
-                android:layout_marginEnd="5dp"/>
-
-        <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@mipmap/ic_balance_coins"
-                android:id="@+id/icon"/>
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:text="书币充值"
-                android:textSize="16sp"
-                android:id="@+id/text"/>
-
-        <View
-                android:layout_width="50dp"
-                android:layout_height="1dp"
-                android:background="@color/colorDivider"
-                android:layout_marginStart="5dp"/>
-    </LinearLayout>
 </LinearLayout>
