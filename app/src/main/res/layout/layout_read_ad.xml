@@ -3,7 +3,7 @@
     android:id="@+id/layout_ad_bottom"
     android:layout_width="match_parent"
     android:layout_height="150dp"
-    android:background="@color/white"
+    android:background="@color/theme_color"
     android:orientation="vertical"
     android:visibility="gone">
 

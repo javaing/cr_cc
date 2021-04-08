@@ -12,8 +12,16 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ListView
+import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.aliee.quei.mo.R
 import com.aliee.quei.mo.base.BaseFragment
@@ -35,9 +43,12 @@ import com.aliee.quei.mo.ui.main.vm.AdVModel
 import com.aliee.quei.mo.ui.main.vm.ShopVModel
 import com.aliee.quei.mo.utils.rxjava.RxBus
 import com.elvishew.xlog.XLog
+import com.google.android.material.tabs.TabLayoutMediator
 import com.umeng.analytics.MobclickAgent
 import io.reactivex.Observable
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_shop.*
+import kotlinx.android.synthetic.main.item_shop_hotrank.*
 import kotlinx.android.synthetic.main.layout_common_list.*
 import retrofit2.HttpException
 import kotlin.collections.ArrayList
@@ -86,6 +97,7 @@ class ShopFragment : BaseFragment() {
                 return when (adapter.getItemViewType(position)) {
                     ShopAdapter.VIEW_TYPE_ITEM_LINEAR,
                     ShopAdapter.VIEW_TYPE_BANNER,
+                    ShopAdapter.VIEW_TYPE_HOTRANK,
                     ShopAdapter.VIEW_TYPE_TITLE,
                     ShopAdapter.VIEW_TYPE_AD,
                     ShopAdapter.VIEW_TYPE_LAND_IMG -> 6
@@ -118,11 +130,8 @@ class ShopFragment : BaseFragment() {
             if (it.bookcover!!.contains("http")) {
                 AdConfig.adClick(activity!!, it.adClickUrl!!)
             } else {
-                hashMap.clear()
-                hashMap.put("BookCollect", it.title)
-                MobclickAgent.onEvent(activity!!, "1", hashMap)
-                Log.d("ShopFragment", "Rid：" + it.rid)
-                ARouterManager.goReadActivity(activity!!, it.id, if (it.rid == "") 27 else it.rid!!.toInt(), 0, true)
+                logEvent(hashMap, it)
+                ARouterManager.goReadActivity(activity!!, it.id, getRid(it), 0, true)
                 if (layoutModify.visibility == View.VISIBLE) {
                     layoutModify.visibility = View.INVISIBLE
                 }
@@ -156,6 +165,16 @@ class ShopFragment : BaseFragment() {
             }
         }
     }
+
+    private fun logEvent(hashMap: HashMap<String, String?>, it: RecommendBookBean) {
+        hashMap.clear()
+        hashMap.put("BookCollect", it.title)
+        MobclickAgent.onEvent(activity!!, "1", hashMap)
+        Log.d("ShopFragment", "Rid：" + it.rid)
+    }
+
+    private fun getRid(it: RecommendBookBean) =
+            if (it.rid == "") 27 else it.rid!!.toInt()
 
 
     private fun initRefresh() {

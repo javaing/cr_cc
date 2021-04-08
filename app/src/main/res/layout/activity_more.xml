@@ -27,7 +27,7 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-        android:background="@color/white"/>
+        android:background="@color/theme_color"/>
 
         <com.scwang.smartrefresh.layout.footer.ClassicsFooter
                 android:layout_width="match_parent"
@@ -44,7 +44,7 @@
         android:layout_marginTop="50dp"
         android:id="@+id/layout_ad_head"
         android:visibility="gone"
-        android:background="@color/white">
+        android:background="@color/theme_color">
 
         <ImageView
             android:id="@+id/ad_more_head"
@@ -62,7 +62,7 @@
         android:layout_marginBottom="54dp"
         android:id="@+id/layout_ad_bottom"
         android:visibility="gone"
-        android:background="@color/white">
+        android:background="@color/theme_color">
 
 
         <ImageView

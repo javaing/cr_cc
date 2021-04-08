@@ -267,7 +267,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="64dp"
-        android:background="@color/white"
+        android:background="@color/theme_color"
         android:orientation="vertical"
         android:visibility="gone">
 
@@ -282,7 +282,6 @@
         android:id="@+id/layoutDailyReward"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:orientation="vertical"
         android:padding="8dp"
         android:visibility="gone">

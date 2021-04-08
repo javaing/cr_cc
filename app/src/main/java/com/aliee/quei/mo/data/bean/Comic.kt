@@ -50,3 +50,5 @@ data class RecommendBookBean(
 }
 
 data class RecommendListBean(val rid : String,val name : String,val list : MutableList<RecommendBookBean>? = null)
+
+data class RecommendListBeanNewSkin(val rid : String,val name : String,val list : MutableList<RecommendBookBean>? = null)

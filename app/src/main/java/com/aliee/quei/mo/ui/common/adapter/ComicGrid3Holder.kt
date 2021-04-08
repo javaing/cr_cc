@@ -39,7 +39,7 @@ class ComicGrid3Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 tagRight.setSlantedBackgroundColor(bean.tagColor)
             }
         }
-        Log.e("tag", "ComicGrid3Holder---图片:${if (bean.thumb.isNullOrEmpty()) bean.bookcover else bean.thumb}----->：${bean.title}")
+        //Log.e("tag", "ComicGrid3Holder---图片:${if (bean.thumb.isNullOrEmpty()) bean.bookcover else bean.thumb}----->：${bean.title}")
 
         if (bean.bookcover!!.contains("http")) {
             ivCover.loadHtmlImg(bean.bookcover)

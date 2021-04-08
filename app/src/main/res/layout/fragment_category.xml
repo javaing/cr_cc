@@ -2,6 +2,6 @@
 <com.aliee.quei.mo.widget.view.statuslayout.StatusLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent" android:layout_height="match_parent" android:id="@+id/statuslayout"
-android:background="@color/white">
+android:background="@color/theme_color">
     <include layout="@layout/layout_common_list"/>
 </com.aliee.quei.mo.widget.view.statuslayout.StatusLayout>

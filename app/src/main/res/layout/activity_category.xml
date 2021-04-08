@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tabLayout"
-        android:background="@color/white"
+        android:background="@color/theme_color"
         android:orientation="vertical">
 
         <LinearLayout
@@ -115,7 +115,7 @@
         android:layout_marginTop="50dp"
         android:id="@+id/layout_ad_head"
         android:visibility="gone"
-        android:background="@color/white">
+        android:background="@color/theme_color">
 
         <ImageView
             android:id="@+id/ad_category_head"
@@ -133,7 +133,7 @@
         android:layout_marginBottom="54dp"
         android:id="@+id/layout_ad_bottom"
         android:visibility="gone"
-        android:background="@color/white">
+        android:background="@color/theme_color">
 
 
         <ImageView

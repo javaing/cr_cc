@@ -13,7 +13,9 @@ import com.aliee.quei.mo.utils.extention.click
 import com.aliee.quei.mo.utils.extention.gone
 import com.aliee.quei.mo.utils.extention.show
 import kotlinx.android.synthetic.main.fragment_mine_comic.*
+import kotlinx.android.synthetic.main.layout_navi_header.*
 import kotlinx.android.synthetic.main.layout_title_first.*
+import kotlinx.android.synthetic.main.layout_title_first.search
 
 /**
  * Created by Administrator on 2018/4/18 0018.
@@ -38,7 +40,7 @@ class MineComicFragment : BaseFragment(), ViewPager.OnPageChangeListener {
     }
 
     override fun initView() {
-        search.click {
+        ivSearch.click {
             ARouterManager.goSearch(it.context)
         }
     }

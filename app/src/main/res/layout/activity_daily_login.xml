@@ -10,7 +10,7 @@
         android:id="@+id/layoutDailyReward"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/theme_color"
         android:visibility="gone"
         android:orientation="vertical"
         android:padding="8dp"

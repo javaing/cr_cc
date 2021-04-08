@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
    >
@@ -11,60 +12,7 @@
         android:orientation="vertical"
         android:paddingTop="25dp">
 
-        <RelativeLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp"
-            android:visibility="visible">
-
-            <ImageView
-                android:id="@+id/ivLogo"
-                android:layout_width="122dp"
-                android:layout_height="30dp"
-                android:layout_centerHorizontal="true"
-                android:src="@mipmap/logo_02" />
-
-            <include
-                android:layout_below="@+id/ivLogo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                layout="@layout/layout_category" />
-
-
-            <TextView
-                android:id="@+id/tvShare"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/share"
-                android:layout_alignParentRight="true"
-                android:textColor="@color/all_white"
-                android:textSize="15dp"
-                android:visibility="gone" />
-
-            <ImageView
-                android:id="@+id/ivSearch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"
-                android:contentDescription="@string/empty_string"
-                android:src="@mipmap/ic_search_dl" />
-
-            <ImageView
-                android:id="@+id/ivModify"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="3dp"
-                android:contentDescription="@string/empty_string"
-                android:src="@mipmap/ic_menu_overflow"
-                android:visibility="gone" />
-
-        </RelativeLayout>
+        <include layout="@layout/layout_navi_header"/>
 
         <View
             android:layout_width="match_parent"

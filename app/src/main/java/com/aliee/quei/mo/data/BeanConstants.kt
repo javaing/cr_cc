@@ -44,6 +44,7 @@ object BeanConstants{
         TWO_CHAPTER("39","每隔两章推荐"),
         WEEK_TOP10("45",ReaderApplication.instance.getString(R.string.position_week_top10)),
         OPEN_APP_RECOMMEND("61","打开APP推荐"),
+        HOTRANK_NEWSKIN("62","热门推荐"),
         AD_FLOW_90("-111","信息流90高度");
 
         companion object {

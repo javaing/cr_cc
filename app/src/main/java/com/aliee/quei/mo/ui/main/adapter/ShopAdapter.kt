@@ -1,18 +1,21 @@
 package com.aliee.quei.mo.ui.main.adapter
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.Lifecycle
 import android.graphics.Color
-import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
-import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.aliee.quei.mo.R
 import com.aliee.quei.mo.application.ReaderApplication
 import com.aliee.quei.mo.component.CommonDataProvider.Companion.instance
@@ -22,6 +25,7 @@ import com.aliee.quei.mo.data.BeanConstants
 import com.aliee.quei.mo.data.bean.AdInfo
 import com.aliee.quei.mo.data.bean.RecommendBookBean
 import com.aliee.quei.mo.data.bean.RecommendListBean
+import com.aliee.quei.mo.data.bean.RecommendListBeanNewSkin
 import com.aliee.quei.mo.net.imageloader.glide.GlideApp
 import com.aliee.quei.mo.net.imageloader.glide.GlideRoundTransform
 import com.aliee.quei.mo.router.ARouterManager
@@ -36,11 +40,11 @@ import com.aliee.quei.mo.utils.extention.*
 import com.aliee.quei.mo.utils.rxjava.RxBus
 import com.aliee.quei.mo.widget.DepthScaleTransformer
 import com.aliee.quei.mo.widget.FixedSpeedScroller
-import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.elvishew.xlog.XLog
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.scwang.smartrefresh.layout.util.DensityUtil
 import com.tmall.ultraviewpager.UltraViewPager
 import com.tmall.ultraviewpager.UltraViewPagerAdapter
@@ -76,7 +80,7 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         const val VIEW_TYPE_LAND_IMG = 4
         const val VIEW_TYPE_AD = 5
 
-        const val VIEW_TYPE_HOTRANK = 6     //热门排行
+        const val VIEW_TYPE_HOTRANK = 6     //热门排行,(精品 人气 新作)
         const val VIEW_TYPE_CATEGORY = 7    //分类精选
         const val VIEW_TYPE_FREE = 8        //免费漫画推荐
         const val VIEW_TYPE_WEEKLY = 9      //每周更新
@@ -88,6 +92,9 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         LogUtil.e("tag", "书城：${list.toString()}")
         list ?: return
         mData.clear()
+        val copyListHot : MutableList<RecommendListBean> = arrayListOf()
+        val copyListLatest : MutableList<RecommendListBean> = arrayListOf()
+        val copyListPop : MutableList<RecommendListBean> = arrayListOf()
         list.forEach {
             val bean = it
             if (shouldShuffle) {
@@ -96,6 +103,9 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             if (BeanConstants.RecommendPosition.getByRid(it.rid) == BeanConstants.RecommendPosition.BANNER) {
                 //插入banner广告
                 fillBannerData(adMap, bean)
+
+                //热门推荐
+                fillNewSkinHotRank(bean)
             } else {
                 if (bean.list != null && bean.list.isNotEmpty()) {
                     mData.add(TitleBean(bean.rid, bean.name))
@@ -112,11 +122,18 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                                 it.tagText = "精品"
                                 it.tagColor = Color.parseColor("#ee82ee")
                             }
+
+//                            copyListHot.addAll(bean.list)
+//                            copyListHot.forEach {
+//                                it.showType = VIEW_TYPE_HOTRANK
+//                            }
+
                         }
                         BeanConstants.RecommendPosition.LATELY_UPDATE.rid -> {
                             bean.list.forEach {
                                 it.showType = ShopItemDecoration.VIEW_TYPE_COMIC_GRID_3
                             }
+                            //copyListLatest.addAll(bean.list)
                         }
                         BeanConstants.RecommendPosition.WEEK_POPULAR.rid -> {
                             var rankIndex = 0
@@ -131,6 +148,7 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                                 it.showType = ShopItemDecoration.VIEW_TYPE_COMIC_GRID_3
                                 rankIndex++
                             }
+                            //copyListPop.addAll(bean.list)
                         }
                         BeanConstants.RecommendPosition.FREE.rid -> {
                             bean.list.forEach {
@@ -202,6 +220,17 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                             mData.addAll(bean.list)
                         }
                     }
+
+                    //NEW SKIN
+                    if (bean.rid == BeanConstants.RecommendPosition.HOT_RECOMMEND.rid) {
+                        //mData.add(TitleBean(BeanConstants.RecommendPosition.HOTRANK_NEWSKIN.rid, BeanConstants.RecommendPosition.HOTRANK_NEWSKIN.title))
+//                        bean.list.forEach {
+//                            it.showType = VIEW_TYPE_HOTRANK
+//                        }
+//                        Log.e("tag", "NEW SKIN:" + bean.list.toString())
+//                        mData.addAll(bean.list)
+                    }
+
                 }
             }
         }
@@ -214,7 +243,7 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             BeanConstants.RecommendPosition.HOT_RECOMMEND.rid -> 9 //精品荟萃  9
             BeanConstants.RecommendPosition.LATELY_UPDATE.rid -> {
                 //新书推荐 6
-                if(adMap["flowObsQu"] != null) 5 else 6
+                if (adMap["flowObsQu"] != null) 5 else 6
             }
             BeanConstants.RecommendPosition.WEEK_POPULAR.rid -> 3 //新人 4
             BeanConstants.RecommendPosition.WEEK_TOP10.rid -> Int.MAX_VALUE //免费
@@ -234,6 +263,16 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         mData.add(bean)
     }
 
+    private fun fillNewSkinHotRank(bean: RecommendListBean) {
+        val list2: MutableList<RecommendBookBean> = arrayListOf()
+        bean.list?.forEach {
+
+        }
+        val bean2 = RecommendListBeanNewSkin(BeanConstants.RecommendPosition.HOTRANK_NEWSKIN.rid, BeanConstants.RecommendPosition.HOTRANK_NEWSKIN.title, bean.list)
+        mData.add(bean2)
+    }
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when (viewType) {
             VIEW_TYPE_AD -> {
@@ -243,6 +282,11 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             VIEW_TYPE_BANNER -> {
                 val v = parent.context.inflate(R.layout.item_shop_banner)
                 return BannerHolder(v)
+            }
+            VIEW_TYPE_HOTRANK -> {
+                val v = parent.context.inflate(R.layout.item_shop_hotrank)
+                Log.e("TAG", "VIEW_TYPE_HOTRANK set...")
+                return PagerHolder(v)
             }
             VIEW_TYPE_TITLE -> {
                 val v = parent.context.inflate(R.layout.item_shop_title)
@@ -276,6 +320,7 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return when (item) {
             is AdInfo -> VIEW_TYPE_AD
             is RecommendListBean -> VIEW_TYPE_BANNER
+            is RecommendListBeanNewSkin -> VIEW_TYPE_HOTRANK
             is TitleBean -> VIEW_TYPE_TITLE
             is RecommendBookBean -> {
                 return item.showType
@@ -293,6 +338,10 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             is RecommendListBean -> {
                 holder as BannerHolder
+                holder.bind(item)
+            }
+            is RecommendListBeanNewSkin -> {
+                holder as PagerHolder
                 holder.bind(item)
             }
             is TitleBean -> {
@@ -383,6 +432,97 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
+    class HotRankAdapter(private val datas: List<String>) : RecyclerView.Adapter<HotRankAdapter.BaseViewHolder?>() {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+            val itemView: View = LayoutInflater.from(parent.context).inflate(R.layout.layout_one_list, parent, false)
+            Log.e("tag", "HotRankAdapter onCreateViewHolder")
+            return BaseViewHolder(itemView)
+        }
+
+        override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+            holder.tv.text = datas.get(position)
+            Log.e("tag", "HotRankAdapter onBindViewHolder")
+        }
+
+        override fun getItemCount(): Int {
+            return 3
+        }
+
+        inner class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            val tv: TextView = itemView.findViewById(R.id.tv)
+        }
+
+    }
+
+    inner class PagerHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val shopPager = itemView.find<ViewPager2>(R.id.shop_pager)
+        private val tabLayout = itemView.find<com.google.android.material.tabs.TabLayout>(R.id.shop_tabLayout)
+
+
+        @SuppressLint("CheckResult")
+        fun bind(recommendListBean: RecommendListBeanNewSkin) {
+            Log.e("TAG", "PagerHolder bind: size=${recommendListBean.list?.size}")
+
+            with(shopPager) {
+                adapter = HotRankAdapter(listOf("111", "222", "333"))
+                isUserInputEnabled = true // 禁止滚动true为可以滑动false为禁止
+                orientation = ViewPager2.ORIENTATION_HORIZONTAL // 设置垂直滚动ORIENTATION_VERTICAL
+                setCurrentItem(1, true) //切换到指定页，是否展示过渡中间页
+                registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                    override fun onPageScrolled(
+                            position: Int,
+                            positionOffset: Float,
+                            positionOffsetPixels: Int
+                    ) {
+                        super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                        Log.e("TAG", "onPageScrolled: $position--->$positionOffset--->$positionOffsetPixels"
+                        )
+                    }
+
+                    override fun onPageSelected(position: Int) {
+                        super.onPageSelected(position)
+                        Log.e("TAG", "onPageSelected: $position")
+                    }
+
+                    override fun onPageScrollStateChanged(state: Int) {
+                        super.onPageScrollStateChanged(state)
+                        Log.e("TAG", "onPageScrollStateChanged: $state")
+                    }
+                }) // 监听滑动
+            }
+
+
+            TabLayoutMediator(tabLayout, shopPager) { tab, position ->
+                tab.text = when (position) {
+                    0 -> "精品"
+                    1 -> "人气"
+                    2 -> "新作"
+                    else -> null
+                }
+            }.attach()
+
+//            tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+//                override fun onTabSelected(tab: TabLayout.Tab) {
+//                    if(tab.isSelected) {
+//                        tab.setBackgroundResource(R.drawable.bg_tab_select)
+//                    } else {
+//                        (tab as TextView).setBackgroundColor(Color.WHITE)
+//                    }
+//                }
+//
+//                override fun onTabUnselected(tab: TabLayout.Tab) {}
+//                override fun onTabReselected(tab: TabLayout.Tab) {}
+//            })
+
+        }
+
+
+    }
+
+    fun View.getColor(resId: Int):Int {
+        return ContextCompat.getColor(this.context, resId)
+    }
+
     inner class BannerHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val pager = itemView.find<UltraViewPager>(R.id.pager)
         //private val categoryBtn = itemView.find<View>(R.id.category)
@@ -398,14 +538,15 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private var ivSearch = itemView.find<View>(R.id.ivSearch)
         private var ivModify = itemView.find<View>(R.id.ivModify)
         //private val cateFree = itemView.find<View>(R.id.cateFree)
-        private var indicatorColorSelected = itemView.context.resources.getColor(R.color.indicator_shelf_banner_s)
-        private var indicatorColorNormal = itemView.context.resources.getColor(R.color.indicator_shelf_banner_n)
+        private var indicatorColorSelected = itemView.getColor(R.color.indicator_shelf_banner_s)
+        private var indicatorColorNormal = itemView.getColor(R.color.indicator_shelf_banner_n)
 //        lateinit var arrayAdapter: ArrayAdapter<*>
 
         var str = arrayOf("图标1", "图标2", "图标3")
 
         @SuppressLint("CheckResult")
         fun bind(recommendListBean: RecommendListBean) {
+            Log.e("TAG", "BannerHolder bind...")
             pager.adapter = UltraViewPagerAdapter(BannerAdapter(recommendListBean.list
                     ?: mutableListOf()))
             pager.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL)

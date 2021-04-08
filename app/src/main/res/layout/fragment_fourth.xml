@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/theme_color">
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
@@ -610,7 +610,7 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_marginTop="50dp"
-        android:background="@color/white"
+        android:background="@color/theme_color"
         android:orientation="vertical"
         android:visibility="gone">
 
@@ -627,7 +627,7 @@
         android:layout_height="150dp"
         android:layout_gravity="bottom"
         android:layout_marginBottom="54dp"
-        android:background="@color/white"
+        android:background="@color/theme_color"
         android:orientation="vertical"
         android:visibility="gone">
 
