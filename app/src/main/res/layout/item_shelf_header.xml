@@ -10,12 +10,12 @@
     <TextView android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textColor="@color/text_reading_history"
+        android:textColor="@color/text_CACACA"
         android:text="@string/reading_history"
         android:id="@+id/tvAmount"/>
     <TextView android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnEdit"
-        android:textColor="@color/text_reading_history"
+        android:textColor="@color/text_CACACA"
         android:text="@string/edit"/>
 </LinearLayout>

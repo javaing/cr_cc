@@ -6,6 +6,7 @@ import android.graphics.Typeface
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.jakewharton.rxbinding2.view.RxView
 import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindUntilEvent
 import com.umeng.analytics.MobclickAgent
@@ -149,4 +150,8 @@ fun View.disable() : View {
         else -> this.isEnabled = false
     }
     return this
+}
+
+fun View.getColor(resId: Int):Int {
+    return ContextCompat.getColor(this.context, resId)
 }

@@ -69,7 +69,7 @@ class ComicGrid3Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             tvStar.text = ComicUtils.getCommentStar(bean.id)
             tvReadNum.text = ComicUtils.getReadNum(bean.id).toString()
             ivCover.loadNovelCover(bean.bookcover)
-            tvTitle.textColor = itemView.context.resources.getColor(R.color.theme_color)
+            tvTitle.textColor = itemView.getColor(R.color.theme_color)
             tvTitle.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
 
         }

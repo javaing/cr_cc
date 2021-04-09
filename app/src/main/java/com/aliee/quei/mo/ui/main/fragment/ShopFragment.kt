@@ -123,10 +123,8 @@ class ShopFragment : BaseFragment() {
 
 
 
-        val hashMap: HashMap<String, String?> = HashMap<String, String?>() //define empty hashmap
+        val hashMap: HashMap<String, String?> = HashMap()
         adapter.itemClick = {
-            //  VM.getComicDetailRand(activity!!, it.id, if (it.rid == "") "27" else it.rid!!)
-            // ARouterManager.goComicDetailActivity(activity!!,it.id,true,it.rid?:"")
             if (it.bookcover!!.contains("http")) {
                 AdConfig.adClick(activity!!, it.adClickUrl!!)
             } else {

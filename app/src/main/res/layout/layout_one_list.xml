@@ -1,20 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/ll_hot"
     >
-    <!--    <ListView-->
-    <!--        android:id="@+id/listView_Hotrank"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--         />-->
-    <TextView
-        android:id="@+id/tv"
-        android:textSize="48dp"
-        android:textColor="@color/main_text"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:text="ART"
-        />
-</FrameLayout>
+
+</LinearLayout>

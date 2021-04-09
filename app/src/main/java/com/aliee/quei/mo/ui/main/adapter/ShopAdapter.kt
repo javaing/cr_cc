@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
@@ -34,6 +35,7 @@ import com.aliee.quei.mo.ui.common.adapter.ComicGrid2Holder
 import com.aliee.quei.mo.ui.common.adapter.ComicGrid3Holder
 import com.aliee.quei.mo.ui.common.adapter.ComicLandImgHolder
 import com.aliee.quei.mo.ui.common.adapter.ComicLinearHolder
+import com.aliee.quei.mo.utils.ComicUtils
 import com.aliee.quei.mo.utils.LogUtil
 import com.aliee.quei.mo.utils.SharedPreUtils
 import com.aliee.quei.mo.utils.extention.*
@@ -265,10 +267,11 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private fun fillNewSkinHotRank(bean: RecommendListBean) {
         val list2: MutableList<RecommendBookBean> = arrayListOf()
-        bean.list?.forEach {
-
+        bean.list?.let { list2.addAll(it.toList()) }
+        list2.forEach {
+            it.showType = VIEW_TYPE_ITEM_LINEAR
         }
-        val bean2 = RecommendListBeanNewSkin(BeanConstants.RecommendPosition.HOTRANK_NEWSKIN.rid, BeanConstants.RecommendPosition.HOTRANK_NEWSKIN.title, bean.list)
+        val bean2 = RecommendListBeanNewSkin(BeanConstants.RecommendPosition.HOTRANK_NEWSKIN.rid, BeanConstants.RecommendPosition.HOTRANK_NEWSKIN.title, list2)
         mData.add(bean2)
     }
 
@@ -286,7 +289,7 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             VIEW_TYPE_HOTRANK -> {
                 val v = parent.context.inflate(R.layout.item_shop_hotrank)
                 Log.e("TAG", "VIEW_TYPE_HOTRANK set...")
-                return PagerHolder(v)
+                return HotRankPagerHolder(v)
             }
             VIEW_TYPE_TITLE -> {
                 val v = parent.context.inflate(R.layout.item_shop_title)
@@ -341,7 +344,7 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 holder.bind(item)
             }
             is RecommendListBeanNewSkin -> {
-                holder as PagerHolder
+                holder as HotRankPagerHolder
                 holder.bind(item)
             }
             is TitleBean -> {
@@ -432,7 +435,7 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    class HotRankAdapter(private val datas: List<String>) : RecyclerView.Adapter<HotRankAdapter.BaseViewHolder?>() {
+    class HotRankAdapter(private val data: List<RecommendBookBean>) : RecyclerView.Adapter<HotRankAdapter.BaseViewHolder?>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             val itemView: View = LayoutInflater.from(parent.context).inflate(R.layout.layout_one_list, parent, false)
             Log.e("tag", "HotRankAdapter onCreateViewHolder")
@@ -440,8 +443,22 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
         override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-            holder.tv.text = datas.get(position)
             Log.e("tag", "HotRankAdapter onBindViewHolder")
+            var max = data.size
+            if (max>6) max=6
+            data.forEachIndexed { index, _ ->
+                if(index>6) return
+                val itemView: View = LayoutInflater.from(holder.llHot.context).inflate(R.layout.item_comic_hotrank, holder.llHot, false)
+                itemView.findViewById<TextView>(R.id.tv_hot_ranknum).text = index.toString()
+                itemView.findViewById<ImageView>(R.id.img_hot_cover).load(data[index].thumb)
+                itemView.findViewById<TextView>(R.id.tv_hot_descr).text = data[index].desc
+                itemView.findViewById<TextView>(R.id.tv_hot_title).text = data[index].title
+                itemView.findViewById<TextView>(R.id.tv_hot_tag).text = data[index].tagText
+                itemView.findViewById<TextView>(R.id.tv_hot_Star).text = ComicUtils.getCommentStar(data[index].id)
+
+                holder.llHot.addView(itemView)
+            }
+
         }
 
         override fun getItemCount(): Int {
@@ -449,22 +466,23 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
         inner class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val tv: TextView = itemView.findViewById(R.id.tv)
+            val llHot: LinearLayout = itemView.findViewById(R.id.ll_hot)
         }
 
     }
 
-    inner class PagerHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class HotRankPagerHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val shopPager = itemView.find<ViewPager2>(R.id.shop_pager)
-        private val tabLayout = itemView.find<com.google.android.material.tabs.TabLayout>(R.id.shop_tabLayout)
+        private val tabLayout = itemView.find<TabLayout>(R.id.shop_tabLayout)
 
 
         @SuppressLint("CheckResult")
-        fun bind(recommendListBean: RecommendListBeanNewSkin) {
-            Log.e("TAG", "PagerHolder bind: size=${recommendListBean.list?.size}")
+        fun bind(dataBean: RecommendListBeanNewSkin) {
+            Log.e("TAG", "PagerHolder bind: size=${dataBean.list?.size}")
 
             with(shopPager) {
-                adapter = HotRankAdapter(listOf("111", "222", "333"))
+                //adapter = HotRankAdapter(listOf("111", "222", "333"))
+                adapter = dataBean.list?.let { HotRankAdapter(it.toList()) }
                 isUserInputEnabled = true // 禁止滚动true为可以滑动false为禁止
                 orientation = ViewPager2.ORIENTATION_HORIZONTAL // 设置垂直滚动ORIENTATION_VERTICAL
                 setCurrentItem(1, true) //切换到指定页，是否展示过渡中间页
@@ -500,27 +518,9 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     else -> null
                 }
             }.attach()
-
-//            tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-//                override fun onTabSelected(tab: TabLayout.Tab) {
-//                    if(tab.isSelected) {
-//                        tab.setBackgroundResource(R.drawable.bg_tab_select)
-//                    } else {
-//                        (tab as TextView).setBackgroundColor(Color.WHITE)
-//                    }
-//                }
-//
-//                override fun onTabUnselected(tab: TabLayout.Tab) {}
-//                override fun onTabReselected(tab: TabLayout.Tab) {}
-//            })
-
         }
 
 
-    }
-
-    fun View.getColor(resId: Int):Int {
-        return ContextCompat.getColor(this.context, resId)
     }
 
     inner class BannerHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
