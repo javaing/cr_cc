@@ -215,6 +215,7 @@
     <string name="this_book_finished">本书已完结</string>
     <string name="author_is_writting">作者正在努力创作中。。。</string>
     <string name="tab_shelf">我的最爱</string>
+    <string name="edit">编辑</string>
     <string name="tap_again_to_exit">再点一次退出程序</string>
     <string name="something_went_wrong">出错啦</string>
     <string name="dialog_notice">提示</string>

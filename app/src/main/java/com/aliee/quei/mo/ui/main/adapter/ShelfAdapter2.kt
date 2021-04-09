@@ -16,6 +16,7 @@ import com.aliee.quei.mo.ui.common.ShopItemDecoration
 import com.aliee.quei.mo.ui.common.adapter.ComicGrid2Holder
 import com.aliee.quei.mo.ui.common.adapter.ComicGrid3Holder
 import com.aliee.quei.mo.ui.common.adapter.ComicLinearHolder
+import com.aliee.quei.mo.utils.StringUtils.getString
 import com.aliee.quei.mo.utils.extention.*
 import org.jetbrains.anko.find
 
@@ -178,12 +179,12 @@ class ShelfAdapter2 : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         private val tvAmount = itemView.find<TextView>(R.id.tvAmount)
 
         fun bind() {
-            tvAmount.text = "我的书架(${mShelfList.size})"
+            tvAmount.text = getString(R.string.tab_shelf)+  "(${mShelfList.size})"
             btnEdit.click {
                 if(toggleRemoveBtn()) {
-                    btnEdit.text = "完成"
+                    btnEdit.text = getString(R.string.done)
                 } else {
-                    btnEdit.text = "编辑"
+                    btnEdit.text = getString(R.string.edit)
                 }
             }
         }

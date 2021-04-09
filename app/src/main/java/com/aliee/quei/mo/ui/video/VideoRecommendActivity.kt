@@ -65,7 +65,7 @@ class VideoRecommendActivity : BaseActivity() {
                  */
                 mCurrentPosition = position
                 val isEdit: Boolean = mBooleans[mCurrentPosition]
-                titleEdit.text = if (isEdit) "完成" else "编辑"
+                titleEdit.text = if (isEdit) getString(R.string.done) else getString(R.string.edit)
             }
 
         })
@@ -76,9 +76,9 @@ class VideoRecommendActivity : BaseActivity() {
     private fun editStatus() {
         isEdit = !mBooleans[mCurrentPosition]
         if (isEdit) {
-            titleEdit.text = "完成"
+            titleEdit.text = getString(R.string.done)
         } else {
-            titleEdit.text = "编辑"
+            titleEdit.text = getString(R.string.edit)
         }
         recommendFragment.setEdit(isEdit)
         //记录当前fragment为编辑状态

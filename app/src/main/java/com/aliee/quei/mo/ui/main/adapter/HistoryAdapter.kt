@@ -14,6 +14,7 @@ import com.aliee.quei.mo.ui.common.ShopItemDecoration
 import com.aliee.quei.mo.ui.common.adapter.ComicGrid2Holder
 import com.aliee.quei.mo.ui.common.adapter.ComicGrid3Holder
 import com.aliee.quei.mo.ui.common.adapter.ComicLinearHolder
+import com.aliee.quei.mo.utils.StringUtils.getString
 import com.aliee.quei.mo.utils.extention.*
 import org.jetbrains.anko.find
 
@@ -204,9 +205,9 @@ class HistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
             tvAmount.text = "阅读记录(${mHistory.size})"
             btnEdit.click {
                 if(toggleRemoveBtn()) {
-                    btnEdit.text = "完成"
+                    btnEdit.text = getString(R.string.done)
                 } else {
-                    btnEdit.text = "编辑"
+                    btnEdit.text = getString(R.string.edit)
                 }
             }
         }

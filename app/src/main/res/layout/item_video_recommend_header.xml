@@ -21,5 +21,5 @@
         android:id="@+id/btnEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="编辑" />
+        android:text="string/R.string.edit" />
 </LinearLayout>

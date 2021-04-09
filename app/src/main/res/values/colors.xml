@@ -67,6 +67,6 @@
     <color name="hometop_tab_selected">#FF292A</color>
     <color name="home_section_title_div">#F51526</color>
     <color name="colorDivider">#404040</color>
-    <color name="text_myfavor">#CACACA</color>
+    <color name="text_reading_history">#CACACA</color>
 
 </resources>
