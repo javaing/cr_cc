@@ -39,7 +39,7 @@
         android:background="@drawable/bg_msg_bubble"
         android:gravity="center"
         android:text="New"
-        android:textColor="@color/white"
+        android:textColor="@color/main_text"
         android:textSize="6sp"
         android:visibility="gone" />
 

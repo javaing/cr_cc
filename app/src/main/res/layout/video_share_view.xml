@@ -14,7 +14,7 @@
         android:layout_marginTop="40dp"
         android:gravity="center"
         android:text="每日更新海量视频\n满足你所有幻想"
-        android:textColor="@color/white"
+        android:textColor="@color/main_text"
         android:textSize="30dp" />
 
     <LinearLayout

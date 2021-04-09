@@ -34,7 +34,7 @@
                       android:drawableStart="@mipmap/ic_coin_welfare"
                       android:textSize="14dp"
                       android:drawablePadding="6dp"
-                      android:textColor="@color/white"
+                      android:textColor="@color/main_text"
                       android:text="+10 金币"
                       android:id="@+id/tvTicketAmount"
             >
@@ -68,10 +68,10 @@
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                               android:id="@+id/tvTicketTitle"
                               android:textSize="16sp"
-                              android:textColor="@color/white"/>
+                              android:textColor="@color/main_text"/>
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                               android:id="@+id/tvTicketFreeChapter"
-                              android:textColor="@color/white"
+                              android:textColor="@color/main_text"
                               android:textSize="14sp"/>
                 </LinearLayout>
 
@@ -82,7 +82,7 @@
                           android:gravity="center"
                           android:paddingLeft="10dp"
                           android:paddingRight="10dp"
-                          android:textColor="@color/white"
+                          android:textColor="@color/main_text"
                           android:id="@+id/btnTicketAction"
                           android:text="去阅读"/>
             </LinearLayout>

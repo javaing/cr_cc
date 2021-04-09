@@ -52,7 +52,7 @@
                         android:gravity="end"
                         android:id="@+id/tvTitle"
                         tools:text="水蛭"
-                        android:textColor="@color/white"
+                        android:textColor="@color/main_text"
                         android:padding="6dp"/>
 
                 <LinearLayout
@@ -74,7 +74,7 @@
                             android:paddingEnd="10dp"
                             android:text="完结"
                             android:textSize="12sp"
-                            android:textColor="@color/white"/>
+                            android:textColor="@color/main_text"/>
 
                     <Space
                             android:layout_width="0dp"
@@ -89,7 +89,7 @@
                             android:drawablePadding="2dp"
                             android:id="@+id/tvStar"
                             android:text="9.0"
-                            android:textColor="@color/white"
+                            android:textColor="@color/main_text"
                             />
 
                     <TextView
@@ -101,7 +101,7 @@
                             android:id="@+id/tvViewNum"
                             android:textSize="12sp"
                             android:text="10086"
-                            android:textColor="@color/white"
+                            android:textColor="@color/main_text"
                             />
                 </LinearLayout>
             </LinearLayout>

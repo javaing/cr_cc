@@ -86,7 +86,7 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="marquee"
                         android:singleLine="true"
-                        android:textColor="@color/white"
+                        android:textColor="@color/main_text"
                         android:textSize="16sp" />
 
                     <TextView
@@ -95,7 +95,7 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="marquee"
                         android:singleLine="true"
-                        android:textColor="@color/white"
+                        android:textColor="@color/main_text"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -177,7 +177,7 @@
                 android:background="@drawable/bg_btn_pay"
                 android:gravity="center"
                 android:text="余额不足，立即充值"
-                android:textColor="@color/white"
+                android:textColor="@color/main_text"
                 android:textSize="16sp" />
 
             <TextView
@@ -425,7 +425,7 @@
         android:background="@drawable/bg_btn_read_home"
         android:gravity="center"
         android:text="首页"
-        android:textColor="@color/white"
+        android:textColor="@color/main_text"
         android:textSize="14sp" />
 
     <TextView

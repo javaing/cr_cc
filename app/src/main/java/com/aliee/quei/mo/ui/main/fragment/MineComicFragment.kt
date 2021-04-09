@@ -1,7 +1,10 @@
 package com.aliee.quei.mo.ui.main.fragment
 
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.aliee.quei.mo.R
@@ -12,6 +15,7 @@ import com.aliee.quei.mo.ui.main.activity.ContentActivity
 import com.aliee.quei.mo.utils.extention.click
 import com.aliee.quei.mo.utils.extention.gone
 import com.aliee.quei.mo.utils.extention.show
+import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_mine_comic.*
 import kotlinx.android.synthetic.main.layout_navi_header.*
 import kotlinx.android.synthetic.main.layout_title_first.*
@@ -21,18 +25,18 @@ import kotlinx.android.synthetic.main.layout_title_first.search
  * Created by Administrator on 2018/4/18 0018.
  */
 @Route(path = Path.PATH_MAIN_FIRST_FRAGMENT)
-class MineComicFragment : BaseFragment(), ViewPager.OnPageChangeListener {
+class MineComicFragment : BaseFragment() {
     @Autowired
     @JvmField
     var showTab : Int = 0
 
     override fun getPageName(): Nothing? = null
 
-    override fun onPageScrollStateChanged(state: Int) = Unit
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
-
-    override fun onPageSelected(position: Int) {
-    }
+//    override fun onPageScrollStateChanged(state: Int) = Unit
+//    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
+//
+//    override fun onPageSelected(position: Int) {
+//    }
 
 
     override fun getLayoutId(): Int {
@@ -68,12 +72,19 @@ class MineComicFragment : BaseFragment(), ViewPager.OnPageChangeListener {
 
         fragments.add(historyFragment)
         fragments.add(shelfFragment)
-        viewPager.adapter = object : FragmentPagerAdapter(childFragmentManager){
-            override fun getItem(position: Int) =  fragments[position]
-            override fun getCount() = fragments.size
+        viewPager.adapter = object : FragmentStateAdapter(requireActivity()){
+            override fun createFragment(position: Int) =  fragments[position]
+            override fun getItemCount() = fragments.size
         }
-        viewPager.addOnPageChangeListener(this)
-        tabLayout.setViewPager(viewPager, arrayOf(getString(R.string.tab_history),getString(R.string.tab_shelf)))
+        //viewPager.addOnPageChangeListener(this)
+        //tabLayout.setViewPager(viewPager, arrayOf(getString(R.string.tab_history),getString(R.string.tab_shelf)))
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = when (position) {
+                0 -> getString(R.string.tab_history)
+                1 -> getString(R.string.tab_shelf)
+                else -> null
+            }
+        }.attach()
     }
 
     override fun initData() {
@@ -81,13 +92,13 @@ class MineComicFragment : BaseFragment(), ViewPager.OnPageChangeListener {
 //            val url = "file:///android_asset/demo.html"
 //            ARouterManager.goWebActivity(it.context,url,"")
 //        }
-        finish.click {
-            clean.show()
-            finish.gone()
-            if(activity is ContentActivity){
-                (activity as ContentActivity).showTab()
-            }
-        }
+//        finish.click {
+//            clean.show()
+//            finish.gone()
+//            if(activity is ContentActivity){
+//                (activity as ContentActivity).showTab()
+//            }
+//        }
         initFragment()
         initEvent()
 

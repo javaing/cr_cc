@@ -48,7 +48,7 @@
                     android:paddingEnd="10dp"
                     android:paddingBottom="1dp"
                     android:text="完结"
-                    android:textColor="@color/white"
+                    android:textColor="@color/main_text"
                     android:textSize="12sp" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
@@ -109,7 +109,7 @@
                 android:paddingTop="2dp"
                 android:paddingRight="5dp"
                 android:paddingBottom="2dp"
-                android:textColor="@color/white"
+                android:textColor="@color/main_text"
                 android:textSize="12sp"
                 tools:text="乡村·激情" />
 

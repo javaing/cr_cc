@@ -73,6 +73,6 @@
         android:text="3"
         android:textStyle="bold"
         android:layout_marginTop="40dp"
-        android:textColor="@color/white"
+        android:textColor="@color/main_text"
         android:textSize="18sp" />
 </RelativeLayout>

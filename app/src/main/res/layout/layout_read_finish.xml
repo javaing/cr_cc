@@ -18,7 +18,7 @@
     android:background="@drawable/bg_btn_recharge"
               android:layout_marginLeft="40dp"
               android:layout_marginRight="40dp"
-    android:textColor="@color/white"
+    android:textColor="@color/main_text"
     android:text="@string/find_book"
     android:gravity="center"
     android:layout_marginTop="30dp"

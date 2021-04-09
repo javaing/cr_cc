@@ -122,7 +122,7 @@
             android:text="特惠"
             android:gravity="center"
             android:textSize="12sp"
-            android:textColor="@color/white"
+            android:textColor="@color/main_text"
             android:src="@mipmap/hot"
             android:scaleType="fitXY"
             android:translationZ="10dp"/>

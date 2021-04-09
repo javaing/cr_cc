@@ -17,7 +17,7 @@
         android:background="@drawable/bg_btn_recharge"
         android:gravity="center"
         android:text="@string/next_chapter"
-        android:textColor="@color/white"
+        android:textColor="@color/main_text"
         android:textSize="16sp" />
 
     <TextView

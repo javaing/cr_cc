@@ -20,7 +20,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="精选"
-            android:textColor="@color/white"
+            android:textColor="@color/main_text"
             android:textSize="18sp" />
 
         <ImageView

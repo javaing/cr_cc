@@ -13,7 +13,7 @@
         android:gravity="center"
         android:lineSpacingExtra="4dp"
         android:text="免费观看已用完，金币剩余%s\n如需继续观看请充值喔"
-        android:textColor="@color/white"
+        android:textColor="@color/main_text"
         android:textSize="16sp" />
 
     <TextView
@@ -27,6 +27,6 @@
         android:paddingRight="10dp"
         android:paddingBottom="4dp"
         android:text="去充值"
-        android:textColor="@color/white"
+        android:textColor="@color/main_text"
         android:textSize="16sp" />
 </LinearLayout>

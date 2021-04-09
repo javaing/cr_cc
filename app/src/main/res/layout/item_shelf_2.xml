@@ -29,7 +29,7 @@
                    android:src="@mipmap/ic_del_shelf"/>
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:gravity="center"
-                  android:textColor="@color/white"
+                  android:textColor="@color/main_text"
                   android:layout_alignParentBottom="true"
                   android:layout_marginBottom="12dp"
                   android:paddingTop="1dp"

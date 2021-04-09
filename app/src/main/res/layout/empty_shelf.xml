@@ -34,6 +34,6 @@
             android:gravity="center"
             android:text="@string/explore_book"
             android:textSize="12sp"
-            android:textColor="@color/white"
+            android:textColor="@color/main_text"
             android:background="@drawable/bg_btn_recharge"/>
 </LinearLayout>

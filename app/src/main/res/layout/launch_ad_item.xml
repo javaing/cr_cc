@@ -21,6 +21,6 @@
         android:background="@drawable/bg_btn_skip"
         android:gravity="center"
         android:text="跳过"
-        android:textColor="@color/white"
+        android:textColor="@color/main_text"
         android:textSize="18sp" />
 </FrameLayout>

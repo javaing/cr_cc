@@ -14,6 +14,14 @@
         android:layout_centerHorizontal="true"
         android:src="@mipmap/logo_02" />
 
+    <View
+        android:layout_marginTop="8dp"
+        android:layout_below="@id/ivLogo"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorDivider"
+        />
+
     <include
         android:layout_below="@+id/ivLogo"
         android:layout_width="match_parent"

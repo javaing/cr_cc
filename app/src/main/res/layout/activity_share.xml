@@ -41,7 +41,7 @@
                 android:gravity="center"
                 android:lineSpacingExtra="3dp"
                 android:text="保存二维码，分享给朋友加入蟲蟲\n即可增加观影次数"
-                android:textColor="@color/white"
+                android:textColor="@color/main_text"
                 android:textSize="15sp" />
 
             <LinearLayout
@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="扫码下载虫虫漫画App"
-                    android:textColor="@color/white"
+                    android:textColor="@color/main_text"
                     android:textSize="16sp" />
 
                 <LinearLayout
@@ -91,7 +91,7 @@
                 android:gravity="center"
                 android:lineSpacingExtra="3dp"
                 android:text="如果使用户自带浏览器不能打开，请更换其他浏览器\n 例如UC浏览器、QQ浏览器、360浏览器等"
-                android:textColor="@color/white"
+                android:textColor="@color/main_text"
                 android:textSize="13sp" />
 
             <LinearLayout

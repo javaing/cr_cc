@@ -4,14 +4,27 @@
     android:layout_height="40dp"
     android:background="@color/theme_color">
 
-    <com.flyco.tablayout.SlidingTabLayout
+<!--    <com.flyco.tablayout.SlidingTabLayout-->
+<!--        android:id="@+id/tabLayout"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="28dp"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        app:tl_indicator_corner_radius="2dp"-->
+<!--        app:tl_indicator_width="16dp"-->
+<!--        app:tl_textsize="16sp" />-->
+
+    <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="wrap_content"
         android:layout_height="28dp"
         android:layout_centerInParent="true"
         app:tl_indicator_corner_radius="2dp"
         app:tl_indicator_width="16dp"
-        app:tl_textsize="16sp" />
+        app:tl_textsize="16sp"
+        app:tabMode="auto"
+        app:tabIndicator="@color/theme_color"
+        app:tabBackground="@drawable/tab_selector_myfavor"
+        app:tabTextColor="@color/white"/>
 
     <ImageView
         android:id="@+id/clean"
@@ -35,6 +48,7 @@
         android:visibility="gone" />
 
     <ImageView
+        android:visibility="gone"
         android:id="@+id/search"
         android:layout_width="40dp"
         android:layout_height="40dp"

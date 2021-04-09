@@ -38,7 +38,7 @@
             android:text="注册会员每天可享受5次免费观看次数"
             android:layout_gravity="center"
             android:visibility="visible"
-            android:textColor="@color/white"/>
+            android:textColor="@color/main_text"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

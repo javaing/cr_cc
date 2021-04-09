@@ -9,7 +9,7 @@
           android:paddingTop="1dp"
           android:paddingBottom="1dp"
           android:text="离婚"
-          android:textColor="@color/white"
+          android:textColor="@color/main_text"
           android:background="@drawable/bg_comic_tag_lh">
 
 </TextView>

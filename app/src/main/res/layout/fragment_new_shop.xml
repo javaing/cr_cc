@@ -12,7 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.aliee.quei.mo.ui.main.CustomViewPager
+<!--        <com.aliee.quei.mo.ui.main.CustomViewPager-->
+<!--            android:id="@+id/mviewPager"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent" />-->
+
+        <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/mviewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

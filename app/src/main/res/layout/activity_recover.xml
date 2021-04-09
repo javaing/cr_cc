@@ -41,7 +41,7 @@
               android:text="找回"
               android:gravity="center"
               android:id="@+id/btnRecover"
-              android:textColor="@color/white"/>
+              android:textColor="@color/main_text"/>
     <TextView
             android:layout_margin="10dp" android:layout_width="match_parent" android:layout_height="wrap_content"
             android:text="有关账户异常的说明:"/>

@@ -40,7 +40,7 @@
                 android:id="@+id/btnAction"
                 android:text="@string/done"
                 android:gravity="center"
-                android:textColor="@color/white"
+                android:textColor="@color/main_text"
                 android:textSize="18sp"
                 android:background="@drawable/solid_theme_r2_selector"/>
             <View android:layout_width="match_parent" android:layout_height="0dp"

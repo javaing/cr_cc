@@ -47,6 +47,6 @@
         android:background="@drawable/bg_video_vip_tips"
         android:textSize="15sp"
         android:visibility="gone"
-        android:textColor="@color/white"
+        android:textColor="@color/main_text"
         android:text="一日vip启动中"/>
 </FrameLayout>

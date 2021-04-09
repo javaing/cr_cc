@@ -3,6 +3,8 @@ package com.aliee.quei.mo.ui.main.fragment
 import androidx.lifecycle.Lifecycle
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.github.ikidou.fragmentBackHandler.BackHandlerHelper
@@ -22,6 +24,7 @@ import com.aliee.quei.mo.utils.extention.gone
 import com.aliee.quei.mo.utils.extention.show
 import com.aliee.quei.mo.utils.extention.toast
 import com.aliee.quei.mo.utils.rxjava.RxBus
+import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_mine_comic.viewPager
 import kotlinx.android.synthetic.main.fragment_new_shop.*
 import kotlinx.android.synthetic.main.layout_title_first.*
@@ -30,26 +33,26 @@ import kotlinx.android.synthetic.main.layout_title_first.*
  * Created by Administrator on 2018/4/18 0018.
  */
 @Route(path = Path.PATH_NEW_SHOP_FRAGMENT)
-class NewShopFragment : BaseFragment(), ViewPager.OnPageChangeListener , FragmentBackHandler {
+class NewShopFragment : BaseFragment(), FragmentBackHandler {
     @Autowired
     @JvmField
     var showTab : Int = 0
 
     override fun getPageName(): Nothing? = null
 
-    override fun onPageScrollStateChanged(state: Int) = Unit
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
-
-    override fun onPageSelected(position: Int) {
-            if(position == 1) {
-                RxBus.getInstance().post(EventHideBottomBar())
-                search.gone()
-            }else{
-                RxBus.getInstance().post(EventShowBottomBar())
-                search.show()
-            }
-
-    }
+//    override fun onPageScrollStateChanged(state: Int) = Unit
+//    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
+//
+//    override fun onPageSelected(position: Int) {
+//            if(position == 1) {
+//                RxBus.getInstance().post(EventHideBottomBar())
+//                search.gone()
+//            }else{
+//                RxBus.getInstance().post(EventShowBottomBar())
+//                search.show()
+//            }
+//
+//    }
 
 
     override fun getLayoutId(): Int {
@@ -98,13 +101,33 @@ class NewShopFragment : BaseFragment(), ViewPager.OnPageChangeListener , Fragmen
 
         fragments.add(ShopFragment)
         fragments.add(VideoFragment)
-        mviewPager.adapter = object : FragmentPagerAdapter(childFragmentManager){
-            override fun getItem(position: Int) =  fragments[position]
-            override fun getCount() = fragments.size
+        mviewPager.adapter = object : FragmentStateAdapter(requireActivity()){
+            override fun createFragment(position: Int) =  fragments[position]
+            override fun getItemCount() = fragments.size
         }
-        mviewPager.setPagingEnabled(false)
-        mviewPager.addOnPageChangeListener(this)
-        tabLayout.setViewPager(mviewPager, arrayOf(getString(R.string.app_name),getString(R.string.videoname)))
+        //mviewPager.setPagingEnabled(false)
+        //mviewPager.addOnPageChangeListener(this)
+        //tabLayout.setViewPager(mviewPager, arrayOf(getString(R.string.app_name),getString(R.string.videoname)))
+
+        mviewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                if (position == 1) {
+                    RxBus.getInstance().post(EventHideBottomBar())
+                    search.gone()
+                } else {
+                    RxBus.getInstance().post(EventShowBottomBar())
+                    search.show()
+                }
+            }
+        })
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = when (position) {
+                0 -> getString(R.string.app_name)
+                1 -> getString(R.string.videoname)
+                else -> null
+            }
+        }.attach()
+
     }
 
     override fun initData() {
