@@ -4,14 +4,11 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.util.Log
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.PagerAdapter
@@ -19,23 +16,22 @@ import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.aliee.quei.mo.R
 import com.aliee.quei.mo.application.ReaderApplication
+import com.aliee.quei.mo.component.CommonDataProvider
 import com.aliee.quei.mo.component.CommonDataProvider.Companion.instance
 import com.aliee.quei.mo.component.EventLoginSuccess
 import com.aliee.quei.mo.config.AdConfig
 import com.aliee.quei.mo.data.BeanConstants
-import com.aliee.quei.mo.data.bean.AdInfo
-import com.aliee.quei.mo.data.bean.RecommendBookBean
-import com.aliee.quei.mo.data.bean.RecommendListBean
-import com.aliee.quei.mo.data.bean.RecommendListBeanNewSkin
+import com.aliee.quei.mo.data.bean.*
+import com.aliee.quei.mo.database.DatabaseProvider
 import com.aliee.quei.mo.net.imageloader.glide.GlideApp
 import com.aliee.quei.mo.net.imageloader.glide.GlideRoundTransform
 import com.aliee.quei.mo.router.ARouterManager
+import com.aliee.quei.mo.ui.catalog.adapter.CatalogGridAdapter
 import com.aliee.quei.mo.ui.common.ShopItemDecoration
 import com.aliee.quei.mo.ui.common.adapter.ComicGrid2Holder
 import com.aliee.quei.mo.ui.common.adapter.ComicGrid3Holder
 import com.aliee.quei.mo.ui.common.adapter.ComicLandImgHolder
 import com.aliee.quei.mo.ui.common.adapter.ComicLinearHolder
-import com.aliee.quei.mo.utils.ComicUtils
 import com.aliee.quei.mo.utils.LogUtil
 import com.aliee.quei.mo.utils.SharedPreUtils
 import com.aliee.quei.mo.utils.extention.*
@@ -96,7 +92,7 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         mData.clear()
 
         //处理Banner和热门排行
-        val listMap: MutableMap<Int,List<RecommendBookBean>> = mutableMapOf()
+        val listMap: MutableMap<Int, List<RecommendBookBean>> = mutableMapOf()
         list.forEach {
             val bean = it
             if (shouldShuffle) {
@@ -110,13 +106,13 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                     when (bean.rid) {
                         BeanConstants.RecommendPosition.HOT_RECOMMEND.rid -> {
-                            bean.list?.let { listMap.put(0,it.toList()) }
+                            bean.list?.let { listMap.put(0, it.toList()) }
                         }
                         BeanConstants.RecommendPosition.WEEK_POPULAR.rid -> {
-                            bean.list?.let { listMap.put(1,it.toList()) }
+                            bean.list?.let { listMap.put(1, it.toList()) }
                         }
                         BeanConstants.RecommendPosition.LATELY_UPDATE.rid -> {
-                            bean.list?.let { listMap.put(2,it.toList()) }
+                            bean.list?.let { listMap.put(2, it.toList()) }
                         }
                     }
                 }
@@ -345,7 +341,7 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             is RecommendListBeanNewSkin -> {
                 holder as HotRankPagerHolder
-                holder.bind(item)
+                holder.bind(item, itemClick)
             }
             is TitleBean -> {
                 holder as TitleHolder
@@ -439,14 +435,22 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class HotRankPagerHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val shopPager = itemView.find<ViewPager2>(R.id.shop_pager)
         private val tabLayout = itemView.find<TabLayout>(R.id.shop_tabLayout)
+        private val imgHotBanner = itemView.find<ImageView>(R.id.img_hot_banner)
+        //private val flexHotCategory = itemView.find<FlexboxLayout>(R.id.flexHotCategory)
+        private val grid = itemView.find<RecyclerView>(R.id.grid)
 
 
         @SuppressLint("CheckResult")
-        fun bind(dataBean: RecommendListBeanNewSkin) {
+        fun bind(dataBean: RecommendListBeanNewSkin, itemClick: ((bean: RecommendBookBean) -> Unit)?) {
             //Log.e("TAG", "PagerHolder bind: size=${dataBean.list?.size}")
 
+            imgHotBanner.click {
+                ARouterManager.goRechargeActivity(it.context, "", 0)
+            }
+            //addLayouts()
+
             with(shopPager) {
-                adapter = HotRankAdapter(dataBean.listMap)
+                adapter = HotRankAdapter(dataBean.listMap, itemClick)
                 isUserInputEnabled = true // 禁止滚动true为可以滑动false为禁止
                 orientation = ViewPager2.ORIENTATION_HORIZONTAL // 设置垂直滚动ORIENTATION_VERTICAL
                 //setCurrentItem(1, true) //切换到指定页，是否展示过渡中间页

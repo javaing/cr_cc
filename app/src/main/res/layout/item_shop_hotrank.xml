@@ -50,4 +50,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
+
+    <ImageView
+        android:id="@+id/img_hot_banner"
+        android:layout_marginBottom="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/home_banner_01"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textColor="@color/main_text"
+        android:gravity="center_vertical"
+        android:text="分类精选"
+        android:drawableLeft="@mipmap/list_icon_02"
+        android:drawablePadding="6dp"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/grid"
+        />
+
+<!--    <com.google.android.flexbox.FlexboxLayout-->
+<!--        android:id="@+id/flexHotCategory"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
+<!--        app:flexWrap="wrap"-->
+<!--        android:animateLayoutChanges="true"-->
+<!--        app:alignItems="stretch"-->
+<!--        app:alignContent="stretch" />-->
+
 </LinearLayout>
