@@ -94,9 +94,9 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         LogUtil.e("tag", "书城：${list.toString()}")
         list ?: return
         mData.clear()
-        val copyListHot : MutableList<RecommendListBean> = arrayListOf()
-        val copyListLatest : MutableList<RecommendListBean> = arrayListOf()
-        val copyListPop : MutableList<RecommendListBean> = arrayListOf()
+
+        //处理Banner和热门排行
+        val listMap: MutableMap<Int,List<RecommendBookBean>> = mutableMapOf()
         list.forEach {
             val bean = it
             if (shouldShuffle) {
@@ -105,9 +105,37 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             if (BeanConstants.RecommendPosition.getByRid(it.rid) == BeanConstants.RecommendPosition.BANNER) {
                 //插入banner广告
                 fillBannerData(adMap, bean)
+            } else {
+                if (bean.list != null && bean.list.isNotEmpty()) {
 
-                //热门推荐
-                fillNewSkinHotRank(bean)
+                    when (bean.rid) {
+                        BeanConstants.RecommendPosition.HOT_RECOMMEND.rid -> {
+                            bean.list?.let { listMap.put(0,it.toList()) }
+                        }
+                        BeanConstants.RecommendPosition.WEEK_POPULAR.rid -> {
+                            bean.list?.let { listMap.put(1,it.toList()) }
+                        }
+                        BeanConstants.RecommendPosition.LATELY_UPDATE.rid -> {
+                            bean.list?.let { listMap.put(2,it.toList()) }
+                        }
+                    }
+                }
+
+            }
+        }
+        val bean2 = RecommendListBeanNewSkin(BeanConstants.RecommendPosition.HOTRANK_NEWSKIN.rid, BeanConstants.RecommendPosition.HOTRANK_NEWSKIN.title, listMap)
+        mData.add(bean2)
+
+
+        list.forEach {
+            val bean = it
+            if (shouldShuffle) {
+                bean.list?.shuffle()
+            }
+            if (BeanConstants.RecommendPosition.getByRid(it.rid) == BeanConstants.RecommendPosition.BANNER) {
+                //插入banner广告
+                //fillBannerData(adMap, bean)
+
             } else {
                 if (bean.list != null && bean.list.isNotEmpty()) {
                     mData.add(TitleBean(bean.rid, bean.name))
@@ -124,18 +152,11 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                                 it.tagText = "精品"
                                 it.tagColor = Color.parseColor("#ee82ee")
                             }
-
-//                            copyListHot.addAll(bean.list)
-//                            copyListHot.forEach {
-//                                it.showType = VIEW_TYPE_HOTRANK
-//                            }
-
                         }
                         BeanConstants.RecommendPosition.LATELY_UPDATE.rid -> {
                             bean.list.forEach {
                                 it.showType = ShopItemDecoration.VIEW_TYPE_COMIC_GRID_3
                             }
-                            //copyListLatest.addAll(bean.list)
                         }
                         BeanConstants.RecommendPosition.WEEK_POPULAR.rid -> {
                             var rankIndex = 0
@@ -150,7 +171,6 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                                 it.showType = ShopItemDecoration.VIEW_TYPE_COMIC_GRID_3
                                 rankIndex++
                             }
-                            //copyListPop.addAll(bean.list)
                         }
                         BeanConstants.RecommendPosition.FREE.rid -> {
                             bean.list.forEach {
@@ -223,16 +243,6 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         }
                     }
 
-                    //NEW SKIN
-                    if (bean.rid == BeanConstants.RecommendPosition.HOT_RECOMMEND.rid) {
-                        //mData.add(TitleBean(BeanConstants.RecommendPosition.HOTRANK_NEWSKIN.rid, BeanConstants.RecommendPosition.HOTRANK_NEWSKIN.title))
-//                        bean.list.forEach {
-//                            it.showType = VIEW_TYPE_HOTRANK
-//                        }
-//                        Log.e("tag", "NEW SKIN:" + bean.list.toString())
-//                        mData.addAll(bean.list)
-                    }
-
                 }
             }
         }
@@ -263,16 +273,6 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
         //填充数据
         mData.add(bean)
-    }
-
-    private fun fillNewSkinHotRank(bean: RecommendListBean) {
-        val list2: MutableList<RecommendBookBean> = arrayListOf()
-        bean.list?.let { list2.addAll(it.toList()) }
-        list2.forEach {
-            it.showType = VIEW_TYPE_ITEM_LINEAR
-        }
-        val bean2 = RecommendListBeanNewSkin(BeanConstants.RecommendPosition.HOTRANK_NEWSKIN.rid, BeanConstants.RecommendPosition.HOTRANK_NEWSKIN.title, list2)
-        mData.add(bean2)
     }
 
 
@@ -435,41 +435,6 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    class HotRankAdapter(private val data: List<RecommendBookBean>) : RecyclerView.Adapter<HotRankAdapter.BaseViewHolder?>() {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-            val itemView: View = LayoutInflater.from(parent.context).inflate(R.layout.layout_one_list, parent, false)
-            Log.e("tag", "HotRankAdapter onCreateViewHolder")
-            return BaseViewHolder(itemView)
-        }
-
-        override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-            Log.e("tag", "HotRankAdapter onBindViewHolder")
-            var max = data.size
-            if (max>6) max=6
-            data.forEachIndexed { index, _ ->
-                if(index>6) return
-                val itemView: View = LayoutInflater.from(holder.llHot.context).inflate(R.layout.item_comic_hotrank, holder.llHot, false)
-                itemView.findViewById<TextView>(R.id.tv_hot_ranknum).text = index.toString()
-                itemView.findViewById<ImageView>(R.id.img_hot_cover).load(data[index].thumb)
-                itemView.findViewById<TextView>(R.id.tv_hot_descr).text = data[index].desc
-                itemView.findViewById<TextView>(R.id.tv_hot_title).text = data[index].title
-                itemView.findViewById<TextView>(R.id.tv_hot_tag).text = data[index].tagText
-                itemView.findViewById<TextView>(R.id.tv_hot_Star).text = ComicUtils.getCommentStar(data[index].id)
-
-                holder.llHot.addView(itemView)
-            }
-
-        }
-
-        override fun getItemCount(): Int {
-            return 3
-        }
-
-        inner class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val llHot: LinearLayout = itemView.findViewById(R.id.ll_hot)
-        }
-
-    }
 
     inner class HotRankPagerHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val shopPager = itemView.find<ViewPager2>(R.id.shop_pager)
@@ -478,14 +443,13 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         @SuppressLint("CheckResult")
         fun bind(dataBean: RecommendListBeanNewSkin) {
-            Log.e("TAG", "PagerHolder bind: size=${dataBean.list?.size}")
+            //Log.e("TAG", "PagerHolder bind: size=${dataBean.list?.size}")
 
             with(shopPager) {
-                //adapter = HotRankAdapter(listOf("111", "222", "333"))
-                adapter = dataBean.list?.let { HotRankAdapter(it.toList()) }
+                adapter = HotRankAdapter(dataBean.listMap)
                 isUserInputEnabled = true // 禁止滚动true为可以滑动false为禁止
                 orientation = ViewPager2.ORIENTATION_HORIZONTAL // 设置垂直滚动ORIENTATION_VERTICAL
-                setCurrentItem(1, true) //切换到指定页，是否展示过渡中间页
+                //setCurrentItem(1, true) //切换到指定页，是否展示过渡中间页
                 registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                     override fun onPageScrolled(
                             position: Int,

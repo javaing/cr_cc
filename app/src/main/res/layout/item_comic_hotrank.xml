@@ -14,9 +14,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingStart="0dp"
-        android:paddingTop="6dp"
+        android:paddingTop="5dp"
         android:paddingEnd="5dp"
-        android:paddingBottom="6dp">
+        android:paddingBottom="5dp">
 
         <androidx.cardview.widget.CardView
             android:layout_width="0dp"
@@ -39,7 +39,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:orientation="vertical"
             android:padding="2dp">
 
@@ -48,9 +48,10 @@
                 android:layout_height="wrap_content"
                 >
                 <TextView
-                    android:id="@+id/tv_hot_ranknum"
+                    android:id="@+id/tv_HotNum"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
+                    android:maxLines="1"
                     android:textColor="@color/main_text"
                     android:textSize="13.33sp"
                     android:textStyle="bold"
@@ -59,10 +60,10 @@
                     android:text="1" />
 
                 <TextView
-                    android:id="@+id/tv_hot_title"
+                    android:id="@+id/tv_HotTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/tv_hot_ranknum"
+                    android:layout_toRightOf="@+id/tv_HotNum"
                     android:layout_marginLeft="3dp"
                     tools:text="女大生世晶"
                     android:textColor="@color/main_text"
@@ -70,12 +71,12 @@
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/tv_hot_descr"
+                android:id="@+id/tv_HotDescr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="2"
                 android:minLines="2"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:textColor="@color/text_CACACA"
                 android:textSize="12sp"
                 android:text="最终话" />
@@ -85,27 +86,30 @@
                 android:id="@+id/layout_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="15dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_hot_Star"
+                    android:id="@+id/tvHotStar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@mipmap/ic_star_num"
                     android:drawablePadding="2dp"
                     android:text="9.0"
                     android:textColor="@color/text_light_blue"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    app:drawableStartCompat="@mipmap/ic_star_num" />
 
 
                 <TextView
-                    android:id="@+id/tv_hot_tag"
+                    android:id="@+id/tvHotType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
+                    android:minWidth="35dp"
                     android:textSize="12sp"
+                    android:padding="2dp"
                     android:textColor="#BA5800"
+                    android:gravity="center_horizontal"
                     android:background="@color/hot_rank_tag"
                     android:text="都市" />
 
