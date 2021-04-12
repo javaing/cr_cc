@@ -166,6 +166,36 @@
 
     <!--animation-->
 
+    <style name="catalog_tag">
+        <item name="android:textSize">13.33sp</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="catalog_tag.1">
+        <item name="android:background">@drawable/bg_catalog_tag1</item>
+        <item name="android:textColor">#ff66d6</item>
+    </style>
+
+    <style name="catalog_tag.2">
+        <item name="android:background">@drawable/bg_catalog_tag2</item>
+        <item name="android:textColor">#D09E36</item>
+    </style>
+
+    <style name="catalog_tag.3">
+        <item name="android:background">@drawable/bg_catalog_tag3</item>
+        <item name="android:textColor">#71C21B</item>
+    </style>
+
+    <style name="catalog_tag.4">
+        <item name="android:background">@drawable/bg_catalog_tag4</item>
+        <item name="android:textColor">#B832DF</item>
+    </style>
+    <style name="catalog_tag.5">
+        <item name="android:background">@drawable/bg_catalog_tag5</item>
+        <item name="android:textColor">#269DE9</item>
+    </style>
+
     <style name="shop">
 
     </style>

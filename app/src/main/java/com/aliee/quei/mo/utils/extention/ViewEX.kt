@@ -155,3 +155,13 @@ fun View.disable() : View {
 fun View.getColor(resId: Int):Int {
     return ContextCompat.getColor(this.context, resId)
 }
+
+fun View.getDimensionInt(resId: Int):Int {
+    return context.resources.getDimension(resId).toInt()
+}
+
+fun View.setHeightByDimension(height: Int) {
+    val params = layoutParams
+    params.height= getDimensionInt(height)
+    layoutParams = params
+}

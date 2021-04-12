@@ -8,7 +8,7 @@ import kotlin.random.Random
 
 
 object ComicUtils{
-    val tags = mutableListOf<Int>(
+    val tags = mutableListOf(
         R.layout.tag_comic_cd,
         R.layout.tag_comic_fc,
         R.layout.tag_comic_jp,
@@ -16,6 +16,14 @@ object ComicUtils{
         R.layout.tag_comic_vip,
         R.layout.tag_comic_xa,
         R.layout.tag_comic_yy
+    )
+
+    val catalog_tags = mutableListOf(
+            R.style.catalog_tag_1,
+            R.style.catalog_tag_2,
+            R.style.catalog_tag_3,
+            R.style.catalog_tag_4,
+            R.style.catalog_tag_5,
     )
 
     fun addSomeTags(viewGroup: LinearLayout) {

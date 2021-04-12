@@ -22,16 +22,15 @@ import com.aliee.quei.mo.component.EventLoginSuccess
 import com.aliee.quei.mo.config.AdConfig
 import com.aliee.quei.mo.data.BeanConstants
 import com.aliee.quei.mo.data.bean.*
-import com.aliee.quei.mo.database.DatabaseProvider
 import com.aliee.quei.mo.net.imageloader.glide.GlideApp
 import com.aliee.quei.mo.net.imageloader.glide.GlideRoundTransform
 import com.aliee.quei.mo.router.ARouterManager
-import com.aliee.quei.mo.ui.catalog.adapter.CatalogGridAdapter
 import com.aliee.quei.mo.ui.common.ShopItemDecoration
 import com.aliee.quei.mo.ui.common.adapter.ComicGrid2Holder
 import com.aliee.quei.mo.ui.common.adapter.ComicGrid3Holder
 import com.aliee.quei.mo.ui.common.adapter.ComicLandImgHolder
 import com.aliee.quei.mo.ui.common.adapter.ComicLinearHolder
+import com.aliee.quei.mo.utils.ComicUtils
 import com.aliee.quei.mo.utils.LogUtil
 import com.aliee.quei.mo.utils.SharedPreUtils
 import com.aliee.quei.mo.utils.extention.*
@@ -41,12 +40,13 @@ import com.aliee.quei.mo.widget.FixedSpeedScroller
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.elvishew.xlog.XLog
+import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.scwang.smartrefresh.layout.util.DensityUtil
 import com.tmall.ultraviewpager.UltraViewPager
 import com.tmall.ultraviewpager.UltraViewPagerAdapter
-import org.jetbrains.anko.find
+import org.jetbrains.anko.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -436,8 +436,8 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val shopPager = itemView.find<ViewPager2>(R.id.shop_pager)
         private val tabLayout = itemView.find<TabLayout>(R.id.shop_tabLayout)
         private val imgHotBanner = itemView.find<ImageView>(R.id.img_hot_banner)
-        //private val flexHotCategory = itemView.find<FlexboxLayout>(R.id.flexHotCategory)
-        private val grid = itemView.find<RecyclerView>(R.id.grid)
+        private val flexHotCategory = itemView.find<FlexboxLayout>(R.id.flexHotCategory)
+        private val img_hot_up = itemView.find<ImageView>(R.id.img_hot_up)
 
 
         @SuppressLint("CheckResult")
@@ -447,7 +447,7 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             imgHotBanner.click {
                 ARouterManager.goRechargeActivity(it.context, "", 0)
             }
-            //addLayouts()
+            addLayouts()
 
             with(shopPager) {
                 adapter = HotRankAdapter(dataBean.listMap, itemClick)
@@ -488,6 +488,42 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }.attach()
         }
 
+
+        fun addLayouts() {
+            val params = FlexboxLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            params.flexBasisPercent = 0.22f
+            params.margin= 6
+
+            flexHotCategory.removeAllViews();
+            val categoryBean = CommonDataProvider.instance.categoryConfig
+            categoryBean?.forEachIndexed { index, bean ->
+                val tv = TextView(flexHotCategory.context, null, 0, ComicUtils.catalog_tags[index % ComicUtils.catalog_tags.size ])
+                tv.text = bean.typename
+                tv.tag = bean
+                flexHotCategory.addView(tv , params);
+
+                tv.click {
+                    it.tag?:return@click
+                    //http://api.7775367.com/2/cartoon/chapter/catalog
+                    //ARouterManager.goComicCatalogActivity(it.context,(it.tag as CategoryBean).id )
+
+                    //
+                    ARouterManager.goComicCategoryActivity(it.context )
+                }
+            }
+
+            img_hot_up.click {
+                val params = flexHotCategory.layoutParams
+                if(params.height == img_hot_up.getDimensionInt(R.dimen.catalog_unfold)) {
+                    flexHotCategory.setHeightByDimension(R.dimen.catalog_fold)
+                    img_hot_up.setImageResource(android.R.drawable.arrow_down_float)
+                } else {
+                    flexHotCategory.setHeightByDimension(R.dimen.catalog_unfold)
+                    img_hot_up.setImageResource(android.R.drawable.arrow_up_float)
+                }
+            }
+            //changeFlexboxHeight(180)
+        }
 
     }
 
