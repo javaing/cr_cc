@@ -63,7 +63,7 @@
     <color name="theme_color">#000000</color>
     <color name="main_text">@color/all_white</color>
     <color name="text_money">#FF0000</color>
-    <color name="text_color_tab_selected">#F11424</color>
+    <color name="text_color_red">#F11424</color>
     <color name="hometop_tab_selected">#FF292A</color>
     <color name="home_section_title_div">#F51526</color>
     <color name="colorDivider">#404040</color>

@@ -5,12 +5,10 @@ import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.aliee.quei.mo.R;
 import com.aliee.quei.mo.utils.extention.ImageViewEXKt;
 
@@ -88,7 +86,7 @@ public class BottomBarTab extends RelativeLayout {
             } else {
                 mIcon.setImageResource(iconSelected);
             }
-            mTvTitle.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_tab_selected));
+            mTvTitle.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_red));
         } else {
             if (iconNormal == -1) {
                 ImageViewEXKt.load(mIcon, iconNormalUrl);

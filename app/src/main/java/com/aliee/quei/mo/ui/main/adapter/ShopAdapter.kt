@@ -5,6 +5,8 @@ import android.graphics.Color
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.widget.ImageView
@@ -43,6 +45,7 @@ import com.elvishew.xlog.XLog
 import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.haozhang.lib.SlantedTextView
 import com.scwang.smartrefresh.layout.util.DensityUtil
 import com.tmall.ultraviewpager.UltraViewPager
 import com.tmall.ultraviewpager.UltraViewPagerAdapter
@@ -79,11 +82,8 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         const val VIEW_TYPE_AD = 5
 
         const val VIEW_TYPE_HOTRANK = 6     //热门排行,(精品 人气 新作)
-        const val VIEW_TYPE_CATEGORY = 7    //分类精选
-        const val VIEW_TYPE_FREE = 8        //免费漫画推荐
-        const val VIEW_TYPE_WEEKLY = 9      //每周更新
-        const val VIEW_TYPE_GUESSLIKE = 10  //猜你喜欢
-        const val VIEW_TYPE_BULLETIN = 11   //公告
+        const val VIEW_TYPE_AUTOROTATE = 7    //免费漫画推荐
+
     }
 
     fun setData(list: MutableList<RecommendListBean>?, adMap: MutableMap<String, AdInfo>) {
@@ -93,6 +93,7 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         //处理Banner和热门排行
         val listMap: MutableMap<Int, List<RecommendBookBean>> = mutableMapOf()
+        var beanFree: RecommendListAutoBean?=null
         list.forEach {
             val bean = it
             if (shouldShuffle) {
@@ -106,21 +107,37 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                     when (bean.rid) {
                         BeanConstants.RecommendPosition.HOT_RECOMMEND.rid -> {
-                            bean.list?.let { listMap.put(0, it.toList()) }
+                            bean.list.let { listMap.put(0, it.toList()) }
                         }
                         BeanConstants.RecommendPosition.WEEK_POPULAR.rid -> {
-                            bean.list?.let { listMap.put(1, it.toList()) }
+                            bean.list.let { listMap.put(1, it.toList()) }
                         }
                         BeanConstants.RecommendPosition.LATELY_UPDATE.rid -> {
-                            bean.list?.let { listMap.put(2, it.toList()) }
+                            bean.list.let { listMap.put(2, it.toList()) }
+                        }
+                        BeanConstants.RecommendPosition.FREE.rid -> {
+                            bean.list.forEach {
+                                it.showType = VIEW_TYPE_LAND_IMG
+                                it.tagText = "免费"
+                            }
+                            beanFree = RecommendListAutoBean(BeanConstants.RecommendPosition.FREE.rid, BeanConstants.RecommendPosition.FREE.title, bean.list)
                         }
                     }
                 }
 
             }
         }
-        val bean2 = RecommendListBeanNewSkin(BeanConstants.RecommendPosition.HOTRANK_NEWSKIN.rid, BeanConstants.RecommendPosition.HOTRANK_NEWSKIN.title, listMap)
-        mData.add(bean2)
+        val beanHot = RecommendListBeanNewSkin(BeanConstants.RecommendPosition.HOTRANK_NEWSKIN.rid, BeanConstants.RecommendPosition.HOTRANK_NEWSKIN.title, listMap)
+        mData.add(beanHot)
+
+        //Rotate type
+        beanFree?.let {
+            val titleBean = TitleBean(it.rid, it.name)
+            titleBean.name = "免费漫画推荐"
+            titleBean.resId = R.mipmap.list_icon_03
+            mData.add(titleBean)
+            mData.add(it)
+        }
 
 
         list.forEach {
@@ -134,110 +151,138 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             } else {
                 if (bean.list != null && bean.list.isNotEmpty()) {
-                    mData.add(TitleBean(bean.rid, bean.name))
-                    var max = getItemMax(bean, adMap)
-                    if (bean.rid == BeanConstants.RecommendPosition.WEEK_TOP10.rid) {
-                        bean.list.forEach {
-                            it.showType = VIEW_TYPE_ITEM_LINEAR
-                        }
-                    }
-                    when (bean.rid) {
-                        BeanConstants.RecommendPosition.HOT_RECOMMEND.rid -> {
-                            bean.list.forEach {
-                                it.showType = ShopItemDecoration.VIEW_TYPE_COMIC_GRID_3
-                                it.tagText = "精品"
-                                it.tagColor = Color.parseColor("#ee82ee")
-                            }
-                        }
-                        BeanConstants.RecommendPosition.LATELY_UPDATE.rid -> {
-                            bean.list.forEach {
-                                it.showType = ShopItemDecoration.VIEW_TYPE_COMIC_GRID_3
-                            }
-                        }
-                        BeanConstants.RecommendPosition.WEEK_POPULAR.rid -> {
-                            var rankIndex = 0
-                            var colors = intArrayOf(
-                                    Color.parseColor("#f44336"),
-                                    Color.parseColor("#ff9800"),
-                                    Color.parseColor("#2196f3")
-                            )
-                            bean.list.forEach {
-                                it.tagText = "NO.${rankIndex + 1}"
-                                it.tagColor = colors.getOrNull(rankIndex) ?: 0
-                                it.showType = ShopItemDecoration.VIEW_TYPE_COMIC_GRID_3
-                                rankIndex++
-                            }
-                        }
-                        BeanConstants.RecommendPosition.FREE.rid -> {
-                            bean.list.forEach {
-                                it.showType = VIEW_TYPE_LAND_IMG
-                                it.tagText = "免费"
-                            }
-                        }
-                        BeanConstants.RecommendPosition.WEEK_TOP10.rid -> {
-                            var index = 0
-                            bean.list.forEach {
-                                val m = index % 10
-                                when {
-                                    m < 5 -> it.showType = VIEW_TYPE_ITEM_LINEAR //5
-                                    m < 8 -> it.showType = ShopItemDecoration.VIEW_TYPE_COMIC_GRID_3
-                                    else -> it.showType = ShopItemDecoration.VIEW_TYPE_COMIC_GRID_2
-                                }
-                                index++
-                            }
-                        }
 
-                        else -> {
-                            bean.list.forEach {
-                                it.showType = VIEW_TYPE_ITEM_LINEAR
-                            }
-                        }
-                    }
+                    if(bean.name.contains("精品")||bean.name.contains("新书")||
+                            bean.rid==BeanConstants.RecommendPosition.FREE.rid) {
 
-                    if (bean.list.size > max) {
-                        if (max == 5) {
-                            //插入信息流区块
-                            val adInfo = adMap["flowObsQu"]
-                            val adQu = bean.list.subList(0, max)
-                            if (adInfo != null) {
-                                Log.d("tag", "adInfo flowObsQu:${adInfo.toString()}")
-                                val recommendBookBean = RecommendBookBean("", adInfo!!.imgurl, AdConfig.BANNER_DEF_ID, adInfo!!.desc, 0, adInfo!!.imgurl, adInfo!!.title, "")
-                                recommendBookBean.adCallbackUrl = adInfo!!.callbackurl
-                                recommendBookBean.adClickUrl = adInfo!!.clickurl
-                                recommendBookBean.showType = ShopItemDecoration.VIEW_TYPE_COMIC_GRID_3
-                                adQu.add(if (adInfo.index!! > 5) 5 else adInfo.index!!, recommendBookBean)
-                            }
-                            mData.addAll(adQu)
-                        } else {
-                            mData.addAll(bean.list.subList(0, max))
-                        }
-                        //插入90高度的广告
-                        val adInfo = adMap["flowObs90"]
-                        if (adInfo != null) {
-                            mData.add(adInfo!!)
-                        }
                     } else {
-                        if (max != 6) {
-                            val adInfo = adMap["flowObsQiang"]
-                            val adQiang = bean.list
+
+                        //Title处理
+                        val titleBean = TitleBean(bean.rid, bean.name)
+                        when(bean.rid) {
+//                            BeanConstants.RecommendPosition.FREE.rid -> {
+//                                //bean.rid = VIEW_TYPE_AUTOROTATE.toString()
+//                                titleBean.name = "免费漫画推荐"
+//                                titleBean.resId = R.mipmap.list_icon_03
+//                            }
+                            BeanConstants.RecommendPosition.WEEK_POPULAR.rid -> {
+                                titleBean.resId = R.mipmap.list_icon_04
+                                titleBean.desc = "每24小时更新漫画!"
+                            }
+                            BeanConstants.RecommendPosition.GUESS_LIKE.rid -> {
+                                titleBean.resId = R.mipmap.list_icon_05
+                                titleBean.desc = "时间久了总要换换口味~"
+                            }
+                            else -> {}
+                        }
+                        mData.add(titleBean)
+
+
+
+                        var max = getItemMax(bean, adMap)
+//                        if (bean.rid == BeanConstants.RecommendPosition.WEEK_TOP10.rid) {
+//                            bean.list.forEach {
+//                                it.showType = VIEW_TYPE_ITEM_LINEAR
+//                            }
+//                        }
+                        when (bean.rid) {
+                            BeanConstants.RecommendPosition.HOT_RECOMMEND.rid -> {
+                                bean.list.forEach {
+                                    it.showType = ShopItemDecoration.VIEW_TYPE_COMIC_GRID_3
+                                    it.tagText = "精品"
+                                    it.tagColor = Color.parseColor("#ee82ee")
+                                }
+                            }
+                            BeanConstants.RecommendPosition.LATELY_UPDATE.rid -> {
+                                bean.list.forEach {
+                                    it.showType = ShopItemDecoration.VIEW_TYPE_COMIC_GRID_3
+                                }
+                            }
+                            BeanConstants.RecommendPosition.WEEK_POPULAR.rid -> {
+                                var rankIndex = 0
+                                var colors = intArrayOf(
+                                        Color.parseColor("#f44336"),
+                                        Color.parseColor("#ff9800"),
+                                        Color.parseColor("#2196f3")
+                                )
+                                bean.list.forEach {
+                                    it.tagText = "NO.${rankIndex + 1}"
+                                    it.tagColor = colors.getOrNull(rankIndex) ?: 0
+                                    it.showType = ShopItemDecoration.VIEW_TYPE_COMIC_GRID_3
+                                    rankIndex++
+                                }
+                            }
+                            BeanConstants.RecommendPosition.FREE.rid -> {
+                                bean.list.forEach {
+                                    it.showType = VIEW_TYPE_LAND_IMG
+                                    it.tagText = "免费"
+                                }
+                            }
+                            BeanConstants.RecommendPosition.WEEK_TOP10.rid -> {
+                                var index = 0
+                                bean.list.forEach {
+                                    val m = index % 10
+                                    when {
+                                        m < 5 -> it.showType = VIEW_TYPE_ITEM_LINEAR //5
+                                        m < 8 -> it.showType = ShopItemDecoration.VIEW_TYPE_COMIC_GRID_3
+                                        else -> it.showType = ShopItemDecoration.VIEW_TYPE_COMIC_GRID_2
+                                    }
+                                    index++
+                                }
+                            }
+                            else -> {
+                                bean.list.forEach {
+                                    it.showType = VIEW_TYPE_ITEM_LINEAR
+                                }
+                            }
+                        }
+
+                        if (bean.list.size > max) {
+                            if (max == 5) {
+                                //插入信息流区块
+                                val adInfo = adMap["flowObsQu"]
+                                val adQu = bean.list.subList(0, max)
+                                if (adInfo != null) {
+                                    Log.d("tag", "adInfo flowObsQu:${adInfo.toString()}")
+                                    val recommendBookBean = RecommendBookBean("", adInfo!!.imgurl, AdConfig.BANNER_DEF_ID, adInfo!!.desc, 0, adInfo!!.imgurl, adInfo!!.title, "")
+                                    recommendBookBean.adCallbackUrl = adInfo!!.callbackurl
+                                    recommendBookBean.adClickUrl = adInfo!!.clickurl
+                                    recommendBookBean.showType = ShopItemDecoration.VIEW_TYPE_COMIC_GRID_3
+                                    adQu.add(if (adInfo.index!! > 5) 5 else adInfo.index!!, recommendBookBean)
+                                }
+                                mData.addAll(adQu)
+                            } else {
+                                mData.addAll(bean.list.subList(0, max))
+                            }
+                            //插入90高度的广告
+                            val adInfo = adMap["flowObs90"]
                             if (adInfo != null) {
-                                val recommendBookBean = RecommendBookBean("", adInfo!!.imgurl, AdConfig.BANNER_DEF_ID, adInfo.desc, 0, adInfo.imgurl, adInfo.title, "")
-                                recommendBookBean.adCallbackUrl = adInfo.callbackurl
-                                recommendBookBean.adClickUrl = adInfo.clickurl
-                                recommendBookBean.showType = VIEW_TYPE_ITEM_LINEAR
-                                for (i in 0 until adQiang.size) {
-                                    if (i % (adInfo.index!! + 1) == 0) {
-                                        if (adQiang[i].showType == VIEW_TYPE_ITEM_LINEAR) {
-                                            adQiang.add(i, recommendBookBean)
+                                mData.add(adInfo!!)
+                            }
+                        } else {
+                            if (max != 6) {
+                                val adInfo = adMap["flowObsQiang"]
+                                val adQiang = bean.list
+                                if (adInfo != null) {
+                                    val recommendBookBean = RecommendBookBean("", adInfo!!.imgurl, AdConfig.BANNER_DEF_ID, adInfo.desc, 0, adInfo.imgurl, adInfo.title, "")
+                                    recommendBookBean.adCallbackUrl = adInfo.callbackurl
+                                    recommendBookBean.adClickUrl = adInfo.clickurl
+                                    recommendBookBean.showType = VIEW_TYPE_ITEM_LINEAR
+                                    for (i in 0 until adQiang.size) {
+                                        if (i % (adInfo.index!! + 1) == 0) {
+                                            if (adQiang[i].showType == VIEW_TYPE_ITEM_LINEAR) {
+                                                adQiang.add(i, recommendBookBean)
+                                            }
                                         }
                                     }
                                 }
+                                mData.addAll(adQiang)
+                            } else {
+                                mData.addAll(bean.list)
                             }
-                            mData.addAll(adQiang)
-                        } else {
-                            mData.addAll(bean.list)
                         }
                     }
+
 
                 }
             }
@@ -253,8 +298,9 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 //新书推荐 6
                 if (adMap["flowObsQu"] != null) 5 else 6
             }
-            BeanConstants.RecommendPosition.WEEK_POPULAR.rid -> 3 //新人 4
-            BeanConstants.RecommendPosition.WEEK_TOP10.rid -> Int.MAX_VALUE //免费
+            BeanConstants.RecommendPosition.GUESS_LIKE.rid,
+            BeanConstants.RecommendPosition.WEEK_POPULAR.rid -> 3
+            BeanConstants.RecommendPosition.WEEK_TOP10.rid -> Int.MAX_VALUE
             else -> 6
         }
     }
@@ -284,8 +330,11 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             VIEW_TYPE_HOTRANK -> {
                 val v = parent.context.inflate(R.layout.item_shop_hotrank)
-                Log.e("TAG", "VIEW_TYPE_HOTRANK set...")
                 return HotRankPagerHolder(v)
+            }
+            VIEW_TYPE_AUTOROTATE -> {
+                val v = parent.context.inflate(R.layout.item_shop_autororate, parent, false)
+                return AutoRotateHolder(v)
             }
             VIEW_TYPE_TITLE -> {
                 val v = parent.context.inflate(R.layout.item_shop_title)
@@ -296,8 +345,10 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 return ComicGrid3Holder(v)
             }
             VIEW_TYPE_LAND_IMG -> {
-                val v = parent.context.inflate(R.layout.item_comic_land_img, parent, false)
-                return ComicLandImgHolder(v)
+                //val v = parent.context.inflate(R.layout.item_comic_land_img, parent, false)
+                //return ComicLandImgHolder(v)
+                val v = parent.context.inflate(R.layout.item_shop_autororate, parent, false)
+                return AutoRotateHolder(v)
             }
             ShopItemDecoration.VIEW_TYPE_COMIC_GRID_2 -> {
                 val v = parent.context.inflate(R.layout.item_comic_grid_2, parent, false)
@@ -319,6 +370,7 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return when (item) {
             is AdInfo -> VIEW_TYPE_AD
             is RecommendListBean -> VIEW_TYPE_BANNER
+            is RecommendListAutoBean -> VIEW_TYPE_AUTOROTATE
             is RecommendListBeanNewSkin -> VIEW_TYPE_HOTRANK
             is TitleBean -> VIEW_TYPE_TITLE
             is RecommendBookBean -> {
@@ -339,13 +391,17 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 holder as BannerHolder
                 holder.bind(item)
             }
+            is RecommendListAutoBean -> {
+                holder as AutoRotateHolder
+                holder.bind(item, itemClick)
+            }
             is RecommendListBeanNewSkin -> {
                 holder as HotRankPagerHolder
                 holder.bind(item, itemClick)
             }
             is TitleBean -> {
                 holder as TitleHolder
-                holder.bind(item.name, item.rid)
+                holder.bind(item)
             }
             is RecommendBookBean -> {
                 if (holder is ComicGrid3Holder) {
@@ -368,10 +424,7 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun addMore(data: MutableList<RecommendBookBean>?, adMap: MutableMap<String, AdInfo>): Int? {
         data ?: return null
         XLog.st(1).e("去重前 ${data.size}")
-        /* val list = data.filterNot {
-             newData.contains(it)
-         }*/
-        //   XLog.st(1).e("去重后 ${list.size}")
+
         data.forEach {
             var m = moreIndex % 10
             if (m < 5) {
@@ -431,6 +484,30 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
+
+    inner class AutoRotateHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val pager = itemView.find<UltraViewPager>(R.id.pager_autorotate)
+
+
+        @SuppressLint("CheckResult")
+        fun bind(dataBean: RecommendListAutoBean, itemClick: ((bean: RecommendBookBean) -> Unit)?) {
+            pager.adapter = UltraViewPagerAdapter(AutoRotateAdapter(dataBean.list?: mutableListOf()))
+            pager.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL)
+            pager.initIndicator()
+//            pager.indicator.setOrientation(UltraViewPager.Orientation.HORIZONTAL)
+//                    .setFocusColor(indicatorColorSelected)
+//                    .setNormalColor(indicatorColorNormal)
+//                    .setRadius(DensityUtil.dp2px(3f))
+//                    .setGravity(Gravity.END or Gravity.BOTTOM)
+//                    .setMargin(0, 0, DensityUtil.dp2px(10F), DensityUtil.dp2px(10F))
+//                    .build()
+            pager.setInfiniteLoop(true)
+            pager.setAutoScroll(3000)
+
+
+
+        }
+    }
 
     inner class HotRankPagerHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val shopPager = itemView.find<ViewPager2>(R.id.shop_pager)
@@ -631,16 +708,25 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class TitleHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val tvTitle = itemView.find<TextView>(R.id.text)
+        private val textDesc = itemView.find<TextView>(R.id.text_desc)
         private val more = itemView.find<TextView>(R.id.more)
-        fun bind(title: String, rid: String) {
-            tvTitle.text = title
+        fun bind(bean: TitleBean) {
+            tvTitle.text = bean.name
+            if(bean.desc!=null) {
+                textDesc.visibility=VISIBLE
+                textDesc.text = bean.desc
+            }
+            if(bean.resId!=null) {
+                tvTitle.setCompoundDrawablesWithIntrinsicBounds(bean.resId!!,0,0,0)
+            }
+
             more.click {
-                titleMoreClick?.invoke(title, rid)
+                titleMoreClick?.invoke(bean.name, bean.rid)
             }
         }
     }
 
-    data class TitleBean(val rid: String, val name: String)
+    data class TitleBean(val rid: String, var name: String, var desc: String?=null, var resId: Int?=null)
 
     inner class BannerAdapter(val list: List<RecommendBookBean>) : PagerAdapter() {
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
@@ -680,4 +766,55 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             return if (list.size > 6) 6 else list.size
         }
     }
+
+    inner class AutoRotateAdapter(val list: List<RecommendBookBean>) : PagerAdapter() {
+        override fun instantiateItem(container: ViewGroup, position: Int): Any {
+            val bean = list[position]
+            val v = container.context.inflate(R.layout.item_comic_land_img, container, false)
+
+            val ivLand = v.find<ImageView>(R.id.ivLand)
+            val tagRight = v.find<SlantedTextView>(R.id.tagRight)
+            val tvStatus = v.find<TextView>(R.id.tvTagStatus)
+            val tvViewNum = v.find<TextView>(R.id.tvViewNum)
+            val tvStar = v.find<TextView>(R.id.tvStar)
+            val tvDescr = v.find<TextView>(R.id.tvDescr)
+            val tvTitle = v.find<TextView>(R.id.tvTitle)
+
+            ivLand.loadNovelCover(if (bean.thumb.isNullOrEmpty()) bean.bookcover else bean.thumb)
+            tagRight.text = bean.tagText
+            tvDescr.text = bean.desc
+            tvDescr.visibility= GONE
+            tvTitle.text = bean.title
+            if (bean.status == BeanConstants.STATUS_FINISH) {
+                tvStatus.text = "完结"
+                tvStatus.setBackgroundResource(R.mipmap.bg_tag_status_finish)
+            } else {
+                tvStatus.text = "连载"
+                tvStatus.setBackgroundResource(R.mipmap.bg_tag_status_ongoing)
+            }
+            v.click {
+                itemClick?.invoke(bean)
+            }
+            tvViewNum.text = ComicUtils.getReadNum(bean.id).toString()
+            tvStar.text = ComicUtils.getCommentStar(bean.id)
+
+            container.addView(v)
+            return v
+        }
+
+        override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+            `object` as View
+            container.removeView(`object`)
+        }
+
+        override fun isViewFromObject(view: View, `object`: Any): Boolean {
+            return view == `object`
+        }
+
+        override fun getCount(): Int {
+            return list.size
+        }
+    }
+
+
 }

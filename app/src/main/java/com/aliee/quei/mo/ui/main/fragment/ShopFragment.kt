@@ -98,6 +98,7 @@ class ShopFragment : BaseFragment() {
                     ShopAdapter.VIEW_TYPE_ITEM_LINEAR,
                     ShopAdapter.VIEW_TYPE_BANNER,
                     ShopAdapter.VIEW_TYPE_HOTRANK,
+                    ShopAdapter.VIEW_TYPE_AUTOROTATE,
                     ShopAdapter.VIEW_TYPE_TITLE,
                     ShopAdapter.VIEW_TYPE_AD,
                     ShopAdapter.VIEW_TYPE_LAND_IMG -> 6

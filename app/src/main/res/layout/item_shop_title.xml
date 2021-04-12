@@ -6,7 +6,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="12dp"
+        android:layout_height="0dp"
         android:background="@color/background_window" />
 
     <LinearLayout
@@ -17,23 +17,32 @@
         android:paddingLeft="5dp"
         android:paddingRight="5dp">
 
-        <View
-            android:layout_width="3dp"
-            android:layout_height="20dp"
-            android:background="@color/home_section_title_div" />
 
         <TextView
             android:id="@+id/text"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginStart="6dp"
-            android:layout_weight="1"
             android:gravity="center_vertical"
             android:textColor="@color/main_text"
-            android:textSize="17sp"
+            android:drawableLeft="@mipmap/list_icon_03"
+            android:textSize="14.33sp"
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/text_desc"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:textColor="@color/text_color_red"
+            android:textSize="12sp"
+            android:visibility="invisible"
+             />
+
+        <TextView
+            android:visibility="gone"
             android:id="@+id/more"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
