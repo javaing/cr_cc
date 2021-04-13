@@ -202,10 +202,10 @@ class ShopFragment : BaseFragment() {
      */
     private var adMap = mutableMapOf<String, AdInfo>()
     private fun loadAdInfoFolw() {
-        val banner = AdConfig.getAd(AdEnum.BANNER.zid) ?: return
-        val flow90 = AdConfig.getAd(AdEnum.COMIC_INFO_FLOW_90.zid)?: return
-        val flowQu = AdConfig.getAd(AdEnum.COMIC_INFO_FLOW_QU.zid)?: return
-        val flowQiang = AdConfig.getAd(AdEnum.COMIC_INFO_FLOW_QIANG.zid)?: return
+        val banner = AdConfig.getAd(AdEnum.BANNER.zid)
+        val flow90 = AdConfig.getAd(AdEnum.COMIC_INFO_FLOW_90.zid)
+        val flowQu = AdConfig.getAd(AdEnum.COMIC_INFO_FLOW_QU.zid)
+        val flowQiang = AdConfig.getAd(AdEnum.COMIC_INFO_FLOW_QIANG.zid)
         if (banner == null || flow90==null || flow90==null || flowQiang==null){
             VM.loadShop(this)
             return
