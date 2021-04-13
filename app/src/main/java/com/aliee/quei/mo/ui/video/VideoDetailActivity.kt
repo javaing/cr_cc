@@ -326,9 +326,11 @@ class VideoDetailActivity : BaseActivity() {
                         }
                     } else if (code == -1) {
                         //金币不足，免费次数不足时
-                        videoTips = Gson().fromJson(data, VideoTips::class.java)
-                        prepareView.showTipsView(true)
-                        prepareView.setTipsText(videoTips.bookbean.bookbean.toString())
+                        if(data!=null) {
+                            videoTips = Gson().fromJson(data, VideoTips::class.java)
+                            prepareView.showTipsView(true)
+                            prepareView.setTipsText(videoTips.bookbean.bookbean.toString())
+                        }
                         player.onError()
                     }
                     showLoadingView(false)
