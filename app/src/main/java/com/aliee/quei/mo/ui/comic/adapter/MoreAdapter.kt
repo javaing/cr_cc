@@ -24,10 +24,17 @@ class MoreAdapter : RecyclerView.Adapter<ComicLinearHolder>() {
 
 
     fun insertAd(index: Int, adInfo: AdInfo) {
-       val recommendBookBean = RecommendBookBean("", adInfo.imgurl, -321, adInfo.desc, 1, "", adInfo.title, "")
+        val recommendBookBean = RecommendBookBean("", adInfo.imgurl, -321, adInfo.desc, 1, "", adInfo.title, "")
         recommendBookBean.adCallbackUrl = adInfo.callbackurl
         recommendBookBean.adClickUrl = adInfo.clickurl
-        this.mData.add(index, recommendBookBean)
+        if(this.mData.contains(recommendBookBean)) {
+            return
+        }
+        if(index>=this.mData.size) {
+            this.mData.add(recommendBookBean)
+        } else {
+            this.mData.add(index, recommendBookBean)
+        }
         notifyDataSetChanged()
     }
 
