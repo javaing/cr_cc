@@ -165,7 +165,9 @@ class ReaderApplication : Application(), LifecycleOwner, Application.ActivityLif
 
     private fun initUmeng() {
        // UMConfigure.init(this, "5df1f468570df3fef6000e7f", Channel.channelName, UMConfigure.DEVICE_TYPE_PHONE, null)
-        UMConfigure.init(this, "5f61cc9fa4ae0a7f7d067d43", Channel.channelName, UMConfigure.DEVICE_TYPE_PHONE, null)
+        //UMConfigure.init(this, "5f61cc9fa4ae0a7f7d067d43", Channel.channelName, UMConfigure.DEVICE_TYPE_PHONE, null)
+        UMConfigure.init(this, com.aliee.quei.mo.BuildConfig.UMENG_APPID, Channel.channelName, UMConfigure.DEVICE_TYPE_PHONE, null)
+
         UMConfigure.setLogEnabled(true)
         MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL)
         MobclickAgent.openActivityDurationTrack(false)

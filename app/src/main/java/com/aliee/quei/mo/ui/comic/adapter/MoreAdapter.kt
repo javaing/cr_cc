@@ -27,7 +27,11 @@ class MoreAdapter : RecyclerView.Adapter<ComicLinearHolder>() {
        val recommendBookBean = RecommendBookBean("", adInfo.imgurl, -321, adInfo.desc, 1, "", adInfo.title, "")
         recommendBookBean.adCallbackUrl = adInfo.callbackurl
         recommendBookBean.adClickUrl = adInfo.clickurl
-        this.mData.add(index, recommendBookBean)
+        try {
+            this.mData.add(index, recommendBookBean)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         notifyDataSetChanged()
     }
 

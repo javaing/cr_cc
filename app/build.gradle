@@ -122,7 +122,7 @@ android {
             buildConfigField("String", "BUGLY_ID", "\"294a2d9168\"")
             buildConfigField("String", "PUSH_SECRET", "\"33e9db22682b85e732d4610fad22722a\"")
             //    buildConfigField("String", "UMENG_APPID","\"5c272410b465f592bf000351\"")
-            buildConfigField("String", "UMENG_APPID", "\"5df1f468570df3fef6000e7f\"")
+            buildConfigField("String", "UMENG_APPID", "\"6073fc8d18b72d2d244f85d8\"")
             manifestPlaceholders = [qqappid: "1106900798"]
 ////
             // zipAlignEnabled true     //Zipalign优化
@@ -141,7 +141,7 @@ android {
             buildConfigField("String", "API_VERSION", "\"$API_VERSION\"")
             buildConfigField("String", "BUGLY_ID", "\"294a2d9168\"")
             buildConfigField("String", "PUSH_SECRET", "\"33e9db22682b85e732d4610fad22722a\"") //测试环境
-            buildConfigField("String", "UMENG_APPID", "\"5df1f468570df3fef6000e7f\"")
+            buildConfigField("String", "UMENG_APPID", "\"6073fc8d18b72d2d244f85d8\"")
             manifestPlaceholders = [qqappid: "1106900798"] ///测试环境
 //            signingConfig signingConfigs.debug
 //
