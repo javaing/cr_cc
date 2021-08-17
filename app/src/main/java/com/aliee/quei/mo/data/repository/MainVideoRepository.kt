@@ -56,7 +56,7 @@ class MainVideoRepository : BaseRepository() {
      */
     suspend fun mainTags() {
         try {
-            val data : MutableList<Tag>? = videoService.mainTagsK().dataConvert()
+            val data : MutableList<Tag>? = videoService.mainTagsK().data
             data?.let {
                 data.add(0, Tag(-1, "推荐"))
                 CommonDataProvider.instance.saveVideoTags(data)
@@ -166,7 +166,7 @@ class MainVideoRepository : BaseRepository() {
 
     suspend fun autoPlay(){
         try {
-            val data = service.getAutoPlayK().toDataBean().data
+            val data = service.getAutoPlayK().data
             data?.let {
                 val conf = Gson().toJson(it)
                 CommonDataProvider.instance.saveAutoPlayCount(conf)

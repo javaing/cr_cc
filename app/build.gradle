@@ -202,6 +202,7 @@ android {
     androidExtensions {
         experimental = true
     }
+    buildToolsVersion '30.0.3'
 
 }
 
@@ -274,11 +275,10 @@ dependencies {
         exclude group: "com.android.support"
     }
     implementation "com.github.bumptech.glide:okhttp3-integration:$GLIDE_VERSION"
-    implementation "com.github.bumptech.glide:recyclerview-integration:${GLIDE_VERSION}@aar"
+    //implementation "com.github.bumptech.glide:recyclerview-integration:${GLIDE_VERSION}@aar"
     implementation 'jp.wasabeef:glide-transformations:4.3.0'  //高斯模糊
 
     kapt "com.github.bumptech.glide:compiler:$GLIDE_VERSION"
-    annotationProcessor "com.github.bumptech.glide:compiler:$GLIDE_VERSION"
 
 
     //Retrofit+kotlin Coroutines（协程）+mvvm（Jetpack架构组件）实现更简洁的网络请求
