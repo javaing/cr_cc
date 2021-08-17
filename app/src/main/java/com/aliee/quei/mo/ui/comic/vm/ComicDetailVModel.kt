@@ -2,6 +2,7 @@ package com.aliee.quei.mo.ui.comic.vm
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.viewModelScope
 import com.aliee.quei.mo.base.BaseViewModel
 import com.aliee.quei.mo.base.response.*
 import com.aliee.quei.mo.component.CommonDataProvider
@@ -11,6 +12,7 @@ import com.aliee.quei.mo.data.repository.*
 import com.aliee.quei.mo.data.service.CategoryService
 import com.aliee.quei.mo.data.service.RecommendService
 import com.aliee.quei.mo.net.retrofit.RetrofitClient
+import kotlinx.coroutines.launch
 
 class ComicDetailVModel : BaseViewModel(){
     private val comicRepository = ComicRepository()
@@ -46,18 +48,17 @@ class ComicDetailVModel : BaseViewModel(){
             .subscribe(ListStatusResourceObserver(catalogLiveData))
     }
 
-    fun addToShelf(lifecycleOwner: LifecycleOwner,bookid: Int) {
-        shelfRepository.addToShelf(lifecycleOwner,bookid)
-            .subscribe(StatusResourceObserver(addShelfLiveData))
+    fun addToShelf(bookid: Int) {
+        viewModelScope.launch {
+            addShelfLiveData.value = shelfRepository.addToShelf(bookid)
+        }
     }
 
-    fun getGuessLike(lifecycleOwner: LifecycleOwner, bookid: Int, typename: String) {
+    fun getGuessLike(typename: String) {
         val categoryBean = CommonDataProvider.instance.categoryConfig?.find {
             it.typename == typename
         }
         if (categoryBean != null) {
-//            categoryRepository.getList(lifecycleOwner,categoryBean.id,BeanConstants.SEX_ALL,BeanConstants.STATUS_ALL,1,20)
-//                .subscribe(ListStatusResourceObserver(sameCategoryLiveData))
             viewModelLaunch({
                 val list = ListBean<ComicBookBean>()
                 list.pageSize = 20
@@ -69,8 +70,6 @@ class ComicDetailVModel : BaseViewModel(){
                 sameCategoryLiveData.value = UIListDataBean(Status.Error, mutableListOf())
             })
         }
-//        recommendRunnable.getRecommend(lifecycleOwner, BeanConstants.RecommendPosition.GUESS_LIKE.rid)
-//            .subscribe(StatusResourceObserver(guessLikeLiveData))
         viewModelLaunch ({
             val id = BeanConstants.RecommendPosition.GUESS_LIKE.rid
             guessLikeLiveData.value =  recommendService.getRecommendK(id).data?.getByRid(id)

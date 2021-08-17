@@ -41,15 +41,16 @@ class ShelfVModel : BaseViewModel(){
                 .subscribe(ListStatusResourceObserver(getShelfListLiveData))
     }
 
-    fun delFromShelf(lifecycleOwner: LifecycleOwner,bookid : Int){
-        shelfRepository.addToShelf(lifecycleOwner,bookid)
-            .subscribe(StatusResourceObserver(delFromShelfLiveData))
+    fun delFromShelf(bookid : Int){
+        viewModelScope.launch {
+            delFromShelfLiveData.value = shelfRepository.addToShelf(bookid)
+        }
     }
 
 
     private var rPage = 1
     private val rPageSize = 10
-    fun loadRecommend(lifecycleOwner: LifecycleOwner) {
+    fun loadRecommend() {
         viewModelScope.launch {
             rPage ++
             recommendLiveData.value = recommendRepository.getListByConversionRate(rPage,rPageSize)

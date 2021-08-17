@@ -590,7 +590,7 @@ class ComicReadActivity : BaseActivity() {
                             VM.getBalance()
                         }
                         4 -> {
-                            VM.addToShelf(this, bookid)
+                            VM.addToShelf(bookid)
                         }
                         5 -> {
                             VM.addHistory(chapterList[0].bookid, chapterList[0].id)
@@ -682,7 +682,7 @@ class ComicReadActivity : BaseActivity() {
 
         }
         menuFav.click {
-            VM.addToShelf(this, bookid)
+            VM.addToShelf(bookid)
         }
 
 //        lightPlus.click {

@@ -140,7 +140,7 @@ class ComicDetailActivity : BaseActivity() {
         }
         adapter.addShelfClick = {
             if (it != null) {
-                VM.addToShelf(this, it.id)
+                VM.addToShelf(it.id)
             }
         }
     }
@@ -155,7 +155,7 @@ class ComicDetailActivity : BaseActivity() {
                     adapter.setComic(bean)
                     titleText.text = bean.title
                     VM.getCatalog(this, bean.id)
-                    VM.getGuessLike(this, bean.id, bean.typename)
+                    VM.getGuessLike(bean.typename)
                 }
                 Status.Error -> {
 //                    statuslayout.showError {
@@ -317,7 +317,7 @@ class ComicDetailActivity : BaseActivity() {
                             VM.addHistory(this, bookid, record.chapterId)
                         }
                     }else if (tokenflag ==2 ){
-                        VM.addToShelf(this,bookid)
+                        VM.addToShelf(bookid)
                     }else if (tokenflag == 3){
                         VM.isInShelf(this,bookid)
                     }else if (tokenflag == 4){

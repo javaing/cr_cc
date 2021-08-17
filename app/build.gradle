@@ -95,14 +95,14 @@ android {
 
     signingConfigs {
         debug {
-            storeFile file('../dmall3.jks')
+            storeFile file('../../dmall3.jks')
             storePassword "dmall3"
             keyAlias "dmall3"
             keyPassword "dmall3"
         }
 
         release {
-            storeFile file('../dmall3.jks')
+            storeFile file('../../dmall3.jks')
             storePassword "dmall3"
             keyAlias "dmall3"
             keyPassword "dmall3"
@@ -278,6 +278,7 @@ dependencies {
     implementation 'jp.wasabeef:glide-transformations:4.3.0'  //高斯模糊
 
     kapt "com.github.bumptech.glide:compiler:$GLIDE_VERSION"
+    annotationProcessor "com.github.bumptech.glide:compiler:$GLIDE_VERSION"
 
 
     //Retrofit+kotlin Coroutines（协程）+mvvm（Jetpack架构组件）实现更简洁的网络请求

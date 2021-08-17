@@ -127,7 +127,7 @@ class ShelfFragment : BaseFragment() {
             dialog.cancelClick = {}
             dialog.confirmClick = {
                 bookId = bean.bookid
-                VM.delFromShelf(this, bean.bookid)
+                VM.delFromShelf(bean.bookid)
             }
             dialog.show(childFragmentManager, dialog.javaClass.name)
         }
@@ -208,7 +208,7 @@ class ShelfFragment : BaseFragment() {
         launchVModel.registerTokenLiveData.observe(this, Observer {
             when (it?.status) {
                 Status.Success -> {
-                    VM.delFromShelf(this, bookId)
+                    VM.delFromShelf(bookId)
                 }
             }
         })
@@ -236,7 +236,7 @@ class ShelfFragment : BaseFragment() {
                 Status.Success -> {
                     statuslayout.showContent()
                     adapter.setShelfItem(it.data)
-                    VM.loadRecommend(this)
+                    VM.loadRecommend()
                 }
                 Status.NoNetwork -> {
                     isFirst = true

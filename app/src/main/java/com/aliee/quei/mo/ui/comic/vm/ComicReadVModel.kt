@@ -5,6 +5,7 @@ import android.app.Activity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.elvishew.xlog.XLog
 import com.aliee.quei.mo.application.ReaderApplication
@@ -23,6 +24,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
 import java.net.URLEncoder
 import java.util.concurrent.ExecutionException
 
@@ -146,9 +148,10 @@ class ComicReadVModel : BaseViewModel(){
             .subscribe(ListStatusResourceObserver(catalogLiveData))
     }
 
-    fun addToShelf(lifecycleOwner: LifecycleOwner,bookid: Int) {
-        shelfRepository.addToShelf(lifecycleOwner,bookid)
-            .subscribe(StatusResourceObserver(addShelfLiveData))
+    fun addToShelf(bookid: Int) {
+        viewModelScope.launch {
+            addShelfLiveData.value=shelfRepository.addToShelf(bookid)
+        }
     }
 
     fun isInShelf(lifecycleOwner: LifecycleOwner,bookid: Int){
