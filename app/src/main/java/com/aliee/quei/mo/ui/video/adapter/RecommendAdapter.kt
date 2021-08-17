@@ -14,10 +14,7 @@ import com.aliee.quei.mo.data.bean.Video
 import com.aliee.quei.mo.ui.main.adapter.MainVideoAdapter
 import com.aliee.quei.mo.ui.video.view.PrepareView
 import com.aliee.quei.mo.utils.StringUtils
-import com.aliee.quei.mo.utils.extention.click
-import com.aliee.quei.mo.utils.extention.gone
-import com.aliee.quei.mo.utils.extention.loadNovelCover
-import com.aliee.quei.mo.utils.extention.show
+import com.aliee.quei.mo.utils.extention.*
 import com.bumptech.glide.Glide
 import org.jetbrains.anko.find
 
@@ -72,8 +69,8 @@ class RecommendAdapter : RecyclerView.Adapter<RecommendAdapter.VH>() {
             val video = videos[position]
             // var imageUrl = "${domain}${mVideoInfo!!.img_path}".replace(".jpeg",".html")
             val url = CommonDataProvider.instance.getVideoThumbDomain()
-            val imageUrl = imageUrl(url!!, video!!.thumbImg!!)
-            videoThumb.loadNovelCover(imageUrl)
+            val imageUrl = imageUrl(url, video.thumbImg!!)
+            videoThumb.loadNovelCover(imageUrl.videoUrl())
             videoDis.text = Html.fromHtml(video.name)
             videoTime.text = StringUtils.secToTime(video.video_long!!)
             itemView.click {

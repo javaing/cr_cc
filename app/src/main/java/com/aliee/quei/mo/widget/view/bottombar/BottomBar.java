@@ -30,7 +30,7 @@ public class BottomBar  extends LinearLayout {
     private final Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
     private boolean mVisible = true;
 
-    private List<BottomBarTab> mTabs = new ArrayList<>();
+    private final List<BottomBarTab> mTabs = new ArrayList<>();
 
     private LinearLayout mTabLayout;
 
@@ -140,7 +140,7 @@ public class BottomBar  extends LinearLayout {
     }
 
     static class SavedState extends BaseSavedState {
-        private int position;
+        private final int position;
 
         public SavedState(Parcel source) {
             super(source);

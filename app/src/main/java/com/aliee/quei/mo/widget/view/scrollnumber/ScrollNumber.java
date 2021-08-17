@@ -39,19 +39,19 @@ class ScrollNumber extends View {
      * the target number
      */
     private int mTargetNum;
-    private Context mContext;
+    private final Context mContext;
 
     /**
      * number offset
      */
     private float mOffset;
-    private Paint mPaint;
+    private final Paint mPaint;
     private Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
 
 
     private float mTextCenterX;
     private int mTextHeight;
-    private Rect mTextBounds = new Rect();
+    private final Rect mTextBounds = new Rect();
     private int mTextSize = sp2px(130);
     private int mTextColor = 0xFF000000;
     private Typeface mTypeface;
@@ -210,7 +210,7 @@ class ScrollNumber extends View {
         mNextNum = number + 1 == 10 ? 0 : number + 1;
     }
 
-    private Runnable mScrollRunnable = new Runnable() {
+    private final Runnable mScrollRunnable = new Runnable() {
         @Override
         public void run() {
             float x = (float) (1 - 1.0 * (mTargetNum - mCurNum) / mDeltaNum);

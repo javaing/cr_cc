@@ -15,24 +15,24 @@ import io.reactivex.Observable
 class CategoryRepository : BaseRepository(){
     private val service = RetrofitClient.createService(CategoryService::class.java)
 
-    fun getCategory(lifecycleOwner: LifecycleOwner,sort : Int = BeanConstants.SORT_ASC) : Observable<List<CategoryBean>> {
-        return service.getCategory(sort)
-            .compose(SchedulersUtil.applySchedulers())
-            .bindUntilEvent(lifecycleOwner,Lifecycle.Event.ON_DESTROY)
-            .compose(handleBean())
-    }
+//    fun getCategory(lifecycleOwner: LifecycleOwner,sort : Int = BeanConstants.SORT_ASC) : Observable<List<CategoryBean>> {
+//        return service.getCategory(sort)
+//            .compose(SchedulersUtil.applySchedulers())
+//            .bindUntilEvent(lifecycleOwner,Lifecycle.Event.ON_DESTROY)
+//            .compose(handleBean())
+//    }
 
-    fun getList(lifecycleOwner: LifecycleOwner,id : Int,sex : Int,status : Int,page : Int,pageSize : Int) : Observable<ListBean<ComicBookBean>> {
-        return service.getList(id,sex, status, page, pageSize)
-            .compose(SchedulersUtil.applySchedulers())
-            .bindUntilEvent(lifecycleOwner,Lifecycle.Event.ON_DESTROY)
-            .compose(handleBean())
-            .map {
-                val list = ListBean<ComicBookBean>()
-                list.pageSize = pageSize
-                list.page = page
-                list.list = it
-                list
-            }
-    }
+//    fun getList(lifecycleOwner: LifecycleOwner,id : Int,sex : Int,status : Int,page : Int,pageSize : Int) : Observable<ListBean<ComicBookBean>> {
+//        return service.getList(id,sex, status, page, pageSize)
+//            .compose(SchedulersUtil.applySchedulers())
+//            .bindUntilEvent(lifecycleOwner,Lifecycle.Event.ON_DESTROY)
+//            .compose(handleBean())
+//            .map {
+//                val list = ListBean<ComicBookBean>()
+//                list.pageSize = pageSize
+//                list.page = page
+//                list.list = it
+//                list
+//            }
+//    }
 }

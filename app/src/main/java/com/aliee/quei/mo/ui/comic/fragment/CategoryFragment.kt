@@ -39,10 +39,10 @@ class CategoryFragment : BaseFragment(){
 
     private fun initRefresh() {
         refreshLayout.setOnRefreshListener {
-            VM.getList(this, tid = tid, sex = sex, status = status)
+            VM.getList( tid = tid, sex = sex, status = status)
         }
         refreshLayout.setOnLoadMoreListener {
-            VM.loadMore(this, tid = tid, sex = sex, status = status)
+            VM.loadMore(tid = tid, sex = sex, status = status)
         }
     }
 
@@ -102,7 +102,7 @@ class CategoryFragment : BaseFragment(){
                     statuslayout.showEmpty()
                 }
                 Status.Error -> statuslayout.showError {
-                    VM.getList(this, tid = tid, sex=sex, status = status)
+                    VM.getList( tid = tid, sex=sex, status = status)
                 }
                 Status.NoMore -> {
 //                    refreshLayout.isEnableLoadMore = false
@@ -116,11 +116,11 @@ class CategoryFragment : BaseFragment(){
     fun filter (sex : Int = this.sex,status : Int = this.status) {
         this.sex = sex
         this.status = status
-        VM.getList(this, tid = tid, sex = this.sex, status = this.status)
+        VM.getList( tid = tid, sex = this.sex, status = this.status)
     }
 
     override fun initData() {
-        VM.getList(this, tid)
+        VM.getList( tid)
     }
 
     override fun getPageName() = "漫画分类"

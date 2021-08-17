@@ -17,6 +17,7 @@ import com.aliee.quei.mo.utils.extention.click
 
 
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.fragment_shop.*
 import kotlinx.android.synthetic.main.layout_common_list.*
 import kotlinx.android.synthetic.main.layout_title.*
 import org.json.JSONArray
@@ -34,7 +35,7 @@ class BulletinActivity : BaseActivity(){
 
 
 
-        VM.getBulletin(this)
+        VM.getBulletin()
     }
 
     override fun initView() {
@@ -66,13 +67,12 @@ class BulletinActivity : BaseActivity(){
         VM.bulletinFullLiveData.observe(this, Observer {
             when (it?.status) {
                 Status.Start -> {
-
                 }
                 Status.Success -> {
 
                     Log.d("BulletinActivity", "BulletinFullLiveData:"+it.data?.data)
                     val json: String = gson.toJson(it.data)
-                    val data = JSONObject(json).getJSONObject("data");
+                    val data = JSONObject(json).getJSONObject("data")
                     val translations: JSONArray = data.getJSONArray("list")
                     val list = ArrayList<BulletinInfo>()
                     for (i in 0 until translations.length()) {
@@ -82,7 +82,6 @@ class BulletinActivity : BaseActivity(){
                     }
 //                    Log.d("BulletinActivity", "Bulletin List Size:"+ list.size)
                     adapter.setData(list)
-
                 }
                 Status.Empty -> {
 

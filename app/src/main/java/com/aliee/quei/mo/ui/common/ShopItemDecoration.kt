@@ -6,9 +6,9 @@ import com.aliee.quei.mo.utils.ScreenUtils
 
 class ShopItemDecoration : RecyclerView.ItemDecoration(){
     companion object {
-        const val VIEW_TYPE_COMIC_GRID_3 = 100;
-        const val VIEW_TYPE_COMIC_GRID_2 = 101;
-        const val VIEW_TYPE_HISTORY = 102;
+        const val VIEW_TYPE_COMIC_GRID_3 = 100
+        const val VIEW_TYPE_COMIC_GRID_2 = 101
+        const val VIEW_TYPE_HISTORY = 102
         const val VIEW_TYPE_SHELF = 103
 
     }
@@ -32,9 +32,9 @@ class ShopItemDecoration : RecyclerView.ItemDecoration(){
                 0 -> outRect.left = dp1 * 3
                 1 -> {
                     outRect.right = dp1
-                    outRect?.left = dp1
+                    outRect.left = dp1
                 }
-                2 -> outRect?.right = dp1 * 3
+                2 -> outRect.right = dp1 * 3
             }
         }
         if (viewType == VIEW_TYPE_COMIC_GRID_2) {
@@ -50,12 +50,12 @@ class ShopItemDecoration : RecyclerView.ItemDecoration(){
             val column = (itemPosition - startPosition) % 2
             when (column) {
                 0 -> {
-                    outRect?.left = dp1 * 3
-                    outRect?.right = dp1 * 1
+                    outRect.left = dp1 * 3
+                    outRect.right = dp1 * 1
                 }
                 1 -> {
-                    outRect?.left = dp1 * 1
-                    outRect?.right = dp1 * 3
+                    outRect.left = dp1 * 1
+                    outRect.right = dp1 * 3
                 }
             }
         }

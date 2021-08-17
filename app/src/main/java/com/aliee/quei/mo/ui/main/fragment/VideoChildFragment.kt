@@ -41,6 +41,7 @@ import com.aliee.quei.mo.ui.video.view.*
 import com.aliee.quei.mo.utils.StringUtils
 import com.aliee.quei.mo.utils.TagCountManager
 import com.aliee.quei.mo.utils.extention.click
+import com.aliee.quei.mo.utils.extention.videoPath
 import com.aliee.quei.mo.utils.rxjava.RxBus
 import com.bumptech.glide.Glide
 import com.dueeeke.videocontroller.component.TitleView
@@ -175,14 +176,16 @@ class VideoChildFragment : BaseFragment() {
         val adBean = AdConfig.getAd(AdEnum.VIDEO_CHILD_LIST.zid)
         Log.d("tag", "videoAd:${adBean.toString()}")
         if (adBean == null) {
-            adapter.setData(tag, videos)
+            activity?.runOnUiThread {
+                adapter.setData(tag, videos)
+            }
             disLoading()
             return
         }
-        Log.d("tag", "video list:${adBean.toString()}")
-        adBean?.also {
+        Log.d("tag", "video list:$adBean")
+        adBean.also {
             AdConfig.getAdInfo(adBean, { adInfo ->
-                activity!!.runOnUiThread {
+                activity?.runOnUiThread {
                     val option = Gson().fromJson<Option>(adInfo.optionstr, Option::class.java)
                     adInfo.title = option.title
                     adInfo.desc = option.desc
@@ -209,7 +212,9 @@ class VideoChildFragment : BaseFragment() {
                     disLoading()
                 }
             }, {
-                adapter.setData(tag, videos)
+                activity?.runOnUiThread {
+                    adapter.setData(tag, videos)
+                }
             })
         }
     }
@@ -217,9 +222,15 @@ class VideoChildFragment : BaseFragment() {
     override fun initData() {
         tag = arguments!!.getParcelable("videoTag")
         Log.d("tag", tag.toString())
-        VM.getVideoDomainType(this)
+        val thumb = CommonDataProvider.instance.getVideoDomain()
+        if(thumb.isNotEmpty()) {
+            Log.e("video", "cache domain thumb:$thumb")
+            initThumbDomain(thumb)
+        } else {
+            VM.getVideoDomainType()
+        }
 
-        VM.analyticsVideoTag(this, if (tag.id == -1) 51 else tag.id)
+        VM.analyticsVideoTag(if (tag.id == -1) 51 else tag.id)
         enter_view.visibility = View.VISIBLE
         ll_ranking.click { ARouterManager.goVideoRankingActivity(it.context) }
         ll_recharge.click { ARouterManager.goRechargeActivity(it.context, "", 0, isBook = false) }
@@ -229,12 +240,14 @@ class VideoChildFragment : BaseFragment() {
         refreshVideoVipTip()
     }
 
-    fun refreshVideoVipTip() {
+    private fun refreshVideoVipTip() {
         val userInfo: UserInfoBean? = CommonDataProvider.instance.getUserInfo()
-        if (userInfo?.discountEndtime!! > System.currentTimeMillis()) {
-            video_tips.visibility = View.VISIBLE
-        } else {
-            video_tips.visibility = View.GONE
+        if (userInfo?.discountEndtime!=null) {
+            if (userInfo.discountEndtime > System.currentTimeMillis()) {
+                video_tips.visibility = View.VISIBLE
+            } else {
+                video_tips.visibility = View.GONE
+            }
         }
     }
 
@@ -268,10 +281,10 @@ class VideoChildFragment : BaseFragment() {
                     if (!isNoMoreData) {
                         // 开始加载
                         if (tag.id != -1) {
-                            VM.videoRankingLoadMoreList(this@VideoChildFragment, 0, tag.id)
+                            VM.videoRankingLoadMoreList(0, tag.id)
                         } else {
                             //首页 加载更多使用随机视频
-                            VM.randomList(this@VideoChildFragment)
+                            VM.randomList()
                         }
                     }
                 }
@@ -285,7 +298,7 @@ class VideoChildFragment : BaseFragment() {
         recyclerView.addOnChildAttachStateChangeListener(object : RecyclerView.OnChildAttachStateChangeListener {
             override fun onChildViewAttachedToWindow(@NonNull view: View) {}
             override fun onChildViewDetachedFromWindow(@NonNull view: View) {
-                Log.d("tag", "view:${view?.toString()}")
+                Log.d("tag", "view:${view.toString()}")
                 viewStatus(view)
             }
         })
@@ -300,10 +313,10 @@ class VideoChildFragment : BaseFragment() {
             //如果不为自动播放，则弹窗提示，点击是 直接播放，点击否也直接播放
             videoId = video.id!!
             if (isAutoPlay) {
-                getVideoUrl(video.id!!)
+                getVideoUrl(video.id)
             } else {
                 if (isFirstPlay) {
-                    showAutoPlayDialog(video.id!!)
+                    showAutoPlayDialog(video.id)
                 } else {
                     //如果在不自动播放的状态下，每10次弹窗
                     if (confAutoDialogCount == showAutoDialogCount) {
@@ -321,7 +334,7 @@ class VideoChildFragment : BaseFragment() {
         }
         adapter.onAddVideoClick = { position, video ->
             mCurrentAddVideoPos = position
-            VM.addMyVideo(this@VideoChildFragment, video.id!!)
+            VM.addMyVideo(video.id!!)
         }
 
         adapter.onItemShareClick = { position, video, thumbUrl ->
@@ -345,48 +358,57 @@ class VideoChildFragment : BaseFragment() {
      * 自动播放位置控制
      */
     fun autoPlayVideo(view: RecyclerView) {
-        view ?: return
+        view
         var count = view.childCount
-        for (i in 0 until count) {
-            val itemView = view.getChildAt(i) ?: continue
-            if (itemView.tag != null) {
-                val holder: MainVideoAdapter.VideoHolder = itemView.tag as MainVideoAdapter.VideoHolder
-                val rect = Rect()
-                holder.playerContainer.getLocalVisibleRect(rect)
-                val height: Int = holder.playerContainer.height
-                if (rect.top == 0 && rect.bottom == height) {
-                    mCurrentAutoPlayVideoPos = holder.mPosition
-                    mCurrentVideoPos = holder.mPosition
-                    val videoId = videos[mCurrentAutoPlayVideoPos].id!!
-                    val videoName = videos[mCurrentAutoPlayVideoPos].name!!
-                    Log.d("startPlay", "autoPlayVideo:videoId:${videoId},videosize:${videos.size} ${videos[mCurrentAutoPlayVideoPos].name}，mCurrentVideoPos:${mCurrentAutoPlayVideoPos}")
-                    this@VideoChildFragment.videoId = videoId
-                    getVideoUrl(videoId)
-                    //  val ivThumb = holder.ivThumb
-                    // val gifDrawable =ivThumb.drawable as GifDrawable
-                    //gifDrawable.stop()
-                    // getVideoPreView(videoId, videoName)
-                    break
+
+
+        //有發生videos[] size=0. index=1的crash
+        try {
+            for (i in 0 until count) {
+                val itemView = view.getChildAt(i) ?: continue
+                if (itemView.tag != null) {
+                    val holder: MainVideoAdapter.VideoHolder = itemView.tag as MainVideoAdapter.VideoHolder
+                    val rect = Rect()
+                    holder.playerContainer.getLocalVisibleRect(rect)
+                    val height: Int = holder.playerContainer.height
+                    if (rect.top == 0 && rect.bottom == height) {
+                        mCurrentAutoPlayVideoPos = holder.mPosition
+                        mCurrentVideoPos = holder.mPosition
+                        val videoId = videos[mCurrentAutoPlayVideoPos].id!!
+                        val videoName = videos[mCurrentAutoPlayVideoPos].name!!
+                        Log.d("startPlay", "autoPlayVideo:videoId:${videoId},videosize:${videos.size} ${videos[mCurrentAutoPlayVideoPos].name}，mCurrentVideoPos:${mCurrentAutoPlayVideoPos}")
+                        this@VideoChildFragment.videoId = videoId
+                        getVideoUrl(videoId)
+                        //  val ivThumb = holder.ivThumb
+                        // val gifDrawable =ivThumb.drawable as GifDrawable
+                        //gifDrawable.stop()
+                        // getVideoPreView(videoId, videoName)
+                        break
+                    }
                 }
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+
+
     }
 
     private fun initRefresh() {
         refreshLayout.setOnRefreshListener {
             if (tag.id != -1) {
-                VM.videoRankingList(this, 0, tag.id)
+                VM.videoRankingList(0, tag.id)
             } else {
                 //首页
-                VM.mainVideoList(this)
+                VM.mainVideoList()
             }
         }
         refreshLayout.setOnLoadMoreListener {
             if (tag.id != -1) {
-                VM.videoRankingLoadMoreList(this, 0, tag.id)
+                VM.videoRankingLoadMoreList(0, tag.id)
             } else {
                 //首页 加载更多使用随机视频
-                VM.randomList(this)
+                VM.randomList()
                 // VM.mainVideoLoadMore(this)
                 //  VM.mainVideoList(this)
             }
@@ -421,7 +443,7 @@ class VideoChildFragment : BaseFragment() {
                          }*/
                         Log.d("tag", "STATE_PLAYBACK_COMPLETED:videoTime:${videoPlayTime}")
                         //记录当前视频完成播放次数
-                        VM.videoEndPlay(this@VideoChildFragment, videoId, videoPlayTime, done = 1)
+                        VM.videoEndPlay(videoId, videoPlayTime, done = 1)
                     }
                 }
             }
@@ -441,7 +463,7 @@ class VideoChildFragment : BaseFragment() {
             override fun saveProgress(url: String?, progress: Long) {
                 if (progress > 0) {
                     videoCurrentPlayTime = StringUtils.formatTime(progress.toInt())
-                    VM.videoEndPlay(this@VideoChildFragment, videoId, videoCurrentPlayTime, done = 0)
+                    VM.videoEndPlay(videoId, videoCurrentPlayTime, done = 0)
                 }
             }
 
@@ -475,13 +497,8 @@ class VideoChildFragment : BaseFragment() {
     }
 
     private fun getVideoUrl(videoId: Int) {
-        VM.getVideoDomain(this@VideoChildFragment, videoId, "u_temp_user_0")
+        VM.getVideoPath(videoId, "u_temp_user_0")
     }
-
-    private fun getVideoPreView(videoId: Int, tname: String) {
-        VM.getVideoPreView(this, videoId, tname)
-    }
-
 
     /**
      * 预览播放，正式播放
@@ -503,7 +520,7 @@ class VideoChildFragment : BaseFragment() {
         activity!!.runOnUiThread {
             val viewHolder = itemView.tag as MainVideoAdapter.VideoHolder
 
-            mController.addControlComponent(viewHolder?.prepareView, true)
+            mController.addControlComponent(viewHolder.prepareView, true)
             Utils.removeViewFormParent(mVideoView)
             viewHolder.playerContainer.addView(mVideoView, 1)
             VideoViewManager.instance().add(mVideoView, "list")
@@ -511,11 +528,11 @@ class VideoChildFragment : BaseFragment() {
                 if (preViewVideoPath.isNotEmpty()) {
                     Log.d("autoplay", "设置预览播放的url")
                     isPreview = true
-                    mVideoView.setUrl("http://vapi.yichuba.com${preViewVideoPath}")
+                    mVideoView.setUrl("$${preViewVideoPath}")
                 } else {
                     isPreview = false
                     mTitleView.setTitle(videoInfo?.name)
-                    mVideoView.setUrl("http://vapi.yichuba.com${videoInfo?.video_path}")
+                    mVideoView.setUrl(videoInfo?.video_path?.videoPath())
                     viewHolder.prepareView.setFreeCount(videoInfo!!.freetime)
                 }
                 viewHolder.prepareView.setPreview(isPreview)
@@ -578,23 +595,16 @@ class VideoChildFragment : BaseFragment() {
                 }
                 Status.Success -> {
                     val videoThumbDomain = it.data!!.`20`[0].domain
-                    CommonDataProvider.instance.saveVideoThumbDomain(videoThumbDomain)
-                    adapter.setVideoThumbDomain(videoThumbDomain)
-                    if (tag.id != -1) {
-                        VM.videoRankingList(this, 0, tag.id)
-                    } else {
-                        //首页
-                        VM.mainVideoList(this)
-                    }
+                    initThumbDomain(videoThumbDomain)
                 }
                 Status.Error -> {
                     if (it.code == 502) {
-                        VM.getVideoDomainType(this)
+                        VM.getVideoDomainType()
                     }
                 }
             }
         }
-        VM.videoDomain.observe(this, Observer {
+        VM.videoPath.observe(this, Observer {
             when (it?.status) {
                 Status.Success -> {
                     val json = Gson().toJson(it.data!!)
@@ -635,7 +645,7 @@ class VideoChildFragment : BaseFragment() {
                     }
                     videos.addAll(it.data!!)
                     val result = adapter.loadMore(it.data!!)
-                    result ?: return@Observer
+                    result
                 }
                 Status.Complete -> {
                     refreshLayout.finishLoadMore()
@@ -689,7 +699,7 @@ class VideoChildFragment : BaseFragment() {
                     }
                     val result = adapter.loadMore(it.data!!)
                     videos.addAll(it.data!!)
-                    result ?: return@Observer
+                    result
                 }
                 Status.Error -> {
                     /* statuslayout.showError {
@@ -738,7 +748,7 @@ class VideoChildFragment : BaseFragment() {
                     }
                     videos.addAll(it.data!!)
                     val result = adapter.loadMore(it.data!!)
-                    result ?: return@Observer
+                    result
                 }
                 Status.Complete -> {
                     refreshLayout.finishLoadMore()
@@ -755,7 +765,7 @@ class VideoChildFragment : BaseFragment() {
                     }
                     videos.addAll(it.data!!)
                     val result = adapter.loadMore(it.data!!)
-                    result ?: return@Observer
+                    result
                 }
                 Status.Complete -> {
                     refreshLayout.finishLoadMore()
@@ -777,6 +787,17 @@ class VideoChildFragment : BaseFragment() {
                 }
             }
         })
+    }
+
+    private fun initThumbDomain(videoThumbDomain: String) {
+        CommonDataProvider.instance.saveVideoThumbDomain(videoThumbDomain)
+        adapter.setVideoThumbDomain(videoThumbDomain)
+        if (tag.id != -1) {
+            VM.videoRankingList(0, tag.id)
+        } else {
+            //首页
+            VM.mainVideoList()
+        }
     }
 
     /**
@@ -842,7 +863,7 @@ class VideoChildFragment : BaseFragment() {
         if (mVideoView.isFullScreen) {
             mVideoView.stopFullScreen()
         }
-        if (activity!!.requestedOrientation !== ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+        if (activity!!.requestedOrientation != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
             activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         }
         mCurPos = -1

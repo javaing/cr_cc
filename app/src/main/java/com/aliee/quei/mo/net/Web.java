@@ -23,7 +23,7 @@ import okhttp3.Response;
 public class Web {
     public static final String TAG = Web.class.getSimpleName();
     public WebListener listener;
-    private OkHttpClient okHttpClient;
+    private final OkHttpClient okHttpClient;
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 

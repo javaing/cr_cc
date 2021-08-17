@@ -13,8 +13,8 @@ class CoinListVModel : BaseViewModel() {
 
     val listLiveData = MediatorLiveData<UIListDataBean<WelfareCoinRecordBean>>()
 
-    private var page = 1;
-    private var pageSize = 20;
+    private var page = 1
+    private var pageSize = 20
     fun loadList(lifecycleOwner: LifecycleOwner)  {
         page = 1
         welfareRepository.getCoinRecords(lifecycleOwner,page, pageSize)

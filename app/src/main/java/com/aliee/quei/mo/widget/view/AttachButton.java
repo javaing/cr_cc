@@ -83,11 +83,7 @@ public class AttachButton extends LinearLayout {
                         float differenceValueY = mRawY - mLastRawY;
                         //判断是否为拖动操作
                         if (!isDrug) {
-                            if (Math.sqrt(differenceValueX * differenceValueX + differenceValueY * differenceValueY) < 2) {
-                                isDrug = false;
-                            } else {
-                                isDrug = true;
-                            }
+                            isDrug = !(Math.sqrt(differenceValueX * differenceValueX + differenceValueY * differenceValueY) < 2);
                         }
                         //获取手指按下的距离与控件本身X轴的距离
                         float ownX = getX();

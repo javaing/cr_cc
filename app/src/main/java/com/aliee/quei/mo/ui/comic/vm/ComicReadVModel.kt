@@ -15,6 +15,8 @@ import com.aliee.quei.mo.data.BeanConstants
 import com.aliee.quei.mo.data.bean.*
 import com.aliee.quei.mo.data.repository.*
 import com.aliee.quei.mo.data.service.OtherService
+import com.aliee.quei.mo.data.service.RecommendService
+import com.aliee.quei.mo.data.service.UserService
 import com.aliee.quei.mo.net.retrofit.RetrofitClient
 import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindUntilEvent
 import io.reactivex.Observable
@@ -33,8 +35,8 @@ class ComicReadVModel : BaseViewModel(){
     private val comicRepository = ComicRepository()
     private val recommendRepository = RecommendRepository()
     private val statRepository = StatRepository()
-    private val userInfoRepository = UserInfoRepository()
-
+    private val userService = RetrofitClient.createService(UserService::class.java)
+    private val recommendService = RetrofitClient.createService(RecommendService::class.java)
 
     private var batchImgSize = 0
     val comicDetailLiveData = MediatorLiveData<UIDataBean<ComicBookBean>>()
@@ -45,7 +47,7 @@ class ComicReadVModel : BaseViewModel(){
     val catalogLiveData = MediatorLiveData<UIListDataBean<CatalogItemBean>>()
     val addShelfLiveData = MediatorLiveData<UIDataBean<Any>>()
     val isInShelfLiveData = MediatorLiveData<UIDataBean<Boolean>>()
-    val chapterEndRecommendLiveData = MediatorLiveData<UIDataBean<List<RecommendBookBean>>>()
+    val chapterEndRecommendLiveData = MediatorLiveData<UIDataBean<MutableList<RecommendBookBean>>>()
     val uploadReadTimeLiveData = MediatorLiveData<UIDataBean<Any>>()
     val balanceLiveData = MediatorLiveData<UIDataBean<UserInfoBean>>()
     val addHistoryLiveData = MediatorLiveData<UIDataBean<Any>>()
@@ -154,14 +156,20 @@ class ComicReadVModel : BaseViewModel(){
             .subscribe(StatusResourceObserver(isInShelfLiveData))
     }
 
-    fun getComicDetail(lifecycleOwner: LifecycleOwner,bookid : Int){
-        comicRepository.getComicDetail(lifecycleOwner,bookid)
-            .subscribe(StatusResourceObserver(comicDetailLiveData))
-    }
+//    fun getComicDetail(lifecycleOwner: LifecycleOwner,bookid : Int){
+//        comicRepository.getComicDetail(lifecycleOwner,bookid)
+//            .subscribe(StatusResourceObserver(comicDetailLiveData))
+//    }
 
-    fun getChapterEndRecommend(lifecycleOwner: LifecycleOwner,bookid: Int) {
-        recommendRepository.getRecommend(lifecycleOwner, BeanConstants.RecommendPosition.CHAPTER_END.rid)
-            .subscribe(StatusResourceObserver(chapterEndRecommendLiveData))
+    fun getChapterEndRecommend() {
+//        recommendRepository.getRecommend(lifecycleOwner, BeanConstants.RecommendPosition.CHAPTER_END.rid)
+//            .subscribe(StatusResourceObserver(chapterEndRecommendLiveData))
+        viewModelLaunch ({
+            val id = BeanConstants.RecommendPosition.CHAPTER_END.rid
+            chapterEndRecommendLiveData.value =  recommendService.getRecommendK(id).data?.getByRid(id)
+        },{
+            chapterEndRecommendLiveData.value = UIDataBean(Status.Error)
+        })
     }
 
     fun uploadReadTime(lifecycleOwner: LifecycleOwner, bookid: Int, readChapterCount: Int, totalMinute: Int) {
@@ -169,9 +177,12 @@ class ComicReadVModel : BaseViewModel(){
             .subscribe(StatusResourceObserver(uploadReadTimeLiveData))
     }
 
-    fun getBalance(lifecycleOwner: LifecycleOwner) {
-        userInfoRepository.getUserInfo(lifecycleOwner)
-            .subscribe(StatusResourceObserver(balanceLiveData))
+    fun getBalance() {
+//        userInfoRepository.getUserInfo(lifecycleOwner)
+//            .subscribe(StatusResourceObserver(balanceLiveData))
+        viewModelLaunch ({
+            balanceLiveData.value=userService.getUserInfo().toDataBean()
+        }, {})
     }
 
 

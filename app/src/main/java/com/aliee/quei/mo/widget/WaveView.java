@@ -26,9 +26,9 @@ public class WaveView extends View {
 
     private boolean mIsRunning;
     private long mLastCreateTime;
-    private List<Circle> mCircleList = new ArrayList<Circle>();
+    private final List<Circle> mCircleList = new ArrayList<Circle>();
 
-    private Runnable mCreateCircle = new Runnable() {
+    private final Runnable mCreateCircle = new Runnable() {
         @Override
         public void run() {
             if (mIsRunning) {
@@ -40,7 +40,7 @@ public class WaveView extends View {
 
     private Interpolator mInterpolator = new LinearInterpolator();
 
-    private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     public WaveView(Context context) {
         super(context);
@@ -141,7 +141,7 @@ public class WaveView extends View {
     }
 
     private class Circle {
-        private long mCreateTime;
+        private final long mCreateTime;
 
         Circle() {
             mCreateTime = System.currentTimeMillis();

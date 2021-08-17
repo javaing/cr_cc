@@ -101,9 +101,9 @@ class SearchVideoFragment : BaseFragment() {
             override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView) {
                 val viewType = adapter.getItemViewType(itemPosition)
                 if (viewType == SearchVideoAdapter.VIEW_TYPE_RECOMMEND_TITLE) {
-                    outRect?.top = ScreenUtils.dpToPx(10)
+                    outRect.top = ScreenUtils.dpToPx(10)
                 } else if (viewType == SearchVideoAdapter.VIEW_TYPE_RECOMMEND) {
-                    outRect?.set(10, 10, 10, 10)
+                    outRect.set(10, 10, 10, 10)
                 }
             }
         })
@@ -123,7 +123,7 @@ class SearchVideoFragment : BaseFragment() {
 
         adapter.shiftClick = {
             page += 1
-            VM.guessLike(this, tagsId, page)
+            VM.guessLike(tagsId, page)
         }
         adapter.videoClick = {
             if (it.thumbImg!!.contains("http")){
@@ -153,8 +153,8 @@ class SearchVideoFragment : BaseFragment() {
 
         tagsId = TagCountManager.getTagCount()?.tagId
         //获取热门搜索
-        VM.getHotSearch(this)
-        VM.guessLike(this, tagsId, page)
+        VM.getHotSearch()
+        VM.guessLike(tagsId, page)
         //获取搜索记录
         realm.where(SearchHistoryBean::class.java)
                 .limit(5)
@@ -174,7 +174,7 @@ class SearchVideoFragment : BaseFragment() {
         val adBean = AdConfig.getAd(AdEnum.VIDEO_SEARCH.zid)
         adBean?.also { adBean ->
             AdConfig.getAdInfo(adBean, { adInfo ->
-                context!!.runOnUiThread {
+                context?.runOnUiThread {
                     if (AdConfig.isClosed(adBean.close)) {
                         search_ad_iv_close.show()
                         search_ad_iv_close.click {
@@ -201,18 +201,18 @@ class SearchVideoFragment : BaseFragment() {
             adapter.setData(list)
             return
         }
-        adBean?.also { adBean ->
+        adBean.also { adBean ->
             AdConfig.getAdInfo(adBean, { adInfo->
                 val option = Gson().fromJson<Option>(adInfo.optionstr, Option::class.java)
                 adInfo.title = option.title
                 adInfo.desc = option.desc
                 activity!!.runOnUiThread {
-                    Log.d("tag","视频详情猜你喜欢：interval:${adBean.interval},物料：${adInfo.toString()}")
+                    Log.d("tag","视频详情猜你喜欢：interval:${adBean.interval},物料：$adInfo")
                     val videoBean = Video(adInfo.title!!,"",-321,-1,adInfo.desc!!,"",-1, mutableListOf(),"",adInfo.imgurl,
-                            "",1,"")
+                        "",1,"")
                     videoBean.adCallbackUrl = adInfo.callbackurl
                     videoBean.adClickUrl = adInfo.clickurl
-                    list?.add(0,videoBean)
+                    list.add(0,videoBean)
                     adapter.setData(list)
 
                 }

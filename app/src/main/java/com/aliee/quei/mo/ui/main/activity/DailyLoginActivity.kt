@@ -16,7 +16,6 @@ import com.aliee.quei.mo.component.EventShowBulletin
 import com.aliee.quei.mo.router.Path
 import com.aliee.quei.mo.ui.comic.adapter.ChpaterEndRecommendAdapter
 import com.aliee.quei.mo.ui.main.vm.MainVModel
-import com.aliee.quei.mo.utils.RxUtils
 import com.aliee.quei.mo.utils.ScreenUtils
 import com.aliee.quei.mo.utils.extention.click
 import com.aliee.quei.mo.utils.extention.gone
@@ -35,13 +34,15 @@ class DailyLoginActivity : BaseActivity() {
 
     private var adapter = ChpaterEndRecommendAdapter()
 
-    private val VM = MainVModel()
+    //private val VM = MainVModel()
+    private val vmK = MainVModel()
     override fun getLayoutId(): Int {
         return R.layout.activity_daily_login
     }
 
     override fun initData() {
-        VM.getRecommend(this)
+        //VM.getRecommend(this)
+        vmK.getRecommend()
       //  showCoinIn()
       //  showCoinIn()
     }
@@ -73,7 +74,7 @@ class DailyLoginActivity : BaseActivity() {
     }
 
     private fun initVM() {
-        VM.recommendLiveData.observe(this, Observer {
+        vmK.recommendLiveData.observe(this, Observer {
             when(it?.status) {
                 Status.Success -> {
                     val list = it.data ?:return@Observer
@@ -82,7 +83,13 @@ class DailyLoginActivity : BaseActivity() {
             }
         })
 
-
+//        VM.recommendLiveData.observe(this, Observer {
+//            when(it?.status) {
+//                Status.Success -> {
+//                    Log.e("TAG", "getRecommend: list=${it.data}")
+//                }
+//            }
+//        })
 
     }
 

@@ -14,10 +14,10 @@ import java.util.Map;
 
 public class IjkVideoView extends VideoView<CustomIjkMediaPlayer> {
 
-    private HashMap<String, Object> mPlayerOptions = new HashMap<>();
-    private HashMap<String, Object> mFormatOptions = new HashMap<>();
-    private HashMap<String, Object> mCodecOptions = new HashMap<>();
-    private HashMap<String, Object> mSwsOptions = new HashMap<>();
+    private final HashMap<String, Object> mPlayerOptions = new HashMap<>();
+    private final HashMap<String, Object> mFormatOptions = new HashMap<>();
+    private final HashMap<String, Object> mCodecOptions = new HashMap<>();
+    private final HashMap<String, Object> mSwsOptions = new HashMap<>();
 
     public IjkVideoView(@NonNull Context context) {
         super(context);
@@ -85,7 +85,7 @@ public class IjkVideoView extends VideoView<CustomIjkMediaPlayer> {
      * 以下可以缩短播放的rtmp视频延迟在1s内
      */
     public void commonOption() {
-        addCodecOption("skip_loop_filter", 48);
+        addCodecOption("skip_loop_filter", 8);
         addFormatOption("analyzemaxduration", 100L);
         addFormatOption("flush_packets", 1L);
         //  addFormatOption("probesize", 1024L);  //这个打开会没有声音

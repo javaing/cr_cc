@@ -42,7 +42,7 @@ class ShareActivity : BaseActivity() {
     }
 
     override fun initData() {
-        VM.getShareDomain(this)
+        VM.getShareDomain()
         //  CommonDataProvider.instance.cacheShareLinkId()
     }
 
@@ -82,11 +82,11 @@ class ShareActivity : BaseActivity() {
     fun copyText(shareUrl: String) {
         var myClipboard: ClipboardManager? = null
         var myClip: ClipData? = null
-        myClipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?;
-        myClip = ClipData.newPlainText("text", shareUrl);
-        myClipboard?.setPrimaryClip(myClip);
+        myClipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
+        myClip = ClipData.newPlainText("text", shareUrl)
+        myClipboard?.primaryClip = myClip
 
-        Toast.makeText(this, "复制分享链接成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "复制分享链接成功", Toast.LENGTH_SHORT).show()
     }
 
     fun createBitmapFromView(): Bitmap {
@@ -145,8 +145,4 @@ class ShareActivity : BaseActivity() {
         return "视频分享"
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        //  CommonDataProvider.instance.cacheShareLinkId(linkid = "0")
-    }
 }

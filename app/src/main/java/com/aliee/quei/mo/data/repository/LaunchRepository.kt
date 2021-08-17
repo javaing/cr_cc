@@ -1,24 +1,26 @@
 package com.aliee.quei.mo.data.repository
 
+import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import android.util.Log
 import com.aliee.quei.mo.BuildConfig
+import com.aliee.quei.mo.base.response.Status
 import com.aliee.quei.mo.base.response.UIDataBean
 import com.aliee.quei.mo.component.CommonDataProvider
 import com.aliee.quei.mo.data.bean.TempUser
-import com.aliee.quei.mo.data.bean.VideoAuth
 import com.aliee.quei.mo.data.bean.VideoDomainType1
+import com.aliee.quei.mo.data.bean.toDataBean
 import com.aliee.quei.mo.data.service.LaunchService
+import com.aliee.quei.mo.net.ApiConstants
 import com.aliee.quei.mo.net.retrofit.RetrofitClient
 import com.aliee.quei.mo.utils.SharedPreUtils
 import com.aliee.quei.mo.utils.rxjava.SchedulersUtil
 import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindUntilEvent
 import io.reactivex.Observable
-import kotlinx.android.synthetic.main.activity_login.*
 
 class LaunchRepository : BaseRepository() {
     private val service = RetrofitClient.createService(LaunchService::class.java)
+    private val serviceVideo = RetrofitClient.createVideoService(LaunchService::class.java)
 
     fun uploadChannelInfo(lifecycleOwner: LifecycleOwner, channelId: String, version: String): Observable<Any?> {
         var flag = 1
@@ -72,27 +74,12 @@ class LaunchRepository : BaseRepository() {
                 }
     }
 
-    fun videoLogin(lifecycleOwner: LifecycleOwner): Observable<VideoAuth> {
-        return service.videoLogin()
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
-                .map {
-                    var videoAuth = it
-                    CommonDataProvider.instance.saveUserTempType(it.istemp)
-                    it
-                }
-    }
-
-    fun getVideoDomain(lifecycleOwner: LifecycleOwner): Observable<VideoDomainType1> {
-        return service.getVideoDomain(1)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
-                .map {
-                    //  CommonDataProvider.instance.currentReading = it[0].book
-                    it
-                }
+    suspend fun getVideoDomain(): UIDataBean<VideoDomainType1> {
+        return try {
+            serviceVideo.getVideoDomainKot(ApiConstants.VIDEO_TYPESTRING.toInt()).toDataBean()
+        } catch (e:Exception) {
+            UIDataBean(Status.Error)
+        }
     }
 
 

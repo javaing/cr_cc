@@ -21,8 +21,8 @@ public class TipsController extends FrameLayout implements IControlComponent {
 
     private ControlWrapper mControlWrapper;
 
-    private TextView tv_tips;
-    private TextView btn_recharge;
+    private final TextView tv_tips;
+    private final TextView btn_recharge;
 
     public TipsController(@NonNull Context context) {
         super(context);

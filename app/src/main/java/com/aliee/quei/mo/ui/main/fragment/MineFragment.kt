@@ -25,6 +25,7 @@ import com.aliee.quei.mo.router.Path
 import com.aliee.quei.mo.ui.launch.vm.LaunchVModel
 import com.aliee.quei.mo.ui.user.vm.UserInfoVModel
 import com.aliee.quei.mo.utils.SharedPreUtils
+import com.aliee.quei.mo.utils.SharedPreUtils.Key_CSRoute
 import com.aliee.quei.mo.utils.ToastUtil
 import com.aliee.quei.mo.utils.extention.click
 import com.aliee.quei.mo.utils.extention.invisible
@@ -66,7 +67,7 @@ class MineFragment : BaseFragment() {
 
     private fun initRefresh() {
         refreshLayout.setOnRefreshListener {
-            userInfoVModel.getMemberInfo(this)
+            userInfoVModel.getMemberInfo()
         }
         refreshLayout.isEnableLoadMore = false
     }
@@ -91,7 +92,7 @@ class MineFragment : BaseFragment() {
             ARouterManager.goBillActivity(activity!!)
         }
         layoutRecord.click {
-            ARouterManager.goMainActivity(
+            ARouterManager.goContentActivity(
                     activity!!,
                     showPage = ARouterManager.TAB_MINE_COMIC,
                     showTab = ARouterManager.SUB_TAB_HISTORY
@@ -109,7 +110,7 @@ class MineFragment : BaseFragment() {
 
         val packageName_weibo = "com.sina.weibo"
         val csNumber = SharedPreUtils.getInstance().getString("csNumber")
-        val csRoute = SharedPreUtils.getInstance().getString("csRoute")
+        val csRoute = SharedPreUtils.getInstance().getString(Key_CSRoute)
         layoutCustomService.click {
             if (csRoute.isNotEmpty()) {
                 ARouterManager.goCustomServiceActivity(it.context)
@@ -185,7 +186,7 @@ class MineFragment : BaseFragment() {
         RxBus.getInstance().toMainThreadObservable(ReaderApplication.instance, Lifecycle.Event.ON_DESTROY).subscribe({
             when (it) {
                 is EventUserInfoUpdated -> {
-                    userInfoVModel.getMemberInfo(this)
+                    userInfoVModel.getMemberInfo()
                 }
             }
         }, {
@@ -216,10 +217,10 @@ class MineFragment : BaseFragment() {
         RxBus.getInstance().toMainThreadObservable(ReaderApplication.instance, Lifecycle.Event.ON_DESTROY).subscribe({
             when (it) {
                 is EventToMineFreeTime -> {
-                    userInfoVModel.getMemberInfo(this)
+                    userInfoVModel.getMemberInfo()
                 }
                 is EventModifyPwd -> {
-                    userInfoVModel.loadUseInfo(this)
+                    userInfoVModel.loadUseInfo()
                 }
             }
         }, {
@@ -255,7 +256,7 @@ class MineFragment : BaseFragment() {
         launchVModel.registerTokenLiveData.observe(this, androidx.lifecycle.Observer {
             when (it?.status) {
                 Status.Success -> {
-                    userInfoVModel.loadUseInfo(this)
+                    userInfoVModel.loadUseInfo()
                 }
             }
         })
@@ -292,15 +293,15 @@ class MineFragment : BaseFragment() {
 
             try {
                 var pinfo: PackageInfo? = null
-                pinfo = ReaderApplication.instance.getPackageManager().getPackageInfo("com.hehe.ykzh.mimic", 0)
+                pinfo = ReaderApplication.instance.packageManager.getPackageInfo("com.hehe.ykzh.mimic", 0)
                 val cVersion = pinfo.versionName
                 apkVersion.text = "版本:" + cVersion
 
-                pinfo = ReaderApplication.instance.getPackageManager().getPackageInfo("com.hehe.sdwd.enoch", 0)
+                pinfo = ReaderApplication.instance.packageManager.getPackageInfo("com.hehe.sdwd.enoch", 0)
                 val cVersion2 = pinfo.versionName
                 apkVersion.text = "版本:" + cVersion2
 
-                pinfo = ReaderApplication.instance.getPackageManager().getPackageInfo("com.aliee.quei.mo", 0)
+                pinfo = ReaderApplication.instance.packageManager.getPackageInfo("com.aliee.quei.mo", 0)
                 val cVersion3 = pinfo.versionName
                 apkVersion.text = "版本:" + cVersion3
 
@@ -390,9 +391,9 @@ class MineFragment : BaseFragment() {
     private fun versionCompare(sVersion: String): Boolean {
         try {
             var pinfo: PackageInfo? = null
-            pinfo = ReaderApplication.instance.getPackageManager().getPackageInfo("com.hehe.ykzh.mimic", 0)
+            pinfo = ReaderApplication.instance.packageManager.getPackageInfo("com.hehe.ykzh.mimic", 0)
             val cVersion = pinfo.versionName
-            if (cVersion == sVersion) return false;
+            if (cVersion == sVersion) return false
             val sVersionNumber = sVersion.replace(".", "")
                     .substring(0, 3)
                     .toInt()
@@ -407,9 +408,9 @@ class MineFragment : BaseFragment() {
 
         try {
             var pinfo: PackageInfo? = null
-            pinfo = ReaderApplication.instance.getPackageManager().getPackageInfo("com.hehe.sdwd.enoch", 0)
+            pinfo = ReaderApplication.instance.packageManager.getPackageInfo("com.hehe.sdwd.enoch", 0)
             val cVersion = pinfo.versionName
-            if (cVersion == sVersion) return false;
+            if (cVersion == sVersion) return false
             val sVersionNumber = sVersion.replace(".", "")
                     .substring(0, 3)
                     .toInt()
@@ -424,9 +425,9 @@ class MineFragment : BaseFragment() {
 
         try {
             var pinfo: PackageInfo? = null
-            pinfo = ReaderApplication.instance.getPackageManager().getPackageInfo("com.aliee.quei.mo", 0)
+            pinfo = ReaderApplication.instance.packageManager.getPackageInfo("com.aliee.quei.mo", 0)
             val cVersion = pinfo.versionName
-            if (cVersion == sVersion) return false;
+            if (cVersion == sVersion) return false
             val sVersionNumber = sVersion.replace(".", "")
                     .substring(0, 3)
                     .toInt()
@@ -451,11 +452,11 @@ class MineFragment : BaseFragment() {
         val csNumber = SharedPreUtils.getInstance().getString("csNumber")
         var myClipboard: ClipboardManager? = null
         var myClip: ClipData? = null
-        myClipboard = activity!!.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager?;
-        myClip = ClipData.newPlainText("text", csNumber);
-        myClipboard?.setPrimaryClip(myClip);
+        myClipboard = activity!!.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager?
+        myClip = ClipData.newPlainText("text", csNumber)
+        myClipboard?.primaryClip = myClip
 
-        Toast.makeText(activity!!, "复制成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(activity!!, "复制成功", Toast.LENGTH_SHORT).show()
     }
 
 
@@ -483,8 +484,8 @@ class MineFragment : BaseFragment() {
 
 
     override fun initData() {
-        userInfoVModel.loadUseInfo(this)
-        userInfoVModel.getMemberInfo(this)
+        userInfoVModel.loadUseInfo()
+        userInfoVModel.getMemberInfo()
         isFirst = true
 
     }

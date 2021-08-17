@@ -2,8 +2,11 @@ package com.aliee.quei.mo.data.repository
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import com.aliee.quei.mo.base.response.Status
+import com.aliee.quei.mo.base.response.UIDataBean
 import com.aliee.quei.mo.component.EventReadHistoryUpdated
 import com.aliee.quei.mo.data.bean.HistoryBean
+import com.aliee.quei.mo.data.bean.toDataBean
 import com.aliee.quei.mo.data.exception.RequestException
 import com.aliee.quei.mo.data.service.HistoryService
 import com.aliee.quei.mo.net.retrofit.RetrofitClient
@@ -18,24 +21,21 @@ import io.reactivex.Observable
 class HistoryRepository : BaseRepository(){
     private val service = RetrofitClient.createService(HistoryService::class.java)
 
-    fun loadHistory(lifecycleOwner: LifecycleOwner) : Observable<List<HistoryBean>>{
-        return service.loadHistory()
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner,Lifecycle.Event.ON_DESTROY)
-                .compose(handleList())
+    suspend fun loadHistory():UIDataBean<List<HistoryBean>> {
+        return try {
+            service.loadHistory().toDataBean()
+        } catch (e: Exception){
+            UIDataBean(Status.Error)
+        }
     }
 
-    fun delRecord(lifecycleOwner: LifecycleOwner,bookId: Int) : Observable<String>{
-        return service.delHistory(bookId)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner,Lifecycle.Event.ON_DESTROY)
-                .map {
-                    if (it.code != 0) {
-                        throw RequestException(it.code,it.msg.toString())
-                    }
-                    bookId.toString()
-                }
-//                .compose(handleBean())
+    suspend fun delRecord(bookId: Int) : UIDataBean<String?>{
+        try {
+            service.delHistory(bookId)
+        } catch (e: Exception) {
+            return UIDataBean(Status.Error)
+        }
+        return UIDataBean(Status.Success,bookId.toString())
     }
 
     fun addHistory(lifecycleOwner: LifecycleOwner,bookId : Int,chapterId: Int) : Observable<Any> {

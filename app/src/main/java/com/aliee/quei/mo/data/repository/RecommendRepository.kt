@@ -3,6 +3,8 @@ package com.aliee.quei.mo.data.repository
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import android.util.Log
+import com.aliee.quei.mo.base.response.Status
+import com.aliee.quei.mo.base.response.UIDataBean
 import com.aliee.quei.mo.data.BeanConstants
 import com.aliee.quei.mo.data.bean.*
 import com.aliee.quei.mo.data.service.RecommendService
@@ -10,6 +12,8 @@ import com.aliee.quei.mo.net.retrofit.RetrofitClient
 import com.aliee.quei.mo.utils.rxjava.SchedulersUtil
 import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindUntilEvent
 import io.reactivex.Observable
+import java.lang.Exception
+import java.util.*
 
 class RecommendRepository : BaseRepository() {
     private val service = RetrofitClient.createService(RecommendService::class.java)
@@ -17,21 +21,14 @@ class RecommendRepository : BaseRepository() {
     /**
      * 通过推荐位ID获取推荐书籍
      */
-    fun getRecommend(
-            lifecycleOwner: LifecycleOwner,
-            id: String
-    ): Observable<MutableList<RecommendBookBean>> {
-        return service.getRecommend(id)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
-                .map {
-                    it[id]
-                }
-                .map {
-                    it.list.forEach { it.rid = id }
-                    it.list
-                }
+    suspend fun getRecommend(id:String): UIDataBean<MutableList<RecommendBookBean>>? {
+        Log.e("TAG", "RecommendRepository getRecommend ")
+        return try {
+            service.getRecommendK(id).data?.getByRid(id)
+        } catch (e:Exception){
+            UIDataBean(Status.Error)
+        }
+
     }
 
     /**
@@ -60,53 +57,55 @@ class RecommendRepository : BaseRepository() {
                 }
     }
 
-    fun getListByConversionRate(
-            lifecycleOwner: LifecycleOwner,
+    suspend fun getListByConversionRate(
             page: Int,
             pageSize: Int,
             sortField: String = "rate_order"
-    ): Observable<ListBean<RecommendBookBean>> {
-        return service.getComicList(pageSize, sortField, page)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
-                .map {
-                    val result = ListBean<RecommendBookBean>()
-                    result.list = it.map {
-                        RecommendBookBean(
-                                it.author,
-                                it.thumb,
-                                it.id,
-                                it.description,
-                                it.status,
-                                it.thumbX,
-                                it.title,
-                                it.typename
-                        )
-                    }
-                    result
-                }
+    ): UIDataBean<ListBean<RecommendBookBean>> {
+        try {
+            val it = service.getComicList(pageSize, sortField, page).data
+            val result = ListBean<RecommendBookBean>()
+            result.list = it?.map {
+                RecommendBookBean(
+                    it.author,
+                    it.thumb,
+                    it.id,
+                    it.description,
+                    it.status,
+                    it.thumbX,
+                    it.title,
+                    it.typename
+                )
+            }
+            return  UIDataBean(Status.Success, result)
+        } catch (e:Exception) {
+            return UIDataBean(Status.Error)
+        }
     }
 
-    fun appUpdateOp(lifecycle: LifecycleOwner, uid: Int, utemp: Int, opType: Int): Observable<String> {
-        return service.appUpdateOp(uid, utemp, opType)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycle, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
+    suspend fun appUpdateOp(uid: Int, utemp: Int, opType: Int):UIDataBean<String> {
+        return try {
+            service.appUpdateOp(uid, utemp, opType).toDataBean()
+        } catch (e:Exception){
+            UIDataBean(Status.Error)
+        }
     }
 
-    fun appDrainage(lifecycle: LifecycleOwner, uid: Int, utemp: Int): Observable<String> {
-        return service.appDrainage(uid, utemp)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycle, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
+
+    suspend fun appDrainage(uid: Int, utemp: Int):UIDataBean<String> {
+        return try {
+            service.appDrainage(uid, utemp).toDataBean()
+        } catch (e:Exception){
+            UIDataBean(Status.Error)
+        }
     }
 
-    fun adZone(lifecycle: LifecycleOwner, status: Int): Observable<List<AdZoneBean>> {
-        return service.getadzone(status)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycle, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
+    suspend fun getAdZone(status: Int):UIDataBean<List<AdZoneBean>> {
+        return try {
+            service.getadzone(status).toDataBean()
+        } catch (e:Exception){
+            UIDataBean(Status.Error)
+        }
     }
 
 }

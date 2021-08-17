@@ -150,7 +150,7 @@ class WelfareFragment : BaseFragment() {
         launchVModel.registerTokenLiveData.observe(this, Observer {
             when (it?.status) {
                 Status.Success -> {
-                    VM.getUserInfo(this)
+                    VM.getUserInfo()
                 }
             }
         })
@@ -174,7 +174,7 @@ class WelfareFragment : BaseFragment() {
                 Status.Success -> {
                     VM.getCheckInStats(this)
                     toast("签到成功")
-                    VM.getUserInfo(this)
+                    VM.getUserInfo()
                     VM.getIncome(this)
                 }
             }
@@ -192,12 +192,12 @@ class WelfareFragment : BaseFragment() {
                 Status.Success -> {
 //                    val bean = it
 //                    weekTaskAdapter.notifyDataSetChanged()
-                    val bean = it.data;
+                    val bean = it.data
                     toast("领取成功 +${bean?.reward}金币")
                     weekTaskAdapter.updateBean(bean)
                     dailyTaskAdapter.updateBean(bean)
                     newbieTaskAdapter.updateBean(bean)
-                    VM.getUserInfo(this)
+                    VM.getUserInfo()
                     VM.getIncome(this)
                 }
                 Status.Start -> showLoading()
@@ -215,11 +215,7 @@ class WelfareFragment : BaseFragment() {
         val sdf = SimpleDateFormat("yyyy-MM-dd")
         val registerDate = sdf.format(Date(data.registerTime))
         val nowDate = sdf.format(Date())
-        if (registerDate == nowDate) {
-            isBanned = true
-        } else {
-            isBanned = false
-        }
+        isBanned = registerDate == nowDate
     }
 
     private fun showUserLevel(data: UserLevelBean) {
@@ -368,7 +364,7 @@ class WelfareFragment : BaseFragment() {
         VM.getTickets(this)
         VM.getCheckInStats(this)
         VM.getUserLevel(this)
-        VM.getUserInfo(this)
+        VM.getUserInfo()
         VM.getIncome(this)
         loadWeek()
         loadDaily()

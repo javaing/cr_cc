@@ -7,6 +7,7 @@ import com.aliee.quei.mo.R
 import com.aliee.quei.mo.application.ReaderApplication
 import com.aliee.quei.mo.cache.CacheManager
 import com.aliee.quei.mo.cache.DBCacheManager
+import com.aliee.quei.mo.config.AdConfig
 import com.aliee.quei.mo.data.bean.*
 import com.aliee.quei.mo.utils.MD5
 import com.aliee.quei.mo.utils.SharedPreUtils
@@ -49,6 +50,7 @@ class CommonDataProvider private constructor() {
         private val CACHE_KEY_BULLETIN_SHOW_DAY = "cache.key.bulletin_show_day"
         private val CACHE_KEY_AUTO_PLAY_COUNT = "cache.key.auto_play_count"
         private val CACHE_KEY_AD_LIST = "cache.key.ad.list"
+        private val CACHE_KEY_FULLSCREENAD_LIST = "cache.key.fullscreenad.list"
 
         val AUTO_PLAY_CLOSE = "close"
         val AUTO_PLAY_OPEN = "open"
@@ -158,7 +160,7 @@ class CommonDataProvider private constructor() {
     fun isUserVipValid(): Boolean {
         val userInfoBean = CommonDataProvider.instance.getUserInfo()
         userInfoBean ?: return false
-        return userInfoBean.vipEndtime ?: 0 > System.currentTimeMillis()
+        return userInfoBean.vipEndtime > System.currentTimeMillis()
     }
 
     fun isVip(): Int {
@@ -256,7 +258,10 @@ class CommonDataProvider private constructor() {
     }
 
     fun getVideoThumbDomain(): String {
-        return cacheManager.getValueByKey(CACHE_KEY_VIDEO_THUMB_DOMAIN)
+        var thumb = cacheManager.getValueByKey(CACHE_KEY_VIDEO_THUMB_DOMAIN)
+        if(thumb==null || thumb=="null")
+            thumb = instance.getVideoDomain()
+        return thumb
     }
 
     fun saveApiDomain(domain: String) {
@@ -400,4 +405,21 @@ class CommonDataProvider private constructor() {
             GsonProvider.gson.fromJson(json, type)
         }
     }
+
+    fun saveFullscreenAdList(json: String) {
+        Log.d("tag", "广告group2 save cache:$json")
+        cacheManager.saveCache(CACHE_KEY_FULLSCREENAD_LIST, json)
+    }
+
+    fun getFullscreenAdList(): MutableList<AdBean>? {
+        val json = cacheManager.getValueByKey(CACHE_KEY_FULLSCREENAD_LIST)
+        Log.d("tag", "广告group2 load cache:$json")
+        return if (json.isEmpty()) {
+            null
+        } else {
+            val type = object : TypeToken<MutableList<AdBean>>() {}.type
+            GsonProvider.gson.fromJson(json, type)
+        }
+    }
+
 }

@@ -13,6 +13,7 @@ import com.aliee.quei.mo.router.ARouterManager
 import com.aliee.quei.mo.ui.main.vm.MainVideoModel
 import com.aliee.quei.mo.ui.video.RecycleGridDivider
 import com.aliee.quei.mo.ui.video.adapter.RecommendAdapter
+import com.aliee.quei.mo.utils.extention.toast
 import com.aliee.quei.mo.widget.ConfirmDialog
 import kotlinx.android.synthetic.main.fragment_shop.statuslayout
 import kotlinx.android.synthetic.main.layout_common_list.*
@@ -58,10 +59,10 @@ class VideoRecommendFragment : BaseFragment() {
         position = arguments!!.getInt("position")
         when (position) {
             0 -> {
-                VM.getMyVideo(this)
+                VM.getMyVideo()
             }
             1 -> {
-                VM.videoRecommend(this)
+                VM.videoRecommend()
             }
         }
     }
@@ -69,10 +70,10 @@ class VideoRecommendFragment : BaseFragment() {
     fun loadMore(){
         when(position){
             0->{
-                VM.getLoadMoreMyVideo(this)
+                VM.getLoadMoreMyVideo()
             }
             1->{
-                VM.videoRecommendLoadMore(this)
+                VM.videoRecommendLoadMore()
             }
         }
     }
@@ -90,9 +91,9 @@ class VideoRecommendFragment : BaseFragment() {
                 confirm.confirmClick = {
                     videoId = bean.id!!
                     if (position == 0) {
-                        VM.delMyVideo(this, bean.id!!)
+                        VM.delMyVideo(bean.id)
                     } else {
-                        VM.delVideoRecommend(this, bean.id!!)
+                        VM.delVideoRecommend(bean.id)
                     }
                 }
                 confirm.show(childFragmentManager, confirm.javaClass.name)
@@ -214,6 +215,7 @@ class VideoRecommendFragment : BaseFragment() {
         VM.delVideoRecommendLiveData.observe(this, Observer {
             when (it?.status) {
                 Status.Success -> {
+                    toast("delVideoRecommendLiveData:$videoId")
                     adapter.removeItem(videoId)
                     if (adapter.itemCount == 0) {
                         statuslayout.showEmpty()
@@ -228,6 +230,7 @@ class VideoRecommendFragment : BaseFragment() {
         VM.delMyVideoLiveData.observe(this, Observer {
             when (it?.status) {
                 Status.Success -> {
+                    toast("delMyVideoLiveData:$videoId")
                     adapter.removeItem(videoId)
                     if (adapter.itemCount == 0) {
                         statuslayout.showEmpty()

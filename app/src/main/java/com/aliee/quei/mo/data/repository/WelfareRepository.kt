@@ -2,6 +2,8 @@ package com.aliee.quei.mo.data.repository
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import com.aliee.quei.mo.base.response.Status
+import com.aliee.quei.mo.base.response.UIDataBean
 import com.aliee.quei.mo.data.bean.*
 import com.aliee.quei.mo.data.local.TaskBean
 import com.aliee.quei.mo.data.local.TaskRewardBean
@@ -11,6 +13,7 @@ import com.aliee.quei.mo.net.retrofit.RetrofitClient
 import com.aliee.quei.mo.utils.rxjava.SchedulersUtil
 import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindUntilEvent
 import io.reactivex.Observable
+import java.lang.Exception
 
 class WelfareRepository : BaseRepository() {
     private val service = RetrofitClient.createService(WelfareService::class.java)
@@ -47,12 +50,6 @@ class WelfareRepository : BaseRepository() {
             .compose(handleBean())
     }
 
-    fun getAllTasks(lifecycleOwner: LifecycleOwner): Observable<ListBean<TaskBean>> {
-        return service.getAllTasks()
-            .compose(SchedulersUtil.applySchedulers())
-            .bindUntilEvent(lifecycleOwner,Lifecycle.Event.ON_DESTROY)
-            .compose(handleBean())
-    }
 
     fun getIncome(lifecycleOwner: LifecycleOwner) :Observable<TotalIncomeBean> {
         return service.getIncome()
@@ -61,24 +58,27 @@ class WelfareRepository : BaseRepository() {
             .compose(handleBean())
     }
 
-    fun getSignAd(lifecycleOwner: LifecycleOwner) :Observable<SignAdBean>{
-        return service.getsignAd()
-            .compose(SchedulersUtil.applySchedulers())
-            .bindUntilEvent(lifecycleOwner,Lifecycle.Event.ON_DESTROY)
-            .compose(handleBean())
+    suspend fun getSignAd():UIDataBean<SignAdBean> {
+        return try {
+            service.getsignAd().toDataBean()
+        } catch (e: Exception){
+            UIDataBean(Status.Error)
+        }
     }
 
-    fun getWxAd(lifecycleOwner: LifecycleOwner) :Observable<WeixinAdBean>{
-        return service.getwxNumber()
-            .compose(SchedulersUtil.applySchedulers())
-            .bindUntilEvent(lifecycleOwner,Lifecycle.Event.ON_DESTROY)
-            .compose(handleBean())
+    suspend fun getWxAd():UIDataBean<WeixinAdBean> {
+        return try {
+            service.getwxNumber().toDataBean()
+        } catch (e: Exception){
+            UIDataBean(Status.Error)
+        }
     }
 
-    fun getWxAttention(lifecycleOwner: LifecycleOwner,installTime:Long,chapter:String) :Observable<WeixinAttentionBean>{
-        return service.getisWxAttention(installTime,chapter)
-            .compose(SchedulersUtil.applySchedulers())
-            .bindUntilEvent(lifecycleOwner,Lifecycle.Event.ON_DESTROY)
-            .compose(handleBean())
+    suspend fun getWxAttention(installTime: Long, chapter: String):UIDataBean<WeixinAttentionBean> {
+        return try {
+            service.getisWxAttention(installTime, chapter).toDataBean()
+        } catch (e: Exception){
+            UIDataBean(Status.Error)
+        }
     }
 }

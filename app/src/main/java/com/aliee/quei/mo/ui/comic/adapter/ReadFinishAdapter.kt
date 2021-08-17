@@ -81,7 +81,7 @@ class ReadFinishAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         fun bind(){
             val context = itemView.context
             findBook.click {
-                ARouterManager.goMainActivity(it.context,showPage = ARouterManager.TAB_SHOP)
+                ARouterManager.goContentActivity(it.context,showPage = ARouterManager.TAB_SHOP)
             }
             if (comicStatus == BeanConstants.STATUS_FINISH) {
                 textStatus.text = context.getString(R.string.this_book_finished)

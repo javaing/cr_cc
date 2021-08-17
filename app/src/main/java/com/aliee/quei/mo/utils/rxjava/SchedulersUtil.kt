@@ -45,7 +45,7 @@ object SchedulersUtil {
      * 代理检查
      */
     private fun doCheck() {
-        if (RxUtils.isWifiProxy(ReaderApplication.instance!!)) {
+        if (RxUtils.isWifiProxy(ReaderApplication.instance)) {
             ToastUtil.showToast(ReaderApplication.instance, "检查到使用代理访问，请关闭后重试", 1)
             return
         }

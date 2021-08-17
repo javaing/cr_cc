@@ -1,36 +1,34 @@
 package com.aliee.quei.mo.data.repository
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
+import com.aliee.quei.mo.base.response.Status
+import com.aliee.quei.mo.base.response.UIDataBean
 import com.aliee.quei.mo.data.bean.AppUpdate
 import com.aliee.quei.mo.data.bean.VersionInfoBean
+import com.aliee.quei.mo.data.bean.dataConvert
+import com.aliee.quei.mo.data.bean.toDataBean
 import com.aliee.quei.mo.data.service.VersionService
 import com.aliee.quei.mo.net.retrofit.RetrofitClient
-import com.aliee.quei.mo.utils.rxjava.SchedulersUtil
-import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindUntilEvent
-import io.reactivex.Observable
-import retrofit2.http.Field
 
-class VersionRepository : BaseRepository() {
+class VersionRepository: BaseRepository() {
     private val service = RetrofitClient.createService(VersionService::class.java)
 
-    fun checkVersion(lifecycleOwner: LifecycleOwner,appid : String,version : String) : Observable<VersionInfoBean>{
-        return service.getVersionInfo(1,1,appid,version)
-            .compose(SchedulersUtil.applySchedulers())
-            .bindUntilEvent(lifecycleOwner,Lifecycle.Event.ON_DESTROY)
-            .compose(handleBean())
+    suspend fun updateAppget(uid: Int, utemp: Int):UIDataBean<AppUpdate> {
+        return try {
+            service.updateAppgetK( uid, utemp).toDataBean()
+        } catch (e: Exception) {
+            UIDataBean(Status.Error)
+        }
     }
 
-    fun appop(lifecycleOwner: LifecycleOwner,opType:Int,uid:Int,utemp:Int):Observable<String>{
-        return service.updateAppop(opType, uid, utemp)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner,Lifecycle.Event.ON_DESTROY)
+    suspend fun updateAppop(opType: Int, uid: Int, utemp: Int):String? {
+        return  service.updateAppopK(opType, uid, utemp).dataConvert()
     }
 
-    fun appget(lifecycleOwner: LifecycleOwner,uid:Int,utemp:Int):Observable<AppUpdate>{
-        return service.updateAppget(uid,utemp)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner,Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
+    suspend fun getVersionInfo(appid: String, version: String):UIDataBean<VersionInfoBean> {
+        return try {
+            service.getVersionInfoK(1, 1, appid, version).toDataBean()
+        } catch (e: Exception) {
+            UIDataBean(Status.Error)
+        }
     }
 }

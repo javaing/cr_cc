@@ -17,7 +17,6 @@ import com.aliee.quei.mo.application.ReaderApplication
 import com.aliee.quei.mo.base.BaseActivity
 import com.aliee.quei.mo.base.response.Status
 import com.aliee.quei.mo.data.bean.VersionInfoBean
-import com.aliee.quei.mo.router.ARouterManager
 import com.aliee.quei.mo.service.VersionUpdate
 import com.aliee.quei.mo.ui.main.vm.MainVModel
 import com.aliee.quei.mo.utils.DownloadManagerUtil
@@ -26,15 +25,13 @@ import com.aliee.quei.mo.utils.extention.*
 import com.elvishew.xlog.XLog
 import kotlinx.android.synthetic.main.activity_upgrade.*
 import org.jetbrains.anko.downloadManager
-import org.jetbrains.anko.textColor
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.log
 
 class UpgradeActivity : BaseActivity() {
 
     var coins: Int = 0
-    private val VM = MainVModel()
+    private val vmK = MainVModel()
     private val CONTENT_URI = Uri.parse("content://downloads/my_downloads")
 
     companion object {
@@ -77,13 +74,13 @@ class UpgradeActivity : BaseActivity() {
                 Log.e("tag", bean.url)
                 actDownloadApk(bean.url)
                 //记录下载导流，
-                bean.userInfo?.let {
+                bean.userInfo.let {
                     if (it.tempUid != null) {
                         //临时用户tempuid不为null
-                        VM.appUpdateOp(UpgradeActivity@ this, it.id!!, 1, 3)
+                        vmK.appUpdateOp(it.id!!, 1, 3)
                     } else {
                         //注册用户tempuid为null，uid不为空
-                        VM.appUpdateOp(UpgradeActivity@ this, it.uid!!, 0, 3)
+                        vmK.appUpdateOp(it.uid!!, 0, 3)
                     }
                 }
                 finish()
@@ -92,12 +89,12 @@ class UpgradeActivity : BaseActivity() {
                 startDownload(url, "${getString(R.string.app_name)}${bean.version}", bean.descr
                         ?: "")
                 //新增最新的版本更新逻辑   20200930
-                bean.userInfo?.let {
+                bean.userInfo.let {
                     if (it.tempUid != null) {
-                        VM.updateAppop(UpgradeActivity@ this, 3, it.id!!, 1)
+                        vmK.updateAppop(3, it.id!!, 1)
                     } else {
                         //注册用户tempuid为null，uid不为空
-                        VM.updateAppop(UpgradeActivity@ this, 3, it.uid!!, 0)
+                        vmK.updateAppop(3, it.uid!!, 0)
                     }
                 }
             }
@@ -113,23 +110,23 @@ class UpgradeActivity : BaseActivity() {
         ivClose.click {
             if (bean.version.equals("-200")) {
                 //记录下载导流，
-                bean.userInfo?.let {
+                bean.userInfo.let {
                     if (it.tempUid != null) {
                         //临时用户tempuid不为null
-                        VM.appUpdateOp(UpgradeActivity@ this, it.id!!, 1, 2)
+                        vmK.appUpdateOp(it.id!!, 1, 2)
                     } else {
                         //注册用户tempuid为null，uid不为空
-                        VM.appUpdateOp(UpgradeActivity@ this, it.uid!!, 0, 2)
+                        vmK.appUpdateOp(it.uid!!, 0, 2)
                     }
                 }
             } else {
                 //新增最新的版本更新逻辑   20200930
-                bean.userInfo?.let {
+                bean.userInfo.let {
                     if (it.tempUid != null) {
-                        VM.updateAppop(UpgradeActivity@ this, 2, it.id!!, 1)
+                        vmK.updateAppop( 2, it.id!!, 1)
                     } else {
                         //注册用户tempuid为null，uid不为空
-                        VM.updateAppop(UpgradeActivity@ this, 2, it.uid!!, 0)
+                        vmK.updateAppop( 2, it.uid!!, 0)
                     }
                 }
             }
@@ -142,7 +139,7 @@ class UpgradeActivity : BaseActivity() {
 
     private fun initVM() {
 
-        VM.signLiveData.observe(this, Observer {
+        vmK.signLiveData.observe(this, Observer {
             when (it?.status) {
                 Status.Success -> {
                     val list = it.data ?: return@Observer
@@ -168,16 +165,16 @@ class UpgradeActivity : BaseActivity() {
             var openRequest = SharedPreUtils.getInstance().getString("openRequest")
 //        Log.e("MainActivity", "openRequest:" + openRequest)
             if (openRequest.equals("") || openRequest.isEmpty()) {
-                VM.getSignAd(this)
-                SharedPreUtils.getInstance().putString("openRequest", today.toString());
+                vmK.getSignAd()
+                SharedPreUtils.getInstance().putString("openRequest", today.toString())
             } else {
 //            val sdf = SimpleDateFormat("yyyy-MM-dd")
                 val tomorrow = today.toString()
                 var compare = tomorrow.compareTo(openRequest)
 //            Log.e("MainActivity", "openRequest compare:" + compare)
                 if (compare > 0) {
-                    VM.getSignAd(this)
-                    SharedPreUtils.getInstance().putString("openRequest", today.toString());
+                    vmK.getSignAd()
+                    SharedPreUtils.getInstance().putString("openRequest", today.toString())
                 }
             }
         }

@@ -26,15 +26,15 @@ class CommonDivider constructor(private val marginLeft : Int = DensityUtil.dp2px
     }
     override fun onDraw(canvas: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDraw(canvas, parent, state)
-        canvas?.let {
+        canvas.let {
             canvas.save()
             val top: Int
             val bottom: Int
-            if (parent?.clipToPadding!!) {
+            if (parent.clipToPadding) {
                 top = parent.paddingTop
                 bottom = parent.height - parent.paddingBottom
                 canvas.clipRect(parent.paddingLeft, top,
-                        parent.width - parent.paddingRight, bottom)
+                    parent.width - parent.paddingRight, bottom)
             } else {
                 top = 0
                 bottom = parent.height

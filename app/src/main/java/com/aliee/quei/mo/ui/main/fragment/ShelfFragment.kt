@@ -165,25 +165,29 @@ class ShelfFragment : BaseFragment() {
     fun guessLikeAd(list: MutableList<RecommendBookBean>?) {
         val adBean = AdConfig.getAd(AdEnum.COMIC_GUESS_LIKE_RANK.zid)
         if (adBean == null) {
-            adapter.addRecommend(list)
+            uiThreadRecommend(list)
             return
         }
-        adBean?.also { adBean ->
+        adBean.also { adBean ->
             AdConfig.getAdInfo(adBean, { adInfo ->
                 val option = Gson().fromJson<Option>(adInfo.optionstr, Option::class.java)
                 adInfo.title = option.title
                 adInfo.desc = option.desc
-                context!!.runOnUiThread {
-                    Log.d("tag", "猜你喜欢：interval:${adBean.interval},物料：${adInfo.toString()}")
-                    val recommendBookBean = RecommendBookBean("", adInfo.imgurl, -321, adInfo.desc, 1, "", adInfo.title, "")
-                    recommendBookBean.adCallbackUrl = adInfo.callbackurl
-                    recommendBookBean.adClickUrl = adInfo.clickurl
-                    list?.add(0, recommendBookBean)
-                    adapter.addRecommend(list)
-                }
+                Log.d("tag", "猜你喜欢：interval:${adBean.interval},物料：$adInfo")
+                val recommendBookBean = RecommendBookBean("", adInfo.imgurl, -321, adInfo.desc, 1, "", adInfo.title, "")
+                recommendBookBean.adCallbackUrl = adInfo.callbackurl
+                recommendBookBean.adClickUrl = adInfo.clickurl
+                list?.add(0, recommendBookBean)
+                uiThreadRecommend(list)
             }, {
-                adapter.addRecommend(list)
+                uiThreadRecommend(list)
             })
+        }
+    }
+
+    private fun uiThreadRecommend(list: MutableList<RecommendBookBean>?) {
+        context?.runOnUiThread {
+            adapter.addRecommend(list)
         }
     }
 
@@ -214,7 +218,7 @@ class ShelfFragment : BaseFragment() {
                 Status.Success -> {
                     if (!isRefresh) {
                         //上拉加载时不添加广告
-                        adapter.addRecommend(it.data?.list)
+                        uiThreadRecommend(it.data?.list)
                     } else {
                         //首次进入时添加广告
                         guessLikeAd(it.data?.list)

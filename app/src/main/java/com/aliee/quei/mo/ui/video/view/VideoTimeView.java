@@ -18,7 +18,7 @@ public class VideoTimeView extends FrameLayout implements IControlComponent {
 
     private ControlWrapper mControlWrapper;
 
-    private TextView tv_video_times;
+    private final TextView tv_video_times;
 
     public VideoTimeView(@NonNull Context context) {
         super(context);

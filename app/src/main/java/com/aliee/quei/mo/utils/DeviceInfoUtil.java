@@ -280,7 +280,7 @@ public class DeviceInfoUtil {
             return  "";
         }
         messageDigest.update(longID.getBytes(), 0, longID.length());
-        byte md5Data[] = messageDigest.digest();
+        byte[] md5Data = messageDigest.digest();
         StringBuilder md5ID = new StringBuilder();
         for (byte aMd5Data : md5Data) {
             int b = (0xFF & aMd5Data);

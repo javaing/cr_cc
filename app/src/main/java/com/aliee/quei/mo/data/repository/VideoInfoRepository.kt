@@ -3,12 +3,10 @@ package com.aliee.quei.mo.data.repository
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import android.util.Log
-import com.google.gson.Gson
+import com.aliee.quei.mo.base.response.Status
 import com.aliee.quei.mo.base.response.UIDataBean
-import com.aliee.quei.mo.component.CommonDataProvider
 import com.aliee.quei.mo.data.bean.*
 import com.aliee.quei.mo.data.exception.RequestException
-import com.aliee.quei.mo.data.service.UserService
 import com.aliee.quei.mo.data.service.VideoInfoService
 import com.aliee.quei.mo.net.retrofit.RetrofitClient
 import com.aliee.quei.mo.utils.rxjava.SchedulersUtil
@@ -17,71 +15,54 @@ import io.reactivex.Observable
 
 class VideoInfoRepository : BaseRepository() {
 
-    private val service = RetrofitClient.createService(VideoInfoService::class.java)
+    private val service = RetrofitClient.createVideoService(VideoInfoService::class.java)
 
 
-    fun getGuessLikes(lifecycleOwner: LifecycleOwner,id: Int?): Observable<MutableList<VideoBean>> {
-        return service.getGuessLike(id = id)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
-                .map {
-                    it
-                }
+    suspend fun getGuessLikes(id: Int?): UIDataBean<MutableList<VideoBean>> {
+        return try {
+            service.getGuessLike(id = id).toDataBean()
+        } catch (e: Exception) {
+            UIDataBean(Status.Error)
+        }
     }
 
     //image domain
-    fun getVideoDomain(lifecycleOwner: LifecycleOwner): Observable<VideoDomainType> {
-        return service.getVideoDomainType()
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
-                .map {
-                    it
-                }
-
+    suspend fun getVideoDomainType(): UIDataBean<VideoDomainType> {
+        return try {
+            service.getVideoDomainType().toDataBean()
+        } catch (e: Exception) {
+            UIDataBean(Status.Error)
+        }
     }
 
     //video domain
-    fun getVideoDomain(lifecycleOwner: LifecycleOwner, vid: Int, tname: String): Observable<Any> {
-        return service.getVideoDomain(vid, tname)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .map {
-                    it
-                }
+    suspend fun getVideoPath(vid: Int, tname: String): UIDataBean<Any> {
+        return try {
+            service.getVideoPath(vid, tname).toDataBean()
+        } catch (e: Exception) {
+            UIDataBean(Status.Error)
+        }
     }
 
-    fun getVideoThumb(lifecycleOwner: LifecycleOwner, url: String): Observable<String> {
-        return service.getVideoThumb(url)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .map {
-                    Log.d("tag", "image:$it")
-                    it
-                }
+    suspend fun addMyVideo(vid: Int): UIDataBean<BaseResponse<String>> {
+        return try {
+            UIDataBean(Status.Success, service.addMyVideo(vid))
+        } catch (e: Exception) {
+            UIDataBean(Status.Error)
+        }
     }
 
+    suspend fun delMyVideo(vid: Int): UIDataBean<String> {
+        return try {
+            val it = service.delMyVideo(vid)
+            if (it.code != 0) {
+                throw RequestException(it.code, it.msg.toString())
+            }
+            UIDataBean(Status.Success, vid.toString())
+        } catch (e: Exception) {
+            UIDataBean(Status.Error)
+        }
 
-    fun addMyVideo(lifecycleOwner: LifecycleOwner, vid: Int): Observable<BaseResponse<String>> {
-        return service.addMyVideo(vid)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .map {
-                    it
-                }
-    }
-
-    fun delMyVideo(lifecycleOwner: LifecycleOwner, vid: Int): Observable<String> {
-        return service.delMyVideo(vid)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .map {
-                    if (it.code != 0) {
-                        throw RequestException(it.code, it.msg.toString())
-                    }
-                    vid.toString()
-                }
     }
 
     fun videoShare(lifecycleOwner: LifecycleOwner,vid:Int):Observable<String> {
@@ -95,23 +76,13 @@ class VideoInfoRepository : BaseRepository() {
     }
 
 
-    fun videoPreViewImg(lifecycleOwner: LifecycleOwner,vid:Int,tname:String):Observable<String>{
-        return service.videoPreViewImg(vid, tname)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
-                .map {
-                    it
-                }
-    }
-    fun videoPreView(lifecycleOwner: LifecycleOwner,vid:Int,tname:String):Observable<VideoPreview>{
-        return service.videoPreView(vid, tname)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
-                .map {
-                    it
-                }
+    suspend fun videoPreView(vid:Int,tname:String):UIDataBean<VideoPreview>{
+        return try {
+            service.videoPreView(vid, tname).toDataBean()
+        } catch (e: Exception) {
+            UIDataBean(Status.Error)
+        }
+
     }
 
 

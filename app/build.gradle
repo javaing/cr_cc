@@ -12,8 +12,8 @@ apply plugin: 'AndResGuard'
 buildscript {
     repositories {
         mavenLocal()
-        jcenter()
         google()
+        maven { url 'https://maven.aliyun.com/repository/jcenter/' }
     }
     dependencies {
         classpath("com.tencent.mm:AndResGuard-gradle-plugin:1.2.20") {
@@ -74,7 +74,7 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
-                includeCompileClasspath = true
+//                includeCompileClasspath = true
                 arguments = [AROUTER_MODULE_NAME: project.getName(), AROUTER_GENERATE_DOC: "enable"]
             }
         }
@@ -122,12 +122,12 @@ android {
             buildConfigField("String", "BUGLY_ID", "\"294a2d9168\"")
             buildConfigField("String", "PUSH_SECRET", "\"33e9db22682b85e732d4610fad22722a\"")
             //    buildConfigField("String", "UMENG_APPID","\"5c272410b465f592bf000351\"")
-            buildConfigField("String", "UMENG_APPID", "\"6073fc8d18b72d2d244f85d8\"")
+            buildConfigField("String", "UMENG_APPID", "\"608a0739f00c2e19b93eca30\"")
             manifestPlaceholders = [qqappid: "1106900798"]
 ////
             // zipAlignEnabled true     //Zipalign优化
-            shrinkResources true    // 移除无用的resource文件
-            minifyEnabled true     //混淆
+            //shrinkResources true    // 移除无用的resource文件
+            //minifyEnabled true     //混淆
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
@@ -141,7 +141,7 @@ android {
             buildConfigField("String", "API_VERSION", "\"$API_VERSION\"")
             buildConfigField("String", "BUGLY_ID", "\"294a2d9168\"")
             buildConfigField("String", "PUSH_SECRET", "\"33e9db22682b85e732d4610fad22722a\"") //测试环境
-            buildConfigField("String", "UMENG_APPID", "\"6073fc8d18b72d2d244f85d8\"")
+            buildConfigField("String", "UMENG_APPID", "\"608a0739f00c2e19b93eca30\"")
             manifestPlaceholders = [qqappid: "1106900798"] ///测试环境
 //            signingConfig signingConfigs.debug
 //
@@ -151,37 +151,29 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    def app_name = "app-tt-ss-kk"
+
     applicationVariants.all { variant ->
         variant.outputs.all {
-            def fileName
+            def fileName = "cc-comic_${VERSION_NAME1}_debug.apk"
             if (variant.buildType.name == 'release') {
                 fileName = "cc${VERSION_NAME1}_release.apk"
             } else if (variant.buildType.name == 'debug') {
-                fileName = "app-hehe-hzky-comic_${VERSION_NAME1}_debug.apk"
+                //fileName = "cc-comic_${VERSION_NAME1}_debug.apk"
             }
+
+            //此法造成/assets目錄下的殘檔無法自動清除，每次build都要手動刪掉原先apk檔
+            //outputFileName = "../../../output/"+fileName
             outputFileName = fileName
         }
     }
 
-    /*   walle {
-           // 指定渠道包的输出路径
-           apkOutputFolder = new File("${project.buildDir}/outputs/channels")
-           // 定制渠道包的APK的文件名称
-           apkFileNameFormat = '${appName}-${packageName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}.apk'
-           // 渠道配置文件
-           channelFile = new File("${project.getProjectDir()}/channel")
-       }
-   */
-    flavorDimensions("needLogin")
+    flavorDimensions("futsu")
 
     productFlavors {
-        optionalLogin {
-            buildConfigField("boolean", "needLogin", "false")
+        futsu {
+            buildConfigField("boolean", "futsu", "false")
         }
-        /* forceLogin {
-               buildConfigField("boolean","needLogin","true")
-          }*/
+
     }
 
     //
@@ -217,6 +209,19 @@ realm {
     syncEnabled = true
 }
 
+// export JAVA_HOME='/Applications/Android Studio.app/Contents/jre/jdk/Contents/Home'
+// ./gradlew clean assemblefutsuReleaseChannels
+// channel會從apk filename取得
+
+walle {
+    // 指定渠道包的输出路径
+    apkOutputFolder = new File("${project.buildDir}/outputs/channels")
+    // 定制渠道包的APK的文件名称
+    apkFileNameFormat = 'cc-${channel}-${buildType}-${versionName}.apk'
+    // 渠道配置文件
+    channelFile = new File("${project.getProjectDir()}/channel.txt")
+}
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 //    implementation project(':StackBlur')
@@ -240,7 +245,7 @@ dependencies {
     //support
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.3.0'
 
@@ -253,7 +258,7 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$RXANDROID_VERSION"
 
     //RXView
-    implementation 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+    implementation 'com.jakewharton.rxbinding2:rxbinding:2.2.0'
     implementation "com.trello.rxlifecycle2:rxlifecycle:$RXLIFE_VERSION"
     implementation "com.trello.rxlifecycle2:rxlifecycle-android:$RXLIFE_VERSION"
     implementation "com.trello.rxlifecycle2:rxlifecycle-kotlin:$RXLIFE_VERSION"
@@ -270,51 +275,31 @@ dependencies {
     }
     implementation "com.github.bumptech.glide:okhttp3-integration:$GLIDE_VERSION"
     implementation "com.github.bumptech.glide:recyclerview-integration:${GLIDE_VERSION}@aar"
-    implementation 'jp.wasabeef:glide-transformations:3.0.1'  //高斯模糊
+    implementation 'jp.wasabeef:glide-transformations:4.3.0'  //高斯模糊
 
     kapt "com.github.bumptech.glide:compiler:$GLIDE_VERSION"
 
 
-    //lifecycles
-//    implementation "android.arch.lifecycle:runtime:$ARCHITECTURE_VERSION"
-//    implementation "android.arch.lifecycle:common-java8:$ARCHITECTURE_VERSION"
-//    implementation "android.arch.lifecycle:extensions:$ARCHITECTURE_VERSION"
-//    implementation "android.arch.lifecycle:reactivestreams:$ARCHITECTURE_VERSION"
-    //kapt "android.arch.lifecycle:compiler:$ARCHITECTURE_VERSION"
+    //Retrofit+kotlin Coroutines（协程）+mvvm（Jetpack架构组件）实现更简洁的网络请求
+    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
 
 
-    //compileOnly 'org.glassfish:javax.annotation:10.0-b28'
+
 
     //xLog
-    implementation 'com.elvishew:xlog:1.6.1'
-
-    //router
-//    implementation 'com.github.mzule.activityrouter:activityrouter:1.2.2'
-//    kapt 'com.github.mzule.activityrouter:compiler:1.1.7'
+    implementation 'com.elvishew:xlog:1.9.0'
 
     //pullrefresh
-//    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.4-7'
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-5'
-    //banner
-//    implementation 'com.youth.banner:banner:1.4.10'
 
-    //rebound animation
-//    implementation 'com.facebook.rebound:rebound:0.3.8'
-    /*implementation("com.github.hotchemi:permissionsdispatcher:3.2.0") {
-         // if you don't use android.app.Fragment you can exclude support for them
-         exclude module: "support-v13"
-     }*/
-    //  kapt "com.github.hotchemi:permissionsdispatcher-processor:3.2.0"
-
-    //权限
-    // implementation 'com.yanzhenjie:permission:1.1.2'
 
     implementation('com.bilibili:boxing-impl:1.0.2') {
         exclude group: 'com.android.support', module: 'appcompat-v7'
     }
-//    implementation('com.github.yalantis:ucrop:2.2.2') {
-//        exclude group: 'com.android.support', module: 'appcompat-v7'
-//    }
 
     implementation 'com.hyman:flowlayout-lib:1.1.2'
 
@@ -325,43 +310,23 @@ dependencies {
     implementation('com.contrarywind:Android-PickerView:4.1.3') {
         exclude group: 'com.android.support', module: 'appcompat-v7'
     }
-/*    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'*/
+
     implementation 'com.ms-square:expandableTextView:0.1.4'
 
     //////////////////////友盟
-    implementation 'com.umeng.sdk:common:1.5.0'
+    implementation 'com.umeng.sdk:common:1.5.3'
     //implementation 'com.umeng.sdk:utdid:1.1.5.3'
 
-    implementation 'com.umeng.sdk:analytics:7.5.0'
-    /*implementation 'com.umeng.sdk:push:4.1.0'
-
-    implementation 'com.umeng.sdk:share-core:6.9.1'
-    implementation 'com.umeng.sdk:share-qq:6.9.1.1'
-    implementation('com.umeng.sdk:share-wechat:6.9.1')
-    implementation 'com.umeng.sdk:share-sina:6.9.1'
-    implementation 'com.umeng.sdk:share-sina:6.9.1'
-
-    implementation 'com.umeng.sdk:push-xiaomi:1.0.0'
-    implementation 'com.umeng.sdk:push-meizu:1.0.0'
-    implementation 'com.umeng.sdk:push-huawei:1.0.0'*/
+    implementation 'com.umeng.sdk:analytics:7.5.3'
 
     implementation 'com.sunfusheng:marqueeview:1.3.3'
     implementation 'com.github.ikidou:FragmentBackHandler:2.1'
 
-    implementation 'com.robinhood.ticker:ticker:2.0.1'
+    implementation 'com.robinhood.ticker:ticker:2.0.2'
 
     implementation 'io.realm:android-adapters:2.1.1'
 
-//    implementation 'jp.wasabeef:glide-transformations:3.0.1'
-    // If you want to use the GPU Filters
-//    implementation 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
-
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
-
-//    implementation project(':7moor')
-
-    //implementation 'com.lijiankun24:shadowlayout:1.1.0'
 
     implementation 'com.tencent:mmkv:1.0.15'
 
@@ -373,7 +338,7 @@ dependencies {
     annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
 
     //implementation 'com.jaeger.statusbaruitl:library:1.1.1'
-    implementation 'jp.wasabeef:glide-transformations:3.0.1'
+    implementation 'jp.wasabeef:glide-transformations:4.3.0'
     implementation 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
 
     implementation('com.alibaba.android:ultraviewpager:1.0.7.7@aar') {
@@ -387,67 +352,20 @@ dependencies {
 
     implementation 'com.aliyun.ams:alicloud-android-hotfix:3.2.14'
 
-    implementation 'com.koushikdutta.ion:ion:2.2.1'
+    implementation 'com.koushikdutta.ion:ion:3.1.0'
 
-    implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
+    implementation 'com.journeyapps:zxing-android-embedded:3.6.0'  //4.2.0的MinSDK需要24故不升
 
 
     //ijkplay --- dkplayer
     //必选，内部默认使用系统mediaplayer进行解码
-    /* implementation 'com.github.dueeeke.dkplayer:dkplayer-java:3.2.6'
-
-     //可选，包含StandardVideoController的实现
-     implementation 'com.github.dueeeke.dkplayer:dkplayer-ui:3.2.6'
-
-     //可选，使用exoplayer进行解码
-     implementation 'com.github.dueeeke.dkplayer:player-exo:3.2.6'
-
-     //可选，使用ijkplayer进行解码
-     implementation 'com.github.dueeeke.dkplayer:player-ijk:3.2.6'
-
-     //可选，如需要缓存或者抖音预加载功能请引入此库
-     implementation 'com.github.dueeeke.dkplayer:videocache:3.2.6'*/
-    implementation 'com.alibaba:fastjson:1.2.73'
+    implementation 'com.alibaba:fastjson:1.2.76'
     //指示器
-    implementation 'com.github.hackware1993:MagicIndicator:1.5.0'
+    implementation 'com.github.hackware1993:MagicIndicator:1.7.0'
     implementation project(':dkplayer-java')
     implementation project(':dkplayer-ui')
     implementation project(path: ':dkplayer-players:ijk')
 
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.8.1'
-
-    //implementation 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.20'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
 
 }
-
-andResGuard {
-    mappingFile = file("./resource_mapping.txt")
-    use7zip = true
-    useSign = true
-    keepRoot = false
-    mergeDuplicatedRes = true
-    // add <yourpackagename>.R.drawable.icon into whitelist.
-    // because the launcher will get the icon with his name
-    whiteList = ["R.mipmap.ic_launcher",
-                 //https://docs.fabric.io/android/crashlytics/build-tools.html
-                 "R.string.com.crashlytics.*",
-                 "R.id.*"]
-    compressFilePattern = ["*.png",
-                           "*.jpg",
-                           "*.jpeg",
-                           "*.gif",
-                           "resources.arsc"]
-    sevenzip {
-        artifact = "com.tencent.mm:SevenZip:1.2.20"
-        //path = "/usr/local/bin/7za"
-    }
-
-    /**
-     * Optional: if finalApkBackupPath is null, AndResGuard will overwrite final apk
-     * to the path which assemble[Task] write to*/
-    finalApkBackupPath = "${project.rootDir}/final.apk"
-    digestalg = "SHA-256"
-}
-//极光推送
-/* implementation 'cn.jiguang.sdk:jpush:3.3.4'  // 此处以JPush 3.3.4 版本为例。
- implementation 'cn.jiguang.sdk:jcore:2.1.2'  */// 此处以JCore 2.1.2 版本为例。

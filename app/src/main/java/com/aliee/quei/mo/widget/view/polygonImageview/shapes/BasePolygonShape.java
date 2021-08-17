@@ -7,7 +7,7 @@ import android.graphics.Path;
  */
 public abstract class BasePolygonShape implements PolygonShape {
 
-    private Path mPath;
+    private final Path mPath;
     private PolygonShapeSpec polygonShapeSpec;
 
     public BasePolygonShape() {

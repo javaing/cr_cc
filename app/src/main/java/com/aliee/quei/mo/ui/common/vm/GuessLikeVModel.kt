@@ -1,57 +1,47 @@
 package com.aliee.quei.mo.ui.common.vm
 
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MediatorLiveData
 import com.aliee.quei.mo.base.BaseViewModel
-import com.aliee.quei.mo.base.response.ListStatusResourceObserver
-import com.aliee.quei.mo.base.response.StatusResourceObserver
-import com.aliee.quei.mo.base.response.UIDataBean
-import com.aliee.quei.mo.base.response.UIListDataBean
+import com.aliee.quei.mo.base.response.*
 import com.aliee.quei.mo.component.CommonDataProvider
 import com.aliee.quei.mo.data.BeanConstants
-import com.aliee.quei.mo.data.bean.ComicBookBean
-import com.aliee.quei.mo.data.bean.RecommendBookBean
-import com.aliee.quei.mo.data.repository.CategoryRepository
-import com.aliee.quei.mo.data.repository.RecommendRepository
+import com.aliee.quei.mo.data.bean.*
+import com.aliee.quei.mo.data.service.CategoryService
+import com.aliee.quei.mo.data.service.RecommendService
+import com.aliee.quei.mo.net.retrofit.RetrofitClient
 
 class GuessLikeVModel : BaseViewModel() {
-    private val recommendRunnable = RecommendRepository()
-    private val categoryRepository = CategoryRepository()
-    val guessLikeLiveData = MediatorLiveData<UIDataBean<List<RecommendBookBean>>>()
+    private val recommendService = RetrofitClient.createService(RecommendService::class.java)
+    private val categoryService = RetrofitClient.createService(CategoryService::class.java)
+
+    val guessLikeLiveData = MediatorLiveData<UIDataBean<MutableList<RecommendBookBean>>>()
     val sameCategoryLiveData = MediatorLiveData<UIListDataBean<ComicBookBean>>()
-    val hotRecommendLiveData = MediatorLiveData<UIDataBean<List<RecommendBookBean>>>()
 
-    fun getGuessLike(
-        lifecycleOwner: LifecycleOwner,
-        bookid: Int,
-        typename: String = "") {
+
+    fun getGuessLike(typename: String = "") {
         val categoryBean = CommonDataProvider.instance.categoryConfig?.find {
             it.typename == typename
         }
         if (categoryBean != null) {
-            categoryRepository.getList(lifecycleOwner,categoryBean.id,
-                BeanConstants.SEX_ALL,
-                BeanConstants.STATUS_ALL,1,20)
-                .subscribe(ListStatusResourceObserver(sameCategoryLiveData))
-        }
-        recommendRunnable.getRecommend(lifecycleOwner, BeanConstants.RecommendPosition.GUESS_LIKE.rid)
-            .subscribe(StatusResourceObserver(guessLikeLiveData))
-    }
+            viewModelLaunch({
+                val list = ListBean<ComicBookBean>()
+                list.pageSize = 20
+                list.page = 1
+                list.list = categoryService.getList(categoryBean.id,BeanConstants.SEX_ALL,BeanConstants.STATUS_ALL,1,20).dataConvert()
 
-    fun getHotRecommend(
-        lifecycleOwner: LifecycleOwner,
-        bookid: Int,
-        typename: String = "") {
-        val categoryBean = CommonDataProvider.instance.categoryConfig?.find {
-            it.typename == typename
+                sameCategoryLiveData.value = UIListDataBean(Status.Success, list.list)
+            },{
+                sameCategoryLiveData.value = UIListDataBean(Status.Error, mutableListOf())
+            })
+
         }
-        if (categoryBean != null) {
-            categoryRepository.getList(lifecycleOwner,categoryBean.id,
-                BeanConstants.SEX_ALL,
-                BeanConstants.STATUS_ALL,1,20)
-                .subscribe(ListStatusResourceObserver(sameCategoryLiveData))
-        }
-        recommendRunnable.getRecommend(lifecycleOwner, BeanConstants.RecommendPosition.HOT_RECOMMEND.rid)
-            .subscribe(StatusResourceObserver(hotRecommendLiveData))
+//        recommendRunnable.getRecommend(lifecycleOwner, BeanConstants.RecommendPosition.GUESS_LIKE.rid)
+//            .subscribe(StatusResourceObserver(guessLikeLiveData))
+        viewModelLaunch ({
+            val id = BeanConstants.RecommendPosition.GUESS_LIKE.rid
+            guessLikeLiveData.value =  recommendService.getRecommendK(id).data?.getByRid(id)
+        },{
+            guessLikeLiveData.value = UIDataBean(Status.Error)
+        })
     }
 }

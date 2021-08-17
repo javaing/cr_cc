@@ -6,6 +6,7 @@ import com.aliee.quei.mo.component.GsonProvider
 import com.aliee.quei.mo.net.ApiConstants
 import com.aliee.quei.mo.utils.FileUtils
 import com.aliee.quei.mo.utils.SharedPreUtils
+import com.aliee.quei.mo.utils.SharedPreUtils.Key_ApiDomain
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -62,15 +63,13 @@ object RetrofitClient {
     }
 
     //获取Retrofit的实力
-    private fun retrofit(): Retrofit {
-//        val gson = GsonBuilder()
-//            .registerTypeAdapter(List<T>,ListDefaultAdapter<T>)
-        var domain = ApiConstants.API_HOST
+    private fun retrofit(apihost:String, defaultHost:String, prefKeyName:String): Retrofit {
+        var domain = apihost
         if (domain.isNullOrEmpty()) {
-            domain = SharedPreUtils.getInstance().getString("apiDomain")
+            domain = SharedPreUtils.getInstance().getString(prefKeyName)
         }
         if (domain.isNullOrEmpty()) {
-            domain = "http://api.7775367.com/"
+            domain = defaultHost
         }
         return Retrofit.Builder()
                 .baseUrl(domain)
@@ -82,7 +81,12 @@ object RetrofitClient {
 
     //获取接口的Service
     fun <T> createService(serviceClass: Class<T>): T {
-        return retrofit().create(serviceClass)
+        return retrofit(ApiConstants.API_HOST,"http://api.7775367.com/",Key_ApiDomain).create(serviceClass)
+    }
+
+
+    fun <T> createVideoService(serviceClass: Class<T>): T {
+        return retrofit(ApiConstants.VIDEO_API_PATH, ApiConstants.DEFAULT_VIDEO_API_PATH, "" ).create(serviceClass)
     }
 
 }

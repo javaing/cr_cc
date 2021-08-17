@@ -37,6 +37,6 @@ class ImageLoadListener(private val imageView : ImageView) : RequestListener<Bit
         dataSource: DataSource?,
         isFirstResource: Boolean
     ): Boolean {
-        return false;
+        return false
     }
 }

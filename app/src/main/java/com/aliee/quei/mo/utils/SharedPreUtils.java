@@ -12,8 +12,8 @@ import com.aliee.quei.mo.application.ReaderApplication;
 public class SharedPreUtils {
     private static final String SHARED_NAME = "IReader_pref";
     private static SharedPreUtils sInstance;
-    private SharedPreferences sharedReadable;
-    private SharedPreferences.Editor sharedWritable;
+    private final SharedPreferences sharedReadable;
+    private final SharedPreferences.Editor sharedWritable;
 
     private static final String SHARED_SHARE_COUNT = "share.count";
     private static final String SHARED_REWARD_TOTAL = "share.reward.total";
@@ -21,6 +21,11 @@ public class SharedPreUtils {
 
 
     private static final String IS_FIRST_OPEN = "app.open";
+
+    public static final String Key_ApiDomain = "apiDomain";
+    public static final String Key_CSRoute = "csRoute";
+    public static final String Key_ISHIDEVIDEO = "ISHIDEVIDEO";
+
 
     private SharedPreUtils() {
         sharedReadable = ReaderApplication.Companion.getInstance()

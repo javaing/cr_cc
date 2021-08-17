@@ -15,6 +15,7 @@ import com.aliee.quei.mo.base.BaseActivity
 import com.aliee.quei.mo.router.ARouterManager
 import com.aliee.quei.mo.router.Path
 import com.aliee.quei.mo.utils.SharedPreUtils
+import com.aliee.quei.mo.utils.SharedPreUtils.Key_CSRoute
 import com.aliee.quei.mo.utils.extention.click
 import kotlinx.android.synthetic.main.activity_custom_service.*
 import kotlinx.android.synthetic.main.layout_title.*
@@ -71,7 +72,7 @@ class CustomServiceActivity : BaseActivity(){
 
 
     override fun initData() {
-        val csUrl = SharedPreUtils.getInstance().getString("csRoute")
+        val csUrl = SharedPreUtils.getInstance().getString(Key_CSRoute)
         Log.d("CustomServiceActivity", "CSUrl:"+csUrl)
         webView.loadUrl(csUrl)
     }
@@ -198,7 +199,7 @@ class CustomServiceActivity : BaseActivity(){
 
     override fun onBackPressed() {
         super.onBackPressed()
-        ARouterManager.goMainActivity(
+        ARouterManager.goContentActivity(
                 this,
                 showPage = ARouterManager.TAB_SHOP,
                 showTab = ARouterManager.TAB_SHOP

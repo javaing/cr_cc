@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aliee.quei.mo.utils.SharedPreUtils;
 import com.bumptech.glide.Glide;
 import com.aliee.quei.mo.R;
 import com.aliee.quei.mo.utils.extention.ImageViewEXKt;
@@ -104,9 +105,8 @@ public class BottomBarTab extends RelativeLayout {
         if (position == 0) {
             setSelected(true);
         }
-
         if (position == 2) {
-           ViewGroup.LayoutParams params = mIcon.getLayoutParams();
+            ViewGroup.LayoutParams params = mIcon.getLayoutParams();
             params.width = 100;
             params.height = 100;
             mIcon.setLayoutParams(params);

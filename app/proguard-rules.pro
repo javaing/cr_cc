@@ -8,9 +8,7 @@
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface
 # class:
--keepclassmembers class fqcn.of.javascript.interface.for.webview {
-   public *;
-}
+
 
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
@@ -44,7 +42,6 @@
 
 # exclusions for Retrofit
 -dontnote retrofit2.Platform
--dontwarn retrofit2.Platform$Java8
 -keepattributes Signature
 -keepattributes Exceptions
 
@@ -53,12 +50,7 @@
     long producerIndex;
     long consumerIndex;
 }
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode producerNode;
-}
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode consumerNode;
-}
+
 -dontwarn sun.misc.Unsafe
 # Retain generic type information for use by reflection by converters and adapters.
 -keepattributes Signature
@@ -86,12 +78,6 @@
 
 ####################vLayout
 -keepattributes InnerClasses
--keep class com.alibaba.android.vlayout.ExposeLinearLayoutManagerEx { *; }
--keep class android.support.v7.widget.RecyclerView$LayoutParams { *; }
--keep class android.support.v7.widget.RecyclerView$ViewHolder { *; }
--keep class android.support.v7.widget.ChildHelper { *; }
--keep class android.support.v7.widget.ChildHelper$Bucket { *; }
--keep class android.support.v7.widget.RecyclerView$LayoutManager { *; }
 
 #####################bugly
 -dontwarn com.tencent.bugly.**
@@ -143,10 +129,7 @@
 -keep class com.tencent.**{*;}
 
 ################################
--keep class com.aliee.quei.mo.data.bean.*{*;}
--keep class com.aliee.quei.mo.base.reponse.BaseReponse
-
--keep class com.aliee.quei.mo.base.reponse.ListBean
+-keep class com.aliee.quei.mo.data.**{*;}
 -keepclasseswithmembernames class com.hkzy.data.bean.**{*;}
 -keep class com.hkzy.database.bean.**{*;}
 
@@ -194,49 +177,7 @@
     *;
 }
 
--keep class com.tencent.tbs.video.interfaces.IUserStateChangedListener {
-	*;
-}
 
--keep class com.tencent.smtt.sdk.CacheManager {
-	public *;
-}
-
--keep class com.tencent.smtt.sdk.CookieManager {
-	public *;
-}
-
--keep class com.tencent.smtt.sdk.WebHistoryItem {
-	public *;
-}
-
--keep class com.tencent.smtt.sdk.WebViewDatabase {
-	public *;
-}
-
--keep class com.tencent.smtt.sdk.WebBackForwardList {
-	public *;
-}
-
--keep public class com.tencent.smtt.sdk.WebView {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.WebView$HitTestResult {
-	public static final <fields>;
-	public java.lang.String getExtra();
-	public int getType();
-}
-
--keep public class com.tencent.smtt.sdk.WebView$WebViewTransport {
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.WebView$PictureListener {
-	public <fields>;
-	public <methods>;
-}
 
 
 -keepattributes InnerClasses
@@ -249,40 +190,9 @@
     *;
 }
 
--keep public class com.tencent.smtt.sdk.WebSettings {
-    public *;
-}
-
 
 -keepattributes Signature
--keep public class com.tencent.smtt.sdk.ValueCallback {
-	public <fields>;
-	public <methods>;
-}
 
--keep public class com.tencent.smtt.sdk.WebViewClient {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.DownloadListener {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.WebChromeClient {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.WebChromeClient$FileChooserParams {
-	public <fields>;
-	public <methods>;
-}
-
--keep class com.tencent.smtt.sdk.SystemWebChromeClient{
-	public *;
-}
 # 1. extension interfaces should be apparent
 -keep public class com.tencent.smtt.export.external.extension.interfaces.* {
 	public protected *;
@@ -293,148 +203,23 @@
 	public protected *;
 }
 
--keep public class com.tencent.smtt.sdk.WebViewCallbackClient {
-	public protected *;
-}
 
--keep public class com.tencent.smtt.sdk.WebStorage$QuotaUpdater {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.WebIconDatabase {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.WebStorage {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.DownloadListener {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.QbSdk {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.QbSdk$PreInitCallback {
-	public <fields>;
-	public <methods>;
-}
--keep public class com.tencent.smtt.sdk.CookieSyncManager {
-	public <fields>;
-	public <methods>;
-}
 
 -keep public class com.tencent.smtt.sdk.Tbs* {
 	public <fields>;
 	public <methods>;
 }
 
--keep public class com.tencent.smtt.utils.LogFileUtils {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.utils.TbsLog {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.utils.TbsLogClient {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.CookieSyncManager {
-	public <fields>;
-	public <methods>;
-}
-
-# Added for game demos
--keep public class com.tencent.smtt.sdk.TBSGamePlayer {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.TBSGamePlayerClient* {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.TBSGamePlayerClientExtension {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.TBSGamePlayerService* {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.utils.Apn {
-	public <fields>;
-	public <methods>;
-}
 -keep class com.tencent.smtt.** {
 	*;
 }
 # end
 
 
--keep public class com.tencent.smtt.export.external.extension.proxy.ProxyWebViewClientExtension {
-	public <fields>;
-	public <methods>;
-}
-
--keep class MTT.ThirdAppInfoNew {
-	*;
-}
-
--keep class com.tencent.mtt.MttTraceEvent {
-	*;
-}
-
-# Game related
--keep public class com.tencent.smtt.gamesdk.* {
-	public protected *;
-}
-
--keep public class com.tencent.smtt.sdk.TBSGameBooter {
-        public <fields>;
-        public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.TBSGameBaseActivity {
-	public protected *;
-}
-
--keep public class com.tencent.smtt.sdk.TBSGameBaseActivityProxy {
-	public protected *;
-}
-
--keep public class com.tencent.smtt.gamesdk.internal.TBSGameServiceClient {
-	public *;
-}
 -dontwarn com.just.agentweb.**
 
 -dontwarn com.alipay.**
 
--keep class com.alipay.android.app.IAlixPay{*;}
--keep class com.alipay.android.app.IAlixPay$Stub{*;}
--keep class com.alipay.android.app.IRemoteServiceCallback{*;}
--keep class com.alipay.android.app.IRemoteServiceCallback$Stub{*;}
--keep class com.alipay.sdk.app.PayTask{ public *;}
--keep class com.alipay.sdk.app.AuthTask{ public *;}
--keep class com.alipay.sdk.app.H5PayCallback {
-    <fields>;
-    <methods>;
-}
 -keep class com.alipay.android.phone.mrpc.core.** { *; }
 -keep class com.alipay.apmobilesecuritysdk.** { *; }
 -keep class com.alipay.mobile.framework.service.annotation.** { *; }
@@ -451,50 +236,6 @@
     *;
 }
 
--keep class com.tencent.tbs.video.interfaces.IUserStateChangedListener {
-	*;
-}
-
--keep class com.tencent.smtt.sdk.CacheManager {
-	public *;
-}
-
--keep class com.tencent.smtt.sdk.CookieManager {
-	public *;
-}
-
--keep class com.tencent.smtt.sdk.WebHistoryItem {
-	public *;
-}
-
--keep class com.tencent.smtt.sdk.WebViewDatabase {
-	public *;
-}
-
--keep class com.tencent.smtt.sdk.WebBackForwardList {
-	public *;
-}
-
--keep public class com.tencent.smtt.sdk.WebView {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.WebView$HitTestResult {
-	public static final <fields>;
-	public java.lang.String getExtra();
-	public int getType();
-}
-
--keep public class com.tencent.smtt.sdk.WebView$WebViewTransport {
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.WebView$PictureListener {
-	public <fields>;
-	public <methods>;
-}
-
 
 -keepattributes InnerClasses
 
@@ -506,40 +247,6 @@
     *;
 }
 
--keep public class com.tencent.smtt.sdk.WebSettings {
-    public *;
-}
-
-
--keepattributes Signature
--keep public class com.tencent.smtt.sdk.ValueCallback {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.WebViewClient {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.DownloadListener {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.WebChromeClient {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.WebChromeClient$FileChooserParams {
-	public <fields>;
-	public <methods>;
-}
-
--keep class com.tencent.smtt.sdk.SystemWebChromeClient{
-	public *;
-}
 # 1. extension interfaces should be apparent
 -keep public class com.tencent.smtt.export.external.extension.interfaces.* {
 	public protected *;
@@ -550,134 +257,19 @@
 	public protected *;
 }
 
--keep public class com.tencent.smtt.sdk.WebViewCallbackClient {
-	public protected *;
-}
-
--keep public class com.tencent.smtt.sdk.WebStorage$QuotaUpdater {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.WebIconDatabase {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.WebStorage {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.DownloadListener {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.QbSdk {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.QbSdk$PreInitCallback {
-	public <fields>;
-	public <methods>;
-}
--keep public class com.tencent.smtt.sdk.CookieSyncManager {
-	public <fields>;
-	public <methods>;
-}
 
 -keep public class com.tencent.smtt.sdk.Tbs* {
 	public <fields>;
 	public <methods>;
 }
 
--keep public class com.tencent.smtt.utils.LogFileUtils {
-	public <fields>;
-	public <methods>;
-}
 
--keep public class com.tencent.smtt.utils.TbsLog {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.utils.TbsLogClient {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.CookieSyncManager {
-	public <fields>;
-	public <methods>;
-}
-
-# Added for game demos
--keep public class com.tencent.smtt.sdk.TBSGamePlayer {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.TBSGamePlayerClient* {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.TBSGamePlayerClientExtension {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.TBSGamePlayerService* {
-	public <fields>;
-	public <methods>;
-}
-
--keep public class com.tencent.smtt.utils.Apn {
-	public <fields>;
-	public <methods>;
-}
 -keep class com.tencent.smtt.** {
 	*;
 }
 # end
 
 
--keep public class com.tencent.smtt.export.external.extension.proxy.ProxyWebViewClientExtension {
-	public <fields>;
-	public <methods>;
-}
-
--keep class MTT.ThirdAppInfoNew {
-	*;
-}
-
--keep class com.tencent.mtt.MttTraceEvent {
-	*;
-}
-
-# Game related
--keep public class com.tencent.smtt.gamesdk.* {
-	public protected *;
-}
-
--keep public class com.tencent.smtt.sdk.TBSGameBooter {
-        public <fields>;
-        public <methods>;
-}
-
--keep public class com.tencent.smtt.sdk.TBSGameBaseActivity {
-	public protected *;
-}
-
--keep public class com.tencent.smtt.sdk.TBSGameBaseActivityProxy {
-	public protected *;
-}
-
--keep public class com.tencent.smtt.gamesdk.internal.TBSGameServiceClient {
-	public *;
-}
 #arouter
 -keep public class com.alibaba.android.arouter.routes.**{*;}
 -keep public class com.alibaba.android.arouter.facade.**{*;}
@@ -689,7 +281,6 @@
 -keep class * implements com.alibaba.android.arouter.facade.template.IProvider
 
 
--keep public class * extends android.support.v4.app.Fragment
 -keep public class * extends android.app.Fragment
 
 #Sophix
@@ -716,7 +307,6 @@
 
 -dontwarn cn.jpush.**
 -keep class cn.jpush.** { *; }
--keep class * extends cn.jpush.android.helpers.JPushMessageReceiver { *; }
 
 -dontwarn cn.jiguang.**
 -keep class cn.jiguang.** { *; }

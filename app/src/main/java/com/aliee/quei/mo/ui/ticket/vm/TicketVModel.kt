@@ -9,7 +9,7 @@ import com.aliee.quei.mo.data.bean.ListBean
 import com.aliee.quei.mo.data.bean.TicketBean
 import com.aliee.quei.mo.data.repository.TicketRepository
 
-class TicketVModel () :BaseViewModel() {
+class TicketVModel :BaseViewModel() {
     private val ticketRepository = TicketRepository()
     val ticketLiveData = MediatorLiveData<UIDataBean<ListBean<TicketBean>>>()
     val ticketReceiveLiveData = MediatorLiveData<UIDataBean<TicketBean>>()

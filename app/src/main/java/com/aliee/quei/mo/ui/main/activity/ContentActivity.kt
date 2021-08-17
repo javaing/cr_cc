@@ -2,8 +2,6 @@ package com.aliee.quei.mo.ui.main.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Observer
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
@@ -12,14 +10,17 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Handler
-import androidx.core.app.ActivityCompat
-import androidx.appcompat.app.AlertDialog
+import android.os.SystemClock
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
@@ -36,7 +37,6 @@ import com.aliee.quei.mo.data.bean.AdBean
 import com.aliee.quei.mo.data.bean.UserInfoBean
 import com.aliee.quei.mo.data.bean.VersionInfoBean
 import com.aliee.quei.mo.data.exception.RequestException
-import com.aliee.quei.mo.net.imageloader.glide.GlideApp
 import com.aliee.quei.mo.router.ARouterManager
 import com.aliee.quei.mo.router.Path
 import com.aliee.quei.mo.service.VersionUpdate
@@ -51,17 +51,15 @@ import com.aliee.quei.mo.utils.extention.*
 import com.aliee.quei.mo.utils.rxjava.RxBus
 import com.aliee.quei.mo.widget.view.bottombar.BottomBar
 import com.aliee.quei.mo.widget.view.bottombar.BottomBarTab
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.dueeeke.videoplayer.player.VideoViewManager
 import com.elvishew.xlog.XLog
 import com.github.ikidou.fragmentBackHandler.BackHandlerHelper
-import com.google.gson.Gson
 import com.taobao.sophix.SophixManager
 import kotlinx.android.synthetic.main.activity_comic_read.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.layoutDailyReward
-import kotlinx.android.synthetic.main.activity_main.tvCoinsGive
+import kotlinx.android.synthetic.main.fragment_video_chlid.*
+import kotlinx.android.synthetic.main.layout_common_list.*
+import kotlinx.android.synthetic.main.video_auto_play_switch.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -72,11 +70,15 @@ import java.util.*
 @Route(path = Path.PATH_CONTENT_ACTIVITY, name = "主界面")
 class ContentActivity : BaseActivity() {
     private val adVm = AdVModel()
-    private val VM = MainVModel()
+    //private val VM = MainVModel()
+    private val vmK = MainVModel()
     private val launchModel = LaunchVModel()
     private var screenWidth: Int = 0
     private var screenHeight: Int = 0
-    var mCurrentIndex = 0
+
+    //10分鐘之內不再重複問VideoHide
+    private val VideoHideFlagCache = 1000*60*10
+    private var mLastClickTime = 0L
 
     /**
      * 打开首页后 随即打开的页面
@@ -116,7 +118,52 @@ class ContentActivity : BaseActivity() {
     override fun getLayoutId() = R.layout.activity_main
     private val tabSelectedListener: BottomBar.OnTabSelectedListener = object : BottomBar.OnTabSelectedListener {
         override fun onTabSelected(position: Int, prePosition: Int) {
-            Log.d("tag", "onTabSelected:${position},prePostion:${prePosition}")
+            Log.e("tag", "onTabSelected:${position},prePostion:${prePosition}")
+
+            //視頻，長視頻先打api
+            if(position==2 || position==3) {
+
+                //註冊一次就好
+                if(mLastClickTime==0L) {
+                    vmK.channelHideLiveData.observe(this@ContentActivity, Observer { it ->
+                        when (it?.status) {
+                            Status.Success -> {
+                                val bean = it.data ?: return@Observer
+                                ReaderApplication.instance.updateIsHideVideo(bean)
+                                isHideOrNot(position, prePosition)
+                            }
+                            Status.Error -> {
+                                Log.e("tag", it.toString())
+                                switchPage(position, prePosition)
+                            }
+                        }
+                    })
+                }
+
+                Log.e("tag", "VideoHide API cache:"+(SystemClock.elapsedRealtime() - mLastClickTime)/1000)
+                if (SystemClock.elapsedRealtime() - mLastClickTime < VideoHideFlagCache){ //10分鐘之內不再重複問
+                    Log.e("tag", "Bingo! not need ask VideoHide")
+                    isHideOrNot(position, prePosition)
+                    return
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                vmK.getUserChannelHide()
+            } else {
+                switchPage(position, prePosition)
+            }
+
+        }
+
+        fun isHideOrNot(position: Int, prePosition: Int) {
+            val isHide = SharedPreUtils.getInstance().getBoolean(SharedPreUtils.Key_ISHIDEVIDEO, false)
+            if(isHide) {
+                showDialog("","视频维护中")
+            } else {
+                switchPage(position, prePosition)
+            }
+        }
+
+        fun switchPage(position: Int, prePosition: Int) {
             if (prePosition == 0 && position == 3) {
                 //漫画首页到个人中心
                 RxBus.getInstance().post(EventToMineFrom(true))
@@ -129,30 +176,20 @@ class ContentActivity : BaseActivity() {
                 //移除正在播放的播放器
                 VideoViewManager.instance().releaseByTag("list")
             }
-            // if (position != 4) {R
+
+
             prePage = prePosition
             showPage = position
             showPage()
-            /*  } else {
-                    val dialog = AlertDialog.Builder(this@ContentActivity)
-                            .setMessage(getString(R.string.csenter))
-                            .setPositiveButton(getString(R.string.confirm)) { dialog, which ->
-                                dialog.dismiss()
-                                ARouterManager.goCustomServiceActivity(this@ContentActivity)
-                            }
-                            .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
-                                dialog.dismiss()
-
-                            }.create()
-                    dialog.show()
-                }*/
+            showScrollToTop()
         }
+
 
         override fun onTabUnselected(position: Int) {
         }
 
         override fun onTabReselected(position: Int) {
-//            listFragment.getOrNull(position)?.scrollToTop()
+            //listFragment.getOrNull(position)?.scrollToTop()
         }
     }
 
@@ -164,6 +201,8 @@ class ContentActivity : BaseActivity() {
             ARouter.getInstance().build(url).navigation(this)
         }
     }
+
+
 
 
     private var isFirstShow = true
@@ -188,12 +227,12 @@ class ContentActivity : BaseActivity() {
         intent?.let {
             if (!url.isNullOrEmpty()) {
                 ARouter.getInstance().build(Uri.parse(url))
-                        .navigation(this)
+                    .navigation(this)
             }
         }
 
         if (!SharedPreUtils.getInstance().getBoolean("hasOpenChannelChapter", false)) {
-            VM.getUserChannelInfo(this)
+            vmK.getUserChannelInfo()
         }
 
 
@@ -214,27 +253,28 @@ class ContentActivity : BaseActivity() {
 
         var userInfo = CommonDataProvider.instance.getUserInfo()
         if (userInfo == null) {
-            launchModel.retryUserInfo(this) {
+            launchModel.retryUserInfo() {
                 userInfo = it
             }
         }
         userInfo?.let {
             if (userInfo?.tempUid != null) {
                 //临时用户tempuid不为null
-                VM.updateAppget(this, userInfo?.id!!, 1)
+                vmK.updateAppget( userInfo?.id!!, 1)
             } else {
                 //注册用户tempuid为null，uid不为空
-                VM.updateAppget(this, userInfo?.uid!!, 0)
+                vmK.updateAppget( userInfo?.uid!!, 0)
             }
         }
-        VM.getVideoDomain(this)
-        VM.videoMemberInfo(this)
-        VM.mainTags(this)
-        VM.autoPlay(this)
-        VM.getSignAd(this)
+        //VM.getVideoDomain(this)
+        vmK.videoMemberInfo()
+        vmK.mainTags()
+        vmK.autoPlay()
+        vmK.getSignAd()
 
-       adVm.getAdList(this, 1)
+        adVm.getAdList(1)
 
+        vmK.getVideoDomain()
     }
 
 
@@ -251,22 +291,25 @@ class ContentActivity : BaseActivity() {
 
     }
 
+
+
     @SuppressLint("CheckResult")
     private fun initVM() {
-//        VM.checkInLiveData.observe(this, Observer {
+
+//        launchModel.channelHideLiveData.observe(this, Observer { it ->
 //            when (it?.status) {
 //                Status.Success -> {
 //                    val bean = it.data ?: return@Observer
-//                    showSignNotification(bean)
-//                    Log.d("MainActivity", "checkInLiveData:"+bean)
-//                    ARouterManager.goDailyLoginActivity(this, bean)
+//                    ReaderApplication.instance.updateIsHideVideo(bean)
+//
 //                }
 //                Status.Error -> {
-//                    VM.getReadHistory(this)
+//                    Log.e("tag", it.toString())
 //                }
 //            }
 //        })
-        VM.signLiveData.observe(this, Observer {
+
+        vmK.signLiveData.observe(this, Observer {
             when (it?.status) {
                 Status.Success -> {
                     val list = it.data ?: return@Observer
@@ -294,11 +337,11 @@ class ContentActivity : BaseActivity() {
         launchModel.registerTokenLiveData.observe(this, Observer {
             when (it?.status) {
                 Status.Success -> {
-                    VM.getReadHistory(this)
+                    vmK.loadHistory()
                 }
             }
         })
-        VM.wxNumberLiveData.observe(this, Observer {
+        vmK.wxNumberLiveData.observe(this, Observer {
             when (it?.status) {
                 Status.Success -> {
                     val list = it.data ?: return@Observer
@@ -310,25 +353,29 @@ class ContentActivity : BaseActivity() {
                     tvWelfare_content.text = Content
                     tvWxnumber.text = WxNumber
                     tvIns2.text =
-                            "2、打开微信→添加朋友→公众号→输入“" + WxNumber + "”" + "→搜索并关注，即可領取" + Coins + "书币"
-                    if (WxNumber!!.isNotEmpty() || WxNumber!!.isNotBlank()) {
+                        "2、打开微信→添加朋友→公众号→输入“" + WxNumber + "”" + "→搜索并关注，即可領取" + Coins + "书币"
+                    if (WxNumber!!.isNotEmpty() || WxNumber.isNotBlank()) {
                         showSignNotification(Coins!!.toInt())
                     }
                 }
             }
         })
         settings = getSharedPreferences("DATA", 0)
-        VM.versionLiveData.observe(this, Observer {
+        vmK.versionLiveData.observe(this, Observer {
             when (it?.status) {
+                Status.Error ->{
+                    Log.e("tag", "versionLiveData err")
+                }
                 Status.Success -> {
+                    Log.e("tag", "versionLiveData ok")
                     var versionInfo = it.data ?: return@Observer
                     versionInfo.version ?: return@Observer
 
                     try {
                         settings.edit()
-                                .putString("appVersion", versionInfo.descr)
-                                .putString("apkPath", versionInfo.url)
-                                .apply()
+                            .putString("appVersion", versionInfo.descr)
+                            .putString("apkPath", versionInfo.url)
+                            .apply()
                         val isForce: Int = versionInfo.isForce
                         val appVersion_desc = versionInfo.descr
                         Log.d("MainActivity", "appDescr:" + versionInfo.descr)
@@ -351,7 +398,7 @@ class ContentActivity : BaseActivity() {
                 }
             }
         })
-        VM.channelInfoLiveData.observe(this, Observer {
+        vmK.channelInfoLiveData.observe(this, Observer {
             when (it?.status) {
                 Status.Success -> {
                     SharedPreUtils.getInstance().putBoolean("hasOpenChannelChapter", true)
@@ -371,7 +418,7 @@ class ContentActivity : BaseActivity() {
                 }
             }
         })
-        VM.bulletinLiveData.observe(this, Observer {
+        vmK.bulletinLiveData.observe(this, Observer {
             /*val calendar = Calendar.getInstance()
             val day = calendar[Calendar.DAY_OF_MONTH]
             var isShow = CommonDataProvider.instance.getBulletinDialogShow()
@@ -417,7 +464,7 @@ class ContentActivity : BaseActivity() {
             }
         })
 
-        VM.adZoneLiveData.observe(this, Observer {
+        vmK.adZoneLiveData.observe(this, Observer {
             when (it?.status) {
                 Status.Success -> {
                     val list = it.data ?: return@Observer
@@ -428,14 +475,14 @@ class ContentActivity : BaseActivity() {
             }
         })
 
-        VM.historyLiveData.observe(this, Observer {
+        vmK.historyLiveData.observe(this, Observer {
             when (it?.status) {
                 Status.Success -> {
                     val list = it.data ?: return@Observer
                     if (list.isEmpty()) return@Observer
                     val history = list[0]
                     val hasOpenChannelChapter =
-                            SharedPreUtils.getInstance().getBoolean("hasOpenChannelChapter", false)
+                        SharedPreUtils.getInstance().getBoolean("hasOpenChannelChapter", false)
                     if (!hasOpenChannelChapter) {
 //                        ARouterManager.goReadActivity(this,history.bookid,history.chapterId)
 //                        SharedPreUtils.getInstance().putBoolean("hasOpenChannelChapter",true)
@@ -443,21 +490,21 @@ class ContentActivity : BaseActivity() {
                     }
 
                     val dialog = AlertDialog.Builder(this)
-                            .setTitle(getString(R.string.dialog_notice))
-                            .setMessage(
-                                    getString(
-                                            R.string.dialog_continue_last_read,
-                                            history.title,
-                                            history.chapterName
-                                    )
+                        .setTitle(getString(R.string.dialog_notice))
+                        .setMessage(
+                            getString(
+                                R.string.dialog_continue_last_read,
+                                history.title,
+                                history.chapterName
                             )
-                            .setPositiveButton(getString(android.R.string.yes)) { dialog, which ->
-                                dialog.dismiss()
-                                ARouterManager.goReadActivity(this, history.id, history.chapterId)
-                            }
-                            .setNegativeButton(getString(android.R.string.cancel)) { dialog, which ->
-                                dialog.dismiss()
-                            }.create()
+                        )
+                        .setPositiveButton(getString(android.R.string.yes)) { dialog, which ->
+                            dialog.dismiss()
+                            ARouterManager.goReadActivity(this, history.id, history.chapterId)
+                        }
+                        .setNegativeButton(getString(android.R.string.cancel)) { dialog, which ->
+                            dialog.dismiss()
+                        }.create()
                     dialog.show()
                 }
                 Status.TokenError -> {
@@ -465,7 +512,7 @@ class ContentActivity : BaseActivity() {
                 }
             }
         })
-        VM.wxAttentionLiveData.observe(this, Observer {
+        vmK.wxAttentionLiveData.observe(this, Observer {
             when (it?.status) {
                 Status.Success -> {
                     val bean = it.data ?: return@Observer
@@ -479,27 +526,27 @@ class ContentActivity : BaseActivity() {
             }
         })
 
-        VM.appDrainageLiveData.observe(this, Observer {
+        vmK.appDrainageLiveData.observe(this, Observer {
             when (it?.status) {
                 Status.Success -> {
-                    it?.let {
-                        if (!it!!.data.equals("")) {
+                    it.let {
+                        if (!it.data.equals("")) {
                             //取一个临时常量 判断是否为导流渠道下载 version:-200
                             val userInfo = CommonDataProvider.instance.getUserInfo()
                             if (userInfo != null) {
                                 UpgradeActivity.start(this, VersionInfoBean(
-                                        "-200",
-                                        "",
-                                        it!!.data,
-                                        null,
-                                        "",
-                                        0,
-                                        userInfo
+                                    "-200",
+                                    "",
+                                    it.data,
+                                    null,
+                                    "",
+                                    0,
+                                    userInfo
                                 ))
                             }
                         }
                     }
-                    VM.getReadHistory(this)
+                    vmK.loadHistory()
                 }
                 Status.Error -> {
 
@@ -509,67 +556,19 @@ class ContentActivity : BaseActivity() {
                 }
             }
         })
-        VM.versionLiveData.observe(this, Observer {
+
+        vmK.videoDomainData.observe(this, Observer {
             when (it?.status) {
                 Status.Success -> {
-                    val versionInfo = it.data ?: return@Observer
-                    versionInfo.version ?: return@Observer
-
-                    settings.edit()
-                            .putString("appVersion", versionInfo.descr)
-                            .putString("apkPath", versionInfo.url)
-                            .apply()
-                    val isForce: Int = versionInfo.isForce
-                    val appVersion_desc = versionInfo.descr
-                    Log.d("MainActivity", "appDescr:" + versionInfo.descr)
-                    try {
-                        // val appVersion_ori = appVersion_desc!!.substring(3, 8)
-//                      Log.d("MainActivity", "Backend Version:" + appVersion_ori)
-                        if (versionCompare(versionInfo.version)) {
-                            var hotFix = SharedPreUtils.getInstance().getInt("hotfix", 0)
-                            if (hotFix == 1) {
-                                SophixManager.getInstance().queryAndLoadNewPatch()
-                            }
-                            if (isForce == 1) {
-                                UpgradeActivity.start(this, versionInfo)
-                            } else {
-                                UpgradeActivity.start(this, versionInfo)
-                            }
-                            /*if (isForce == 1) {
-                                 UpgradeActivity.start(this, versionInfo)
-                             } else {
- //                            checkWelfare()
- //                            val app_name = "pipiComic"
- //                            actIntentUpdate(app_name,versionInfo.url)
-                             }*/
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-            }
-
-        })
-
-
-
-
-        VM.videoDomainData.observe(this, Observer {
-            when (it?.status) {
-                Status.Success -> {
-                    /* Log.d("MainActivity","Video Url"+it.data!!.data)
-                     val json: String = GsonProvider.gson.toJson(it.data!!.data)
-                     Log.d("MainActivity","Video Url json"+json)
-                     val videoData = JSONObject(json).getJSONArray("1");
-                     val translations: JSONObject = videoData.getJSONObject(0)
-                     val videoUrl = translations.getString("domain")*/
-                    Log.d("tag", "domen:${it.data!!.`1`[0].domain}")
-                    CommonDataProvider.instance.saveVideoDomain(it.data!!.`1`[0].domain)
+                    val data = it.data!!
+                    val domain = data.`20`[0].domain
+                    Log.e("tag", "Bingo New Kotlin Corotinue domain:${domain}")
+                    CommonDataProvider.instance.saveVideoDomain(domain)
                 }
             }
         })
 
-        VM.updateAppgetLiveData.observe(this, Observer {
+        vmK.updateAppgetLiveData.observe(this, Observer {
             when (it?.status) {
                 Status.Success -> {
                     val appupdate = it.data!!
@@ -585,10 +584,10 @@ class ContentActivity : BaseActivity() {
             when (it?.status) {
                 Status.Success -> {
                     val adList = it.data!!
-               //     CommonDataProvider.instance.saveAdList(Gson().toJson(adList))
+                    //     CommonDataProvider.instance.saveAdList(Gson().toJson(adList))
                     adList.forEach { adBean ->
                         if (adBean.id == AdEnum.BOTTOM_BAR.zid) {
-                            Log.d("tag","hahahah:${adBean.toString()}")
+                            Log.d("tag","hahahah:$adBean")
                             //下方悬浮广告
                             bottomAd(adBean)
                         } else if (adBean.id == AdEnum.HOME_DIALOG.zid) {
@@ -671,10 +670,10 @@ class ContentActivity : BaseActivity() {
         val imageDomain = CommonDataProvider.instance.getImgDomain()
         if (imageDomain.isEmpty()) {
             launchModel.retryImgDomain(this) {
-                VM.getBulletin(this)
+                vmK.getBulletin()
             }
         } else {
-            VM.getBulletin(this)
+            vmK.getBulletin()
         }
     }
 
@@ -740,6 +739,7 @@ class ContentActivity : BaseActivity() {
         layoutNotificaiton.gone()
     }
 
+    @SuppressLint("CheckResult")
     private fun initEvent() {
 
         RxBus.getInstance().toMainThreadObservable(ReaderApplication.instance, Lifecycle.Event.ON_DESTROY).subscribe({
@@ -828,6 +828,9 @@ class ContentActivity : BaseActivity() {
     }
 
     private fun initClick() {
+        home_top.setOnClickListener {
+            listFragment.getOrNull(showPage)?.scrollToTop()
+        }
     }
 
     private fun initBottomBar() {
@@ -840,13 +843,13 @@ class ContentActivity : BaseActivity() {
 //        listFragment.add(ARouterManager.getWelfareFragment(this))
 //        bottomBar.addItem(BottomBarTab(this,R.mipmap.tab_welfare,R.mipmap.tab_welfare_s,"今日福利"))
 
-        listFragment.add(ARouterManager.getVideoFragment(this))
-        val videoBottomBar = BottomBarTab(this, R.mipmap.tab_video, R.mipmap.tab_video_s, "视频")
-        // videoBottomBar.showMessageNew()
-        bottomBar.addItem(videoBottomBar)
+            listFragment.add(ARouterManager.getVideoFragment(this))
+            val videoBottomBar = BottomBarTab(this, R.mipmap.tab_video, R.mipmap.tab_video_s, "视频")
+            // videoBottomBar.showMessageNew()
+            bottomBar.addItem(videoBottomBar)
 
-        listFragment.add(ARouterManager.getLongVideoFragment(this))
-        bottomBar.addItem(BottomBarTab(this, R.mipmap.tab_video, R.mipmap.tab_video_s, "长视频"))
+            listFragment.add(ARouterManager.getLongVideoFragment(this))
+            bottomBar.addItem(BottomBarTab(this, R.mipmap.tab_video, R.mipmap.tab_video_s, "长视频"))
 
         listFragment.add(ARouterManager.getMineFragment(this))
         bottomBar.addItem(BottomBarTab(this, R.mipmap.tab_mine, R.mipmap.tab_mine_s, "我的"))
@@ -854,20 +857,25 @@ class ContentActivity : BaseActivity() {
 
 //        listFragment.add(CategoryFragment())
         bottomBar.setOnTabSelectedListener(tabSelectedListener)
-
-        mCurrentIndex = 0
-
     }
 
     private fun initFragment() {
     }
 
     private fun showPage() {
-        Log.d("MainActivity", "BottomBar showPage:" + showPage)
         bottomBar.setCurrentItem(showPage)
         viewPager.setCurrentItem(showPage, false)
+    }
 
-//        (listFragment[0] as MineComicFragment).showTab(showTab)
+    private fun showScrollToTop() {
+        when (showPage) {
+            0, 1 -> {
+                home_top.show()
+                home_top.bringToFront()
+            }
+
+            else -> home_top.gone()
+        }
     }
 
     fun hideTab() {
@@ -878,11 +886,6 @@ class ContentActivity : BaseActivity() {
         bottomBar.visibility = View.VISIBLE
     }
 
-
-    override fun onResume() {
-        super.onResume()
-
-    }
 
     override fun onConfigurationChanged(config: Configuration) {
         super.onConfigurationChanged(config)
@@ -921,13 +924,13 @@ class ContentActivity : BaseActivity() {
     private fun versionCompare(sVersion: String?): Boolean {
         try {
             val cVersion = BuildConfig.VERSION_NAME
-            if (cVersion == sVersion) return false;
+            if (cVersion == sVersion) return false
             val sVersionNumber = sVersion!!.replace(".", "")
-                    .substring(0, 3)
-                    .toInt()
+                .substring(0, 3)
+                .toInt()
             val cVersionNumber = cVersion.replace(".", "")
-                    .substring(0, 3)
-                    .toInt()
+                .substring(0, 3)
+                .toInt()
             Log.d("versionCompare", "sVersionNumber:${sVersionNumber},cVersionNumber:${cVersionNumber}")
             return sVersionNumber > cVersionNumber
         } catch (e: Exception) {
@@ -947,16 +950,16 @@ class ContentActivity : BaseActivity() {
             var openRequest2 = SharedPreUtils.getInstance().getString("openRequest2")
 //        Log.e("MainActivity", "openRequest:" + openRequest)
             if (openRequest2.equals("") || openRequest2.isEmpty()) {
-                VM.getWxAd(this)
-                SharedPreUtils.getInstance().putString("openRequest2", today.toString());
+                vmK.getWxAd()
+                SharedPreUtils.getInstance().putString("openRequest2", today.toString())
             } else {
 //            val sdf = SimpleDateFormat("yyyy-MM-dd")
                 val tomorrow = today.toString()
                 var compare = tomorrow.compareTo(openRequest2)
 //            Log.e("MainActivity", "openRequest compare:" + compare)
                 if (compare > 0) {
-                    VM.getWxAd(this)
-                    SharedPreUtils.getInstance().putString("openRequest2", today.toString());
+                    vmK.getWxAd()
+                    SharedPreUtils.getInstance().putString("openRequest2", today.toString())
 
                 }
 
@@ -965,8 +968,8 @@ class ContentActivity : BaseActivity() {
             var openRequest2 = SharedPreUtils.getInstance().getString("openRequest2")
 //        Log.e("MainActivity", "openRequest:" + openRequest)
             if (openRequest2.equals("") || openRequest2.isEmpty()) {
-                VM.getWxAd(this)
-                SharedPreUtils.getInstance().putString("openRequest2", today.toString());
+                vmK.getWxAd()
+                SharedPreUtils.getInstance().putString("openRequest2", today.toString())
             }
         }
 
@@ -1003,11 +1006,11 @@ class ContentActivity : BaseActivity() {
     fun copyText(view: View) {
         var myClipboard: ClipboardManager? = null
         var myClip: ClipData? = null
-        myClipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?;
-        myClip = ClipData.newPlainText("text", tvWxnumber.text);
-        myClipboard?.setPrimaryClip(myClip);
+        myClipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
+        myClip = ClipData.newPlainText("text", tvWxnumber.text)
+        myClipboard?.primaryClip = myClip
 
-        Toast.makeText(this, "复制成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "复制成功", Toast.LENGTH_SHORT).show()
     }
 
     private fun launchApp(packageName: String) {
@@ -1036,34 +1039,34 @@ class ContentActivity : BaseActivity() {
     private fun getVersionUpdate() {
         val REQUEST_EXTERNAL_STORAGE = 1
         val PERMISSIONS_STORAGE =
-                arrayOf(
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )
+            arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
         val permission =
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
         if (permission != PackageManager.PERMISSION_GRANTED) {
             // We don't have permission so prompt the user
             ActivityCompat.requestPermissions(this, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE)
         } else {
             val cappid = BuildConfig.APPLICATION_ID
             val cVersion = BuildConfig.VERSION_NAME
-            VM.versionCheck(this, cappid, cVersion)
+            vmK.versionCheck(cappid, cVersion)
             appDrainage()
         }
 
     }
 
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<out String>,
-            grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1) {
             val cappid = BuildConfig.APPLICATION_ID
             val cVersion = BuildConfig.VERSION_NAME
-            VM.versionCheck(this, cappid, cVersion)
+            vmK.versionCheck(cappid, cVersion)
             appDrainage()
         }
     }
@@ -1073,13 +1076,13 @@ class ContentActivity : BaseActivity() {
         userInfo!!.let {
             if (userInfo.tempUid != null) {
                 //临时用户tempuid不为null
-                VM.getAdZone(this, 1)
+                vmK.getAdZone(1)
             } else {
                 //注册用户tempuid为null，uid不为空
                 if (userInfo.vip != 1) {
-                    VM.getAdZone(this, 2)
+                    vmK.getAdZone(2)
                 } else {
-                    VM.getAdZone(this, 3)
+                    vmK.getAdZone(3)
                 }
             }
         }
@@ -1093,10 +1096,10 @@ class ContentActivity : BaseActivity() {
         userInfo?.let {
             if (userInfo.tempUid != null) {
                 //临时用户tempuid不为null
-                VM.appDrainage(MainActivity@ this, userInfo.id!!, 1)
+                vmK.appDrainage(userInfo.id!!, 1)
             } else {
                 //注册用户tempuid为null，uid不为空
-                VM.appDrainage(MainActivity@ this, userInfo.uid!!, 0)
+                vmK.appDrainage(userInfo.uid!!, 0)
             }
         }
     }

@@ -51,7 +51,7 @@ class BulletinDetailActivity : BaseActivity() {
         screenHeight = p.y
 
         Log.d("BulletinDetailActivity", "BulletinDetailID:" + bulletinid)
-        VM.getBulletinDetail(this, bulletinid)
+        VM.getBulletinDetail(bulletinid)
     }
 
     override fun initView() {
@@ -106,10 +106,6 @@ class BulletinDetailActivity : BaseActivity() {
                                         }
                                     }
 
-                                    override fun onLoadFailed(errorDrawable: Drawable?) {
-                                        super.onLoadFailed(errorDrawable)
-
-                                    }
                                 })
                     }
 
@@ -133,7 +129,7 @@ class BulletinDetailActivity : BaseActivity() {
 
                     } else if (pageId == 3) {
                         //閱讀器
-                        val BookId: Int = bean!!.contentBookId
+                        val BookId: Int = bean.contentBookId
                         ImageView_bulletin.click {
                             ARouterManager.goReadActivity(this, BookId, 18, 0, true)
                         }
@@ -141,6 +137,12 @@ class BulletinDetailActivity : BaseActivity() {
                         //充值頁
                         ImageView_bulletin.click {
                             ARouterManager.goRechargeActivity(this,"",0)
+                        }
+                    } else if (pageId == 5) {
+                        //視頻首頁
+                        ImageView_bulletin.click {
+                            ARouterManager.goContentActivity(this, showPage = ARouterManager.TAB_ME)
+                            finish()
                         }
                     }
 

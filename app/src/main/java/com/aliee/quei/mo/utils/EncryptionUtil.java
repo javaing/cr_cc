@@ -1,5 +1,6 @@
 package com.aliee.quei.mo.utils;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 /**
@@ -10,7 +11,7 @@ public class EncryptionUtil {
     public static final String MD5(String s){
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] bytes = md.digest(s.getBytes("utf-8"));
+            byte[] bytes = md.digest(s.getBytes(StandardCharsets.UTF_8));
             return toHex(bytes);
         }
         catch (Exception e) {

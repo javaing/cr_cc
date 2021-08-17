@@ -31,7 +31,7 @@ class MoreActivity : BaseActivity(){
     override fun getLayoutId() = R.layout.activity_more
 
     override fun initData() {
-        VM.getByRid(this,rid)
+        VM.getByRid(rid)
     }
 
     override fun initView() {
@@ -44,11 +44,11 @@ class MoreActivity : BaseActivity(){
     private fun initRefresh() {
         refreshLayout.setOnLoadMoreListener {
             //Log.e("more", "initRefresh OnLoad")
-            VM.loadMore(this)
+            VM.loadMore()
         }
         refreshLayout.setOnRefreshListener {
             //Log.e("more", "initRefresh OnRefresh")
-            VM.getByRid(this,rid)
+            VM.getByRid(rid)
         }
     }
 

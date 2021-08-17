@@ -90,9 +90,9 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 //插入banner广告
                 val adInfo = adMap["bannerAd"]
                 if (adInfo != null) {
-                    val recommendBookBean = RecommendBookBean("", "", AdConfig.BANNER_DEF_ID, "", 0, adInfo!!.imgurl, "", "")
-                    recommendBookBean.adCallbackUrl = adInfo!!.callbackurl
-                    recommendBookBean.adClickUrl = adInfo!!.clickurl
+                    val recommendBookBean = RecommendBookBean("", "", AdConfig.BANNER_DEF_ID, "", 0, adInfo.imgurl, "", "")
+                    recommendBookBean.adCallbackUrl = adInfo.callbackurl
+                    recommendBookBean.adClickUrl = adInfo.clickurl
                     bean.list!!.add(0, recommendBookBean)
                 }
                 //填充数据
@@ -179,10 +179,10 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                             val adInfo = adMap["flowObsQu"]
                             val adQu = bean.list.subList(0, max)
                             if (adInfo != null) {
-                                Log.d("tag", "adInfo flowObsQu:${adInfo.toString()}")
-                                val recommendBookBean = RecommendBookBean("", adInfo!!.imgurl, AdConfig.BANNER_DEF_ID, adInfo!!.desc, 0, adInfo!!.imgurl, adInfo!!.title, "")
-                                recommendBookBean.adCallbackUrl = adInfo!!.callbackurl
-                                recommendBookBean.adClickUrl = adInfo!!.clickurl
+                                Log.d("tag", "adInfo flowObsQu:$adInfo")
+                                val recommendBookBean = RecommendBookBean("", adInfo.imgurl, AdConfig.BANNER_DEF_ID, adInfo.desc, 0, adInfo.imgurl, adInfo.title, "")
+                                recommendBookBean.adCallbackUrl = adInfo.callbackurl
+                                recommendBookBean.adClickUrl = adInfo.clickurl
                                 recommendBookBean.showType = ShopItemDecoration.VIEW_TYPE_COMIC_GRID_3
                                 adQu.add(if (adInfo.index!! > 5) 5 else adInfo.index!!, recommendBookBean)
                             }
@@ -193,14 +193,14 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         //插入90高度的广告
                         val adInfo = adMap["flowObs90"]
                         if (adInfo != null) {
-                            mData.add(adInfo!!)
+                            mData.add(adInfo)
                         }
                     } else {
                         if (max != 6) {
                             val adInfo = adMap["flowObsQiang"]
                             val adQiang = bean.list
                             if (adInfo != null) {
-                                val recommendBookBean = RecommendBookBean("", adInfo!!.imgurl, AdConfig.BANNER_DEF_ID, adInfo.desc, 0, adInfo.imgurl, adInfo.title, "")
+                                val recommendBookBean = RecommendBookBean("", adInfo.imgurl, AdConfig.BANNER_DEF_ID, adInfo.desc, 0, adInfo.imgurl, adInfo.title, "")
                                 recommendBookBean.adCallbackUrl = adInfo.callbackurl
                                 recommendBookBean.adClickUrl = adInfo.clickurl
                                 recommendBookBean.showType = VIEW_TYPE_ITEM_LINEAR
@@ -330,7 +330,7 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val adInfo = adMap["flowObsQiang"]
         val adQiang = data
         if (adInfo != null) {
-            val recommendBookBean = RecommendBookBean("", adInfo!!.imgurl, AdConfig.BANNER_DEF_ID, adInfo.desc, 0, adInfo.imgurl, adInfo.title, "")
+            val recommendBookBean = RecommendBookBean("", adInfo.imgurl, AdConfig.BANNER_DEF_ID, adInfo.desc, 0, adInfo.imgurl, adInfo.title, "")
             recommendBookBean.adCallbackUrl = adInfo.callbackurl
             recommendBookBean.adClickUrl = adInfo.clickurl
             recommendBookBean.showType = VIEW_TYPE_ITEM_LINEAR
@@ -358,8 +358,8 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val adImage = itemView.find<ImageView>(R.id.iv_shop_ad)
         private val ad_iv_close = itemView.find<ImageView>(R.id.ad_iv_close)
         fun bind(adInfo: AdInfo) {
-            AdConfig.adPreview(adInfo!!.callbackurl!!)
-            adImage.loadHtmlImg(adInfo!!.imgurl)
+            AdConfig.adPreview(adInfo.callbackurl)
+            adImage.loadHtmlImg(adInfo.imgurl)
             if (AdConfig.isClosed(adInfo.isClose!!)) {
                 ad_iv_close.show()
             } else {
@@ -370,7 +370,7 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 notifyDataSetChanged()
             }
             adImage.click {
-                AdConfig.adClick(adImage.context, adInfo!!.clickurl!!)
+                AdConfig.adClick(adImage.context, adInfo.clickurl)
             }
         }
     }
@@ -493,7 +493,7 @@ class ShopAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 AdConfig.adPreview(bean.adCallbackUrl!!)
                 GlideApp.with(cover.context).load(bean.thumb).diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                         .apply(RequestOptions.bitmapTransform(GlideRoundTransform(cover.context, 120)))
-                        .centerCrop().into(cover)
+                        .centerInside().into(cover)
             } else {
                 cover.loadNovelCover(bean.thumb)
             }

@@ -20,10 +20,12 @@ class ApiConstants private constructor() {
         var fdsfsdfsdf = "0123456789abcdef"
         const val API_VERSION = "2/"
         const val API_PAY_VERSION = "3/"
+        const val VIDEO_TYPESTRING = "20"
 
         //online
         const val OSS_PATH = "https://dswd202101.oss-cn-shenzhen.aliyuncs.com/api.json.txt"
-        //   const val OSS_PATH = "https://cartoon202007d.oss-cn-hongkong.aliyuncs.com/test2020.json.txt"
+        const val VOSS_PATH = "https://dswd202101v.oss-cn-shanghai.aliyuncs.com/api.json.txt"
+        const val VOSS_PATH2 = "https://dswd202002v.oss-cn-shenzhen.aliyuncs.com/api.json.txt"
         //debug
         //  const val OSS_PATH = "https://cartoon2020d.oss-cn-hongkong.aliyuncs.com/tapi.json.txt"
 //          const val OSS_PATH2 = "https://cartoon202007d.oss-cn-hongkong.aliyuncs.com/api.json.txt"
@@ -37,7 +39,8 @@ class ApiConstants private constructor() {
         var APP_ID: String? = null
         var HOTFIX: Int = 0
 
-        const val VIDEO_API_PATH = "http://vapi.7911126.com/"
+        const val DEFAULT_VIDEO_API_PATH = "http://vapi.7911126.com/"
+        var VIDEO_API_PATH = DEFAULT_VIDEO_API_PATH
 
     }
 }

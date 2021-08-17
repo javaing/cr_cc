@@ -82,7 +82,7 @@ class LaunchAdFragment : BaseFragment() {
     private fun enterApp() {
         if (activity!!.isFinishing) return
 
-        if (BuildConfig.needLogin && !CommonDataProvider.instance.hasLogin()) {
+        if (BuildConfig.futsu && !CommonDataProvider.instance.hasLogin()) {
             ARouterManager.goLoginActivity(activity!!, url = "app://comic.hkzy.com/main/activity?showPage=0")
             activity!!.finish()
             return

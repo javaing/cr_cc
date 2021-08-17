@@ -85,11 +85,11 @@ class HistoryFragment : BaseFragment() {
     private fun initRefresh() {
         refreshLayout.setOnRefreshListener {
             isRefresh = true
-            VM.loadHistory(this)
+            VM.loadHistory()
         }
         refreshLayout.setOnLoadMoreListener {
             isRefresh = false
-            VM.loadRecommend(this)
+            VM.loadRecommend()
         }
         refreshLayout.setNoMoreData(false)
     }
@@ -97,25 +97,31 @@ class HistoryFragment : BaseFragment() {
     fun guessLikeAd(list : MutableList<RecommendBookBean>?) {
         val adBean = AdConfig.getAd(AdEnum.COMIC_GUESS_LIKE_RANK.zid)
         if (adBean==null){
-            adapter.addRecommend(list)
+            uiThreadRecommend(list)
             return
         }
-        adBean?.also { adBean ->
+        adBean.also { adBean ->
             AdConfig.getAdInfo(adBean, {adInfo->
                 val option = Gson().fromJson<Option>(adInfo.optionstr, Option::class.java)
                 adInfo.title = option.title
                 adInfo.desc = option.desc
-                context!!.runOnUiThread {
-                    Log.d("tag","猜你喜欢：interval:${adBean.interval},物料：${adInfo.toString()}")
+
+                    Log.d("tag","猜你喜欢：interval:${adBean.interval},物料：$adInfo")
                     val recommendBookBean = RecommendBookBean("", adInfo.imgurl, -321, adInfo.desc, 1, "", adInfo.title, "")
                     recommendBookBean.adCallbackUrl = adInfo.callbackurl
                     recommendBookBean.adClickUrl = adInfo.clickurl
                     list?.add(0,recommendBookBean)
-                    adapter.addRecommend(list)
-                }
+
+                uiThreadRecommend(list)
             }, {
-                adapter.addRecommend(list)
+                uiThreadRecommend(list)
             })
+        }
+    }
+
+    private fun uiThreadRecommend(list: MutableList<RecommendBookBean>?) {
+        context?.runOnUiThread {
+            adapter.addRecommend(list)
         }
     }
 
@@ -129,7 +135,7 @@ class HistoryFragment : BaseFragment() {
                 Status.Success -> {
                     if (!isRefresh){
                         //上拉加载时不添加广告
-                        adapter.addRecommend(it.data?.list)
+                        uiThreadRecommend(it.data?.list)
                     }else{
                         //首次进入时添加广告
                         guessLikeAd(it.data?.list)
@@ -149,7 +155,7 @@ class HistoryFragment : BaseFragment() {
         VM.loadHistoryLiveData.observeForever {
             when (it?.status) {
                 Status.Success -> {
-                    VM.loadRecommend(this)
+                    VM.loadRecommend()
                     statuslayout.showContent()
                     val data = it.data
                     data ?: return@observeForever
@@ -168,7 +174,7 @@ class HistoryFragment : BaseFragment() {
                     statuslayout.setEmpty(R.layout.empty_shelf)
                             .setEmptyText(getString(R.string.msg_no_history))
                             .setEmptyRetryListener {
-                                ARouterManager.goMainActivity(it.context, showPage = ARouterManager.TAB_SHOP)
+                                ARouterManager.goContentActivity(it.context, showPage = ARouterManager.TAB_SHOP)
                             }
                 }
                 Status.Complete -> {
@@ -204,7 +210,7 @@ class HistoryFragment : BaseFragment() {
         launchModel.registerTokenLiveData.observe(this, Observer {
             when (it?.status) {
                 Status.Success -> {
-                    VM.loadHistory(this)
+                    VM.loadHistory()
                 }
             }
         })
@@ -263,7 +269,7 @@ class HistoryFragment : BaseFragment() {
                 val confirm = ConfirmDialog.newInstance(getString(R.string.dialog_notice), getString(R.string.dialog_confirm_del))
                 confirm.confirmClick = {
                     id = bean.id
-                    VM.deleteHistory(this, bean.id)
+                    VM.deleteHistory(bean.id)
                 }
                 confirm.show(childFragmentManager, confirm.javaClass.name)
             }
@@ -285,7 +291,7 @@ class HistoryFragment : BaseFragment() {
 
     override fun initData() {
 
-        VM.loadHistory(this)
+        VM.loadHistory()
         statuslayout.showLoading()
     }
 

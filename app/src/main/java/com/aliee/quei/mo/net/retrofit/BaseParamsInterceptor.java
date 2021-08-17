@@ -50,10 +50,10 @@ public class BaseParamsInterceptor implements Interceptor {
                 if (urlPath.equals("/2/cartoon/domain/get")&& originalFormBody.name(0).equals("type") && originalFormBody.value(0).equals("2")) {
                     response = chain.proceed(originalRequest);
                 }else{*/
-                builder.add("linkid", WalleChannelReader.getChannel(ReaderApplication.instance, "98"));
+                builder.add("linkid", WalleChannelReader.getChannel(ReaderApplication.instance, "0"));
                //builder.add("linkid", "100");
                 builder.add("app", "2");
-                builder.add("lang", BeanConstants.INSTANCE.LANG_CH + "");
+                builder.add("lang", BeanConstants.LANG_CH + "");
                 builder.add("appver", BuildConfig.VERSION_NAME);
                 FormBody formBody = builder.build();
                 Request request = originalRequest.newBuilder().post(formBody).build();
@@ -61,9 +61,9 @@ public class BaseParamsInterceptor implements Interceptor {
                 //   }
             } else {
                 FormBody.Builder builder = new FormBody.Builder();
-                builder.add("linkid", WalleChannelReader.getChannel(ReaderApplication.instance, "98"));
+                builder.add("linkid", WalleChannelReader.getChannel(ReaderApplication.instance, "0"));
                 builder.add("app", "2");
-                builder.add("lang", BeanConstants.INSTANCE.LANG_CH + "");
+                builder.add("lang", BeanConstants.LANG_CH + "");
                 builder.add("appver", BuildConfig.VERSION_NAME);
                 Request request = originalRequest.newBuilder().post(builder.build()).build();
                 response = chain.proceed(request);

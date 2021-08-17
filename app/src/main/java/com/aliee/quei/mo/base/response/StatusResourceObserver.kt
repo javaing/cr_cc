@@ -120,7 +120,8 @@ class StatusResourceObserver<T>(private var uiLiveData: MediatorLiveData<UIDataB
 //
 //                    }
 //                    else -> {
-                showMessage(e.msg)
+                if(e.code!=3001)
+                    showMessage(e.msg)
 //                    }
 //                }
             }

@@ -45,10 +45,10 @@ class SearchVideoResultFragment : BaseFragment() {
 
     private fun initRefresh() {
         refreshLayout.setOnRefreshListener {
-            VM.getSearchVideo(this, key)
+            VM.getSearchVideo(key)
         }
         refreshLayout.setOnLoadMoreListener {
-            VM.getSearchVideoLoadMore(this, key)
+            VM.getSearchVideoLoadMore(key)
         }
     }
 
@@ -122,7 +122,7 @@ class SearchVideoResultFragment : BaseFragment() {
     private var key = ""
     fun doSearch(key: String) {
         this.key = key
-        VM.getSearchVideo(this, key)
+        VM.getSearchVideo(key)
     }
 
     override fun initData() {

@@ -82,7 +82,7 @@ public class StatusLayout extends FrameLayout {
     private int mNoNetworkImage = NO_ID;
     private CharSequence mNoNetworkText = null, mNoNetworkRetryText = null;
 
-    private View.OnClickListener mErrorRetryButtonClickListener = new OnClickListener() {
+    private final View.OnClickListener mErrorRetryButtonClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             if (mErrorRetryListener != null) {
@@ -91,7 +91,7 @@ public class StatusLayout extends FrameLayout {
         }
     };
 
-    private View.OnClickListener mNoNetworkRetryButtonClickListener = new OnClickListener() {
+    private final View.OnClickListener mNoNetworkRetryButtonClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             if (mNoNetworkRetryListener != null) {
@@ -100,14 +100,14 @@ public class StatusLayout extends FrameLayout {
         }
     };
 
-    private View.OnClickListener mEmptyRetryButtonClickListener = new OnClickListener() {
+    private final View.OnClickListener mEmptyRetryButtonClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             if(mEmptyRetryListener != null)mEmptyRetryListener.onClick(v);
         }
     };
 
-    private View.OnClickListener mRefreshButtonClickListener = new OnClickListener() {
+    private final View.OnClickListener mRefreshButtonClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             if(mRefreshListener != null)mRefreshListener.onClick(v);
@@ -121,9 +121,9 @@ public class StatusLayout extends FrameLayout {
     private int mEmptyResId = NO_ID, mLoadingResId = NO_ID, mErrorResId = NO_ID, mNoNetworkResId = NO_ID;
     private int mContentId = NO_ID;
 
-    private Map<Integer, View> mLayouts = new HashMap<>();
+    private final Map<Integer, View> mLayouts = new HashMap<>();
 
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
     private AnimationDrawable animationDrawable;
 
     private int retryTime = 0;

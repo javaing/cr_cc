@@ -23,8 +23,8 @@ public class BulletinListAdapter extends ArrayAdapter<ItemData> {
 // 建立佈局
         View oneTeacherView = LayoutInflater.from(getContext()).inflate(R.layout.item_bulletin_linear, parent, false);
 // 獲取ImageView和TextView
-        ImageView imageView = (ImageView) oneTeacherView.findViewById(R.id.img_bulletin);
-        TextView textView = (TextView) oneTeacherView.findViewById(R.id.bulletin_desc);
+        ImageView imageView = oneTeacherView.findViewById(R.id.img_bulletin);
+        TextView textView = oneTeacherView.findViewById(R.id.bulletin_desc);
 // 根據圖示資料設定ImageView和TextView的展現
         imageView.setImageResource(item.getImageId());
         textView.setText(item.getText());

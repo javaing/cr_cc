@@ -1,6 +1,5 @@
 package com.aliee.quei.mo.ui.main.adapter
 
-import androidx.recyclerview.widget.RecyclerView
 import android.text.Html
 import android.util.Log
 import android.view.View
@@ -8,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import com.dueeeke.videoplayer.util.PlayerUtils
+import androidx.recyclerview.widget.RecyclerView
 import com.aliee.quei.mo.R
 import com.aliee.quei.mo.config.AdConfig
 import com.aliee.quei.mo.data.bean.AdInfo
@@ -19,9 +18,7 @@ import com.aliee.quei.mo.router.ARouterManager
 import com.aliee.quei.mo.ui.video.view.PrepareView
 import com.aliee.quei.mo.utils.extention.*
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.gif.GifDrawable
-import com.bumptech.glide.request.RequestOptions
+import com.dueeeke.videoplayer.util.PlayerUtils
 import com.google.gson.Gson
 import com.zhy.view.flowlayout.FlowLayout
 import com.zhy.view.flowlayout.TagAdapter
@@ -34,21 +31,10 @@ class MainVideoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var url: String? = null
 
     companion object {
-        //    const val VIEW_TYPE_ENTER = 0
         const val VIEW_TYPE_VIDEO = 1
         const val VIEW_TYPE_VIDEO_AD = 2
     }
 
-
-    fun getData(): MutableList<Video> {
-        /* val videos = mData
-         if (videos[0].title == "视频圈子") {
-             //移除头部的数据
-             videos.removeAt(0)
-         }
-         return videos*/
-        return mData
-    }
 
     fun setVideoThumbDomain(url: String) {
         this.url = url
@@ -57,14 +43,11 @@ class MainVideoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun loadMore(videos: MutableList<Video>) {
         mData.addAll(videos)
-        /*videos.forEach {
-            it.type = VIEW_TYPE_VIDEO
-        }*/
-        notifyItemRangeChanged(mData.size, mData.size);
+        notifyItemRangeChanged(mData.size, mData.size)
     }
 
     fun setData(tag: Tag, videos: MutableList<Video>) {
-        Log.d("tag", "videos :${videos.toString()}")
+        Log.d("tag", "videos :$videos")
         mData.clear()
         mData = videos
         notifyDataSetChanged()
@@ -89,10 +72,6 @@ class MainVideoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            /*VIEW_TYPE_ENTER -> {
-                val v = parent.context.inflate(R.layout.video_enter_layout)
-                EnterHolder(v)
-            }*/
             VIEW_TYPE_VIDEO_AD -> {
                 val v = parent.context.inflate(R.layout.item_video_ad)
                 AdHolder(v)
@@ -106,13 +85,7 @@ class MainVideoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = mData[position]
-        /*  val holder1 = holder as VideoHolder
-           holder1.bind(mData[position], position)*/
         when (mData[position].type) {
-            /*VIEW_TYPE_ENTER -> {
-                holder as EnterHolder
-                holder.bind(mData[position].title)
-            } */
 
             VIEW_TYPE_VIDEO_AD -> {
                 holder as AdHolder
@@ -131,9 +104,6 @@ class MainVideoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
         return when (mData[position].type) {
-            /* 0 -> {
-                 VIEW_TYPE_ENTER
-             }*/
             2 -> {
                 VIEW_TYPE_VIDEO_AD
             }
@@ -142,27 +112,6 @@ class MainVideoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
 
-    }
-
-
-    inner class EnterHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        private val llRanking = itemView.find<View>(R.id.ll_ranking)
-        private val llCate = itemView.find<View>(R.id.ll_cate)
-        private val llRecharge = itemView.find<View>(R.id.ll_recharge)
-        private val llRecommend = itemView.find<View>(R.id.ll_recommend)
-        private val llNotice = itemView.find<View>(R.id.ll_notice)
-        private val tvTitle = itemView.find<TextView>(R.id.tv_title)
-
-
-        fun bind(title: String) {
-            llRanking.click { ARouterManager.goVideoRankingActivity(it.context) }
-            //  llCate.click { }
-            llRecharge.click { ARouterManager.goRechargeActivity(it.context, "", 0, isBook = false) }
-            llRecommend.click { ARouterManager.goVideoRecommendActivity(it.context) }
-            llNotice.click { ARouterManager.goBulletinActivity(it.context) }
-            tvTitle.text = title
-        }
     }
 
     inner class AdHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -218,13 +167,9 @@ class MainVideoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 prepareView.visibility = View.VISIBLE
                 val imageUrl = imageUrl(url!!, thumbImg!!)
                 Log.d("tag", "imageUrl:${imageUrl}")
-                //  ivThumb.loadImageScale(imageUrl, playerContainer)
-                // val options: RequestOptions = RequestOptions()
-                //         .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                // Glide.with(ivThumb.context).asGif().load("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1605952974631&di=8d632765c03ecc8235f4fbadb31e76a7&imgtype=0&src=http%3A%2F%2Fpic.87g.com%2Fupload%2F2018%2F0905%2F20180905095730580.gif").apply(options).into(ivThumb)
 
                 ivThumb.loadImageScale(imageUrl, playerContainer)
-                ivBlueThumb.loadBlurCover(imageUrl)
+                ivBlueThumb.loadBlurCover(imageUrl.videoUrl())
                 tvTitle.text = Html.fromHtml(name).trim()
                 tvCollectionNum.text = favcounts
                 tvWatchNum.text = playcounts
@@ -243,9 +188,9 @@ class MainVideoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     tag_layout.visibility = View.GONE
                 } else {
                     tag_layout.visibility = View.VISIBLE
-                    tag_layout.adapter = object : TagAdapter<Tags?>(video?.tags) {
+                    tag_layout.adapter = object : TagAdapter<Tags?>(video.tags) {
                         override fun getView(parent: FlowLayout, position: Int, t: Tags?): View? {
-                            val textView = parent?.context?.inflate(R.layout.video_tag_layout, parent, false) as TextView
+                            val textView = parent.context?.inflate(R.layout.video_tag_layout, parent, false) as TextView
                             textView.text = t?.name
                             return textView
                         }
@@ -261,10 +206,7 @@ class MainVideoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             btnCollection.click {
                 onAddVideoClick?.invoke(position, video!!)
             }
-            /* playerContainer.click {
-                 Log.d("tag","playerContainer点击了视频")
-                 onItemClick?.invoke(position, video!!)
-             }*/
+
             prepareView.click {
                 Log.d("tag", "prepareView点击了视频")
                 onItemClick?.invoke(position, video!!)

@@ -39,6 +39,7 @@ class LaunchAdActivity : BaseActivity() {
     private val adVm = AdVModel()
     var adInfos = mutableListOf<AdInfo>()
     private val fragments = mutableListOf<BaseFragment>()
+    private var retryCount=0
 
     companion object {
         fun toThis(context: Context, adBeans: ArrayList<AdBean>) {
@@ -68,19 +69,35 @@ class LaunchAdActivity : BaseActivity() {
         if (newsAdBeans.size<=0){
           //  enterApp()
         }
-        adVm.multipleLaunchAd(this, newsAdBeans, {
+        startLoadAd()
+    }
+
+    fun startLoadAd() {
+        //toast("startLoadAd")
+        adVm.multipleLaunchAd(newsAdBeans, {
             val adMap = it
             adMap.forEach { entry ->
                 adInfos.add(entry.value!!)
             }
             initViewPager()
         }, {
-            enterApp()
+            Log.e("tag", "Bingo! multi err:$it")
+            when {
+                it.contains("500") && retryCount<5 -> {
+                    retryCount++
+                    Log.e("tag", "Bingo! multi reload AD $retryCount")
+                    startLoadAd()
+                }
+                else -> {
+                    //toast("蓋板廣告 $it")
+                    enterApp()
+                }
+            }
         })
     }
 
     private fun initViewPager() {
-        Log.d("tag", "viewpager adInfo:${adInfos.toString()}")
+        Log.d("tag", "viewpager adInfo:$adInfos")
         ad_viewpager.adapter = UltraViewPagerAdapter(AdAdapter(adInfos))
         ad_viewpager.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL)
         ad_viewpager.setInfiniteLoop(false)
@@ -127,7 +144,7 @@ class LaunchAdActivity : BaseActivity() {
             cover.loadHtmlImg(bean.imgurl)
             container.addView(v)
             v.click {
-                AdConfig.adClick(v.context, bean.clickurl!!)
+                AdConfig.adClick(v.context, bean.clickurl)
             }
             return v
         }
@@ -155,7 +172,7 @@ class LaunchAdActivity : BaseActivity() {
     private fun enterApp() {
         if (isFinishing) return
 
-        if (BuildConfig.needLogin && !CommonDataProvider.instance.hasLogin()) {
+        if (BuildConfig.futsu && !CommonDataProvider.instance.hasLogin()) {
             ARouterManager.goLoginActivity(this, url = "app://comic.hkzy.com/main/activity?showPage=0")
             finish()
             return

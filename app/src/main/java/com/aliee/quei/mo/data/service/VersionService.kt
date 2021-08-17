@@ -11,23 +11,42 @@ import retrofit2.http.POST
 
 interface VersionService{
 
+//    /**
+//     * @param platform：客户端类型，1安卓，默认值1
+//     * @param type：app类型，1充值前下载，默认值1
+//     */
+//    @FormUrlEncoded
+//    @POST("${ApiConstants.API_VERSION}cartoon/client/update")
+//    fun getVersionInfo(@Field("platform") platform : Int = 1,@Field("type")type : Int = 1,@Field("appid")appid : String,@Field("version")version : String) : Observable<BaseResponse<VersionInfoBean>>
+
+
+
+//    @FormUrlEncoded
+//    @POST("${ApiConstants.API_PAY_VERSION}cartoon/update/appop")
+//    fun updateAppop(@Field("opType")opType:Int,@Field("uid")uid:Int,@Field("utemp")utemp:Int): Observable<String>
+//
+//
+//    @FormUrlEncoded
+//    @POST("${ApiConstants.API_PAY_VERSION}cartoon/update/appget")
+//    fun updateAppget(@Field("uid")uid:Int,@Field("utemp")utemp:Int) : Observable<BaseResponse<AppUpdate>>
+
+
     /**
      * @param platform：客户端类型，1安卓，默认值1
      * @param type：app类型，1充值前下载，默认值1
      */
     @FormUrlEncoded
     @POST("${ApiConstants.API_VERSION}cartoon/client/update")
-    fun getVersionInfo(@Field("platform") platform : Int = 1,@Field("type")type : Int = 1,@Field("appid")appid : String,@Field("version")version : String) : Observable<BaseResponse<VersionInfoBean>>
-
+    suspend fun getVersionInfoK(@Field("platform") platform : Int = 1,@Field("type")type : Int = 1,@Field("appid")appid : String,@Field("version")version : String) : BaseResponse<VersionInfoBean>
 
 
     @FormUrlEncoded
     @POST("${ApiConstants.API_PAY_VERSION}cartoon/update/appop")
-    fun updateAppop(@Field("opType")opType:Int,@Field("uid")uid:Int,@Field("utemp")utemp:Int): Observable<String>
+    suspend fun updateAppopK(@Field("opType")opType:Int,@Field("uid")uid:Int,@Field("utemp")utemp:Int): BaseResponse<String>
 
 
     @FormUrlEncoded
     @POST("${ApiConstants.API_PAY_VERSION}cartoon/update/appget")
-    fun updateAppget(@Field("uid")uid:Int,@Field("utemp")utemp:Int) : Observable<BaseResponse<AppUpdate>>
+    suspend fun updateAppgetK(@Field("uid")uid:Int,@Field("utemp")utemp:Int) : BaseResponse<AppUpdate>
 
 }

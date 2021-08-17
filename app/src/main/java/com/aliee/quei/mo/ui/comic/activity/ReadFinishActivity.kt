@@ -32,7 +32,7 @@ class ReadFinishActivity : BaseActivity(){
     }
 
     override fun initData() {
-        VM.getGuessLike(this)
+        VM.getGuessLike()
     }
 
     override fun initView() {

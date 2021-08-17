@@ -103,7 +103,7 @@ class TaskHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
             val curDay = calendar.get(Calendar.DAY_OF_MONTH)
             val curWeek = calendar.get(Calendar.WEEK_OF_YEAR)
             val claimDate = Date(record.time)
-            val claimCalendar = Calendar.getInstance();
+            val claimCalendar = Calendar.getInstance()
             claimCalendar.time = claimDate
             if (taskBean.period == 0) { //日任务
                 if (curYear == claimCalendar.get(Calendar.YEAR) && curMonth == claimCalendar.get(Calendar.MONTH) && curDay == claimCalendar.get(Calendar.DAY_OF_MONTH)) {

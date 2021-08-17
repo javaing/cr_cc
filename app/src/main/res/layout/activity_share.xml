@@ -40,7 +40,7 @@
                 android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:lineSpacingExtra="3dp"
-                android:text="保存二维码，分享给朋友加入蟲蟲\n即可增加观影次数"
+                android:text="@string/share_app_friends"
                 android:textColor="@color/white"
                 android:textSize="15sp" />
 
@@ -60,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="扫码下载虫虫漫画App"
+                    android:text="@string/share_app_qrcode"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 

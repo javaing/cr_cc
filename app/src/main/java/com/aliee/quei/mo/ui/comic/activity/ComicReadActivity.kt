@@ -67,6 +67,7 @@ import kotlinx.android.synthetic.main.activity_comic_read.recyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_read_ad.*
 import okhttp3.Response
+import org.jetbrains.anko.sp
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -138,18 +139,13 @@ class ComicReadActivity : BaseActivity() {
             }
         }
         VM.isInShelf(this, bookid)
-        VM.getChapterEndRecommend(this, bookid)
-        VM.getBalance(this)
-        // VM.getComicDetail(this, bookid)
-        var rid: Int = (Math.random() * 90000000).toInt()
-        var url = "http://auc.fancheke.com/www/two/jsonapi.php?xid=2&cid=" + rid
-//        Log.e("ComicReadActivity", "Random: "+ rid)
-        // getAD(url)
+        VM.getChapterEndRecommend()
+        VM.getBalance()
         getAd()
     }
 
     private fun getAd() {
-        adVModel.getAdList(this, 1)
+        adVModel.getAdList(1)
         adVModel.adList1LiveData.observe(this, Observer {
             when (it!!.status) {
                 Status.Success -> {
@@ -219,7 +215,11 @@ class ComicReadActivity : BaseActivity() {
         AdConfig.getAdInfo(adBean, {
             this.adInfo = it
             runOnUiThread {
-                adapter.insertAd(adBean.interval, adInfo!!)
+                try {
+                    adapter.insertAd(adBean.interval, adInfo!!)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
         }, {
 
@@ -318,8 +318,13 @@ class ComicReadActivity : BaseActivity() {
         autoScroll.click {
             if (autoScroll.text.equals("自动")) {
                 recyclerView.post { // Call smooth scroll
-                    layoutManager.setSpeedSlow()
-                    recyclerView.smoothScrollToPosition(adapter.itemCount - 1)
+//                    layoutManager.setSpeedSlow()
+//                    try {
+//                        recyclerView.smoothScrollToPosition(adapter.itemCount - 1)
+//                    } catch (e: Exception) {
+//                        e.printStackTrace()
+//                    }
+                    autoScrollTo(autoSpeed)
                 }
                 layoutLight.gone()
                 layoutPlaySpeed.show()
@@ -373,8 +378,8 @@ class ComicReadActivity : BaseActivity() {
                     chapterList = list
                     recyclerView.isNestedScrollingEnabled = response!!.code != 1009
 
-                    if (response!!.code == 1009) {
-                        pay_layout.visibility = View.VISIBLE
+                    if (response.code == 1009) {
+                        pay_layout_reading.visibility = View.VISIBLE
                         comic_bottom_ad.gone()
                         layoutManager.setScorll(false)
                         isClick = false
@@ -386,7 +391,7 @@ class ComicReadActivity : BaseActivity() {
                         comic_bottom_ad.show()
                         isClick = true
                         layoutManager.setScorll(true)
-                        pay_layout.visibility = View.GONE
+                        pay_layout_reading.visibility = View.GONE
                         VM.addHistory(list[0].bookid, list[0].id)
                         /*  if (TitleBean.getTitles(list[0].bookid)!=null){
                               tv_bookname.text = TitleBean.getTitles(list[0].bookid)
@@ -582,7 +587,7 @@ class ComicReadActivity : BaseActivity() {
                             VM.isInShelf(this, bookid)
                         }
                         3 -> {
-                            VM.getBalance(this)
+                            VM.getBalance()
                         }
                         4 -> {
                             VM.addToShelf(this, bookid)
@@ -654,7 +659,7 @@ class ComicReadActivity : BaseActivity() {
             //  layout_ad_bottom.gone()
             //  setMarginsInDp(recyclerView!!, 0, 0, 0, 0)
 
-            VM.getBalance(this)
+            VM.getBalance()
             tv_nums.visibility = View.INVISIBLE
         }
         menuPrev.click {
@@ -668,7 +673,7 @@ class ComicReadActivity : BaseActivity() {
             }
             //  layout_ad_bottom.gone()
             //  setMarginsInDp(recyclerView!!, 0, 0, 0, 0)
-            VM.getBalance(this)
+            VM.getBalance()
             tv_nums.visibility = View.INVISIBLE
         }
         menuCatalog.click {
@@ -742,27 +747,34 @@ class ComicReadActivity : BaseActivity() {
             }
 
             override fun getProgressOnFinally(signSeekBar: SignSeekBar, progress: Int, progressFloat: Float, fromUser: Boolean) {
-
-                if (progress == 0) {
-//                    layoutManager.setSpeedSlow()
-//                    recyclerView.smoothScrollToPosition(adapter.itemCount - 1)
-                } else if (progress == 1) {
-                    layoutManager.setSpeed(1f)
-                    recyclerView.smoothScrollToPosition(adapter.itemCount - 1)
-                } else if (progress == 2) {
-                    layoutManager.setSpeed(0.75f)
-                    recyclerView.smoothScrollToPosition(adapter.itemCount - 1)
-                } else if (progress == 3) {
-                    layoutManager.setSpeed(0.5f)
-                    recyclerView.smoothScrollToPosition(adapter.itemCount - 1)
-                } else {
-                    layoutManager.setSpeed(0.3f)
-                    recyclerView.smoothScrollToPosition(adapter.itemCount - 1)
+                autoSpeed = when(progress) {
+                    0 -> -1f
+                    1 -> 1f
+                    2 -> 0.75f
+                    3 -> 0.5f
+                    else -> 0.3f
                 }
+                autoScrollTo(autoSpeed)
             }
         })
 
     }
+
+    //keep上一章設定的速度
+    var autoSpeed = 0f
+    private fun autoScrollTo(speed:Float) {
+        try {
+            if (speed>0) {
+                layoutManager.setSpeed(speed)
+            } else {
+                layoutManager.setSpeedSlow()
+            }
+            recyclerView.smoothScrollToPosition(adapter.itemCount - 1)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
 
     private fun showFav(fav: Boolean) {
         if (fav) {
@@ -777,7 +789,7 @@ class ComicReadActivity : BaseActivity() {
                 .subscribe {
                     if (it is EventRechargeSuccess) {
                         VM.getNewContent(this, chapterId)
-                        VM.getBalance(this)
+                        VM.getBalance()
                     }
                 }
     }
@@ -975,7 +987,7 @@ class ComicReadActivity : BaseActivity() {
         }
     }
 
-    private var readChapterCount = 0;
+    private var readChapterCount = 0
     private var mHandler = Handler()
 
     private fun getAD(url: String) {

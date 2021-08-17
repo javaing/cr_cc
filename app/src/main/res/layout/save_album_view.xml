@@ -31,7 +31,7 @@
             android:layout_marginBottom="20dp"
             android:layout_gravity="right"
             android:layout_marginRight="20dp"
-            android:text="虫虫漫画，给你不一样的体验"
+            android:text="@string/share_app_slogan"
             android:textColor="@color/boxing_black"
             android:textSize="14sp" />
     </LinearLayout>

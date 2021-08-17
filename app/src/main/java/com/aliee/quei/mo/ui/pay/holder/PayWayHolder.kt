@@ -35,7 +35,7 @@ class PayWayHolder private constructor(itemView: View) : RecyclerView.ViewHolder
                         .load(CommonDataProvider.instance.getImgDomain() + "/" + bean.icon_url)
                         .into(icon)
             }
-        } else if (bean.sdk!!.contains("Alipay")) {
+        } else if (bean.sdk.contains("Alipay")) {
             payName = "支付宝"
             if(bean.icon_url.isNullOrEmpty()) {
                 icon.setImageResource(R.mipmap.ic_pay_alipay)
@@ -44,7 +44,7 @@ class PayWayHolder private constructor(itemView: View) : RecyclerView.ViewHolder
                         .load(CommonDataProvider.instance.getImgDomain() + "/" + bean.icon_url)
                         .into(icon)
             }
-        }else if (bean.sdk!!.contains("Ysfpay")){
+        }else if (bean.sdk.contains("Ysfpay")){
             payName = "云闪付"
             if(bean.icon_url.isNullOrEmpty()) {
                 icon.setImageResource(R.mipmap.ic_pay_unionpay)

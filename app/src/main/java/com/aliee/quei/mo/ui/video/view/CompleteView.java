@@ -27,9 +27,11 @@ public class CompleteView extends FrameLayout implements IControlComponent {
 
     private ControlWrapper mControlWrapper;
 
-    private ImageView mStopFullscreen;
+    private final ImageView mStopFullscreen;
 
-    private TextView tv_replay_tips, btn_register, btn_replay;
+    private final TextView tv_replay_tips;
+    private final TextView btn_register;
+    private final TextView btn_replay;
 
     private boolean isPreview = false;
 

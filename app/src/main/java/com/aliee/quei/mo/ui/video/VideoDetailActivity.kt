@@ -41,7 +41,6 @@ import com.zhy.view.flowlayout.TagAdapter
 import kotlinx.android.synthetic.main.activity_viceo_info.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.layout_title.*
-import org.jetbrains.anko.runOnUiThread
 
 
 /**
@@ -103,10 +102,16 @@ class VideoDetailActivity : BaseActivity() {
 
     override fun initData() {
         videoBean = Gson().fromJson(videoInfoJson, VideoBean::class.java)
-        Log.e("video", "videoBean:${videoBean.toString()}")
+        //Log.e("video", "videoBean:$videoBean")
         showLoadingView(true)
-        videoInfoVModel.getVideoDomainType(this)
-        videoInfoVModel.getVideoDomain(this, videoBean.id, "u_temp_user_0")
+        imageDomain = CommonDataProvider.instance.getVideoDomain()
+        if(!imageDomain.equals("")) {
+            Log.e("video", "cache domain:$imageDomain")
+        } else {
+            videoInfoVModel.getVideoDomainType()
+        }
+
+        videoInfoVModel.getVideoPath(videoBean.id, "u_temp_user_0")
         setVideoInfo()
         initVideoView()
     }
@@ -116,12 +121,12 @@ class VideoDetailActivity : BaseActivity() {
         rv.layoutManager = GridLayoutManager(this, 2)
         rv.adapter = adapter
         rv.addItemDecoration(RecycleGridDivider())
-        rv.isNestedScrollingEnabled = false;
+        rv.isNestedScrollingEnabled = false
 
         adapter.setOnItemClickListener(object : VideoGuessLikeAdapter.OnItemClickListener {
             override fun onItemClick(video: VideoBean) {
                 if (video.thumbImg.contains("http")){
-                    AdConfig.adClick(this@VideoDetailActivity,video!!.adClickUrl!!)
+                    AdConfig.adClick(this@VideoDetailActivity, video.adClickUrl!!)
                 }else{
                     val videoInfoJson = Gson().toJson(video)
                     ARouterManager.goVideoInfoActivity(this@VideoDetailActivity, videoInfoJson)
@@ -141,7 +146,7 @@ class VideoDetailActivity : BaseActivity() {
 
         prepareView.recharge.setOnClickListener { ARouterManager.goRechargeActivity(this, bookid = videoBean.id, isBook = false) }
         val titleView = TitleView(this) //标题栏
-        titleView.setTitle(videoBean!!.name)
+        titleView.setTitle(videoBean.name)
         val vodController = VodControlView(this)    //设置底部控制栏
         val gestureControlView = GestureView(this)  //滑动控制视图
         videoController.addControlComponent(titleView)
@@ -168,7 +173,7 @@ class VideoDetailActivity : BaseActivity() {
                     VideoView.STATE_PLAYBACK_COMPLETED -> {
                         Log.d("tag", "STATE_PLAYBACK_COMPLETED:videoTime:${player.duration}")
                         //记录当前视频完成播放次数
-                        VM.videoEndPlay(this@VideoDetailActivity, videoId, videoPlayTime, done = 1)
+                        VM.videoEndPlay(videoId, videoPlayTime, done = 1)
                     }
                 }
             }
@@ -190,14 +195,15 @@ class VideoDetailActivity : BaseActivity() {
     }
 
     private fun setPlayerData(videoPath: String) {
-        player.setUrl("http://vapi.yichuba.com${videoPath}")
+        Log.e("tag", "videoPath="+videoPath.videoPath())
+        player.setUrl(videoPath.videoPath())
         // player.setUrl("http://vfx.mtime.cn/Video/2019/03/14/mp4/190314223540373995.mp4")
         player.start()
     }
 
 
     private fun setVideoInfo() {
-        videoBean?.apply {
+        videoBean.apply {
             tv_video_dis.text = Html.fromHtml(name).trim()
             tv_collection_num.text = favcounts
             tv_watch_num.text = playcounts
@@ -216,7 +222,7 @@ class VideoDetailActivity : BaseActivity() {
             tag_layout.visibility = View.GONE
         } else {
             tag_layout.visibility = View.VISIBLE
-            tag_layout.adapter = object : TagAdapter<Tags?>(videoBean?.tags) {
+            tag_layout.adapter = object : TagAdapter<Tags?>(videoBean.tags) {
                 override fun getView(parent: FlowLayout, position: Int, t: Tags?): View? {
                     val textView = parent.context?.inflate(R.layout.video_tag_layout, parent, false) as TextView
                     textView.text = t?.name
@@ -226,7 +232,7 @@ class VideoDetailActivity : BaseActivity() {
             TagCountManager.saveMoreTagCount(videoBean.tags)
         }
         val tagId = TagCountManager.getTagCount()?.tagId
-        videoInfoVModel.loadGuessLike(this, tagId)
+        videoInfoVModel.loadGuessLike(tagId)
         videoAd()
     }
 
@@ -239,7 +245,7 @@ class VideoDetailActivity : BaseActivity() {
     }
 
     private fun addMyVideo() {
-        videoInfoVModel.addMyVideo(this@VideoDetailActivity, videoBean!!.id)
+        videoInfoVModel.addMyVideo(videoBean.id)
     }
     private fun videoAd() {
         val adBean = AdConfig.getAd(AdEnum.VIDEO_INFO.zid)
@@ -268,27 +274,35 @@ class VideoDetailActivity : BaseActivity() {
     }
 
     fun guessLikeAd(list : MutableList<VideoBean>) {
-        val adBean = AdConfig.getAd(AdEnum.VIDEO_GUESS_LIKE_RANK.zid)
-        if (adBean==null){
-            adapter.setItem(list)
+        Log.e("guess", "ad list size:"+list.size)
+        val adBean: AdBean?
+        try {
+            adBean = AdConfig.getAd(AdEnum.VIDEO_GUESS_LIKE_RANK.zid)
+            Log.e("guess", "ad: bean :"+adBean.toString())
+            if (adBean==null){
+                runOnUiThread {adapter.setItem(list)}
+                return
+            }
+        } catch (e: Exception) {
+            runOnUiThread {adapter.setItem(list)}
             return
         }
-        adBean?.also { adBean ->
+        adBean.also { adBean ->
             AdConfig.getAdInfo(adBean, { adInfo->
                 val option = Gson().fromJson<Option>(adInfo.optionstr, Option::class.java)
                 adInfo.title = option.title
                 adInfo.desc = option.desc
                 runOnUiThread {
-                    Log.d("tag","视频详情猜你喜欢：interval:${adBean.interval},物料：${adInfo.toString()}")
+                    Log.d("tag","视频详情猜你喜欢：interval:${adBean.interval},物料：$adInfo")
                     val videoBean = VideoBean(adInfo.title!!,"",-321,-1,adInfo.desc!!,"",-1, mutableListOf(),"",adInfo.imgurl,
-                    "",1,"")
+                        "",1,"")
                     videoBean.adCallbackUrl = adInfo.callbackurl
                     videoBean.adClickUrl = adInfo.clickurl
-                    list?.add(0,videoBean)
+                    list.add(0,videoBean)
                     adapter.setItem(list)
                 }
             }, {
-                adapter.setItem(list)
+                runOnUiThread {adapter.setItem(list)}
             })
         }
     }
@@ -305,7 +319,7 @@ class VideoDetailActivity : BaseActivity() {
                 }
             }
         }
-        videoInfoVModel.videoDomain.observeForever {
+        videoInfoVModel.videoPath.observeForever {
             when (it?.status) {
                 Status.Success -> {
                     val json = Gson().toJson(it.data!!)
@@ -352,9 +366,12 @@ class VideoDetailActivity : BaseActivity() {
                     imageDomain = it.data!!.`20`[0].domain
                     Log.d("tag", "imageDomain:$imageDomain")
                     //获取视频
-                    adapter.setImageDomain(imageDomain!!)
+                    if(imageDomain!=null) {
+                        initVideoDomain(imageDomain!!)
+                    } else {
+                        toast("获取视频網域失敗，請關閉app再試")
+                    }
 
-                    parseImageData(imageDomain!!)
                 }
                 Status.Error -> {
 
@@ -378,12 +395,17 @@ class VideoDetailActivity : BaseActivity() {
         }
     }
 
+    private fun initVideoDomain(domain: String) {
+        adapter.setImageDomain(domain)
+        parseImageData(domain)
+    }
+
 
     //图片处理
     private fun parseImageData(domain: String) {
         var imageUrl = replaceImageUrl(domain)
         thumb.loadImageScale(imageUrl)
-        iv_blue_thumb.loadBlurCover(imageUrl)
+        iv_blue_thumb.loadBlurCover(imageUrl.videoUrl())
         iv_blue_thumb.scaleType = ImageView.ScaleType.FIT_XY
 
     }
@@ -399,7 +421,7 @@ class VideoDetailActivity : BaseActivity() {
             player.resume()
         }
         //充值完成后回到界面刷新
-        videoInfoVModel.getVideoDomain(this, videoBean.id, "u_temp_user_0")
+        videoInfoVModel.getVideoPath(videoBean.id, "u_temp_user_0")
     }
 
 

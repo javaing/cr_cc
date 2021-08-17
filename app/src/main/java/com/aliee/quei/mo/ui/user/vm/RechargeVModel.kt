@@ -7,17 +7,17 @@ import com.aliee.quei.mo.base.BaseViewModel
 import com.aliee.quei.mo.base.response.StatusResourceObserver
 import com.aliee.quei.mo.base.response.UIDataBean
 import com.aliee.quei.mo.data.BeanConstants
-import com.aliee.quei.mo.data.bean.H5OrderBean
-import com.aliee.quei.mo.data.bean.PayWayBean
-import com.aliee.quei.mo.data.bean.PriceBean
-import com.aliee.quei.mo.data.bean.UserInfoBean
+import com.aliee.quei.mo.data.bean.*
 import com.aliee.quei.mo.data.repository.RechargeRepository
 import com.aliee.quei.mo.data.repository.UserInfoRepository
+import com.aliee.quei.mo.data.service.UserService
+import com.aliee.quei.mo.net.retrofit.RetrofitClient
 import retrofit2.http.Field
 
 class RechargeVModel : BaseViewModel() {
     private val rechargeRepository = RechargeRepository()
-    private val userInfoRepository = UserInfoRepository()
+    private val userService = RetrofitClient.createService(UserService::class.java)
+
     val priceListLiveData = MediatorLiveData<UIDataBean<List<PriceBean>>>()
     val createOrderLiveData = MediatorLiveData<UIDataBean<H5OrderBean>>()
     val balanceLiveData = MediatorLiveData<UIDataBean<UserInfoBean>>()
@@ -39,9 +39,12 @@ class RechargeVModel : BaseViewModel() {
                 .subscribe(StatusResourceObserver(createOrderLiveData, silent = false))
     }
 
-    fun getBalance(lifecycleOwner: LifecycleOwner) {
-        userInfoRepository.getUserInfo(lifecycleOwner)
-                .subscribe(StatusResourceObserver(balanceLiveData))
+    fun getBalance() {
+//        userInfoRepository.getUserInfo(lifecycleOwner)
+//                .subscribe(StatusResourceObserver(balanceLiveData))
+        viewModelLaunch ({
+            balanceLiveData.value=userService.getUserInfo().toDataBean()
+        }, {})
     }
 
     @SuppressLint("CheckResult")

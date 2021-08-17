@@ -1,135 +1,159 @@
 package com.aliee.quei.mo.ui.main.vm
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MediatorLiveData
-import com.aliee.quei.mo.application.ReaderApplication
+import androidx.lifecycle.viewModelScope
 import com.aliee.quei.mo.base.BaseViewModel
-import com.aliee.quei.mo.base.response.StatusResourceObserver
 import com.aliee.quei.mo.base.response.UIDataBean
+import com.aliee.quei.mo.component.CommonDataProvider
 import com.aliee.quei.mo.data.BeanConstants
 import com.aliee.quei.mo.data.bean.*
 import com.aliee.quei.mo.data.repository.*
-import com.meituan.android.walle.WalleChannelReader
-import com.aliee.quei.mo.utils.rxjava.SchedulersUtil
-import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindUntilEvent
-import io.reactivex.Observable
+import kotlinx.coroutines.launch
 
 class MainVModel : BaseViewModel() {
-    private val mainVideoRepository = MainVideoRepository()
-    private val recommendRepository = RecommendRepository()
     private val channelRepository = ChannelRepository()
     private val versionRepository = VersionRepository()
+    private val launchRepository = LaunchRepository()
     private val checkInRepository = CheckInRepository()
+    private val recommendRepository = RecommendRepository()
     private val welfareRepository = WelfareRepository()
-    private val historyRepository = HistoryRepository()
-    private val repository = LaunchRepository()
     private val userInfoRepository = UserInfoRepository()
+    private val historyRepository = HistoryRepository()
+    private val mainVideoRepository = MainVideoRepository()
 
-    val historyLiveData = MediatorLiveData<UIDataBean<List<HistoryBean>>>()
-    val recommendLiveData = MediatorLiveData<UIDataBean<List<RecommendBookBean>>>()
-    val channelInfoLiveData = MediatorLiveData<UIDataBean<ChannelInfoBean>>()
+
+    val videoDomainData = MediatorLiveData<UIDataBean<VideoDomainType1>>()
+    val updateAppgetLiveData = MediatorLiveData<UIDataBean<AppUpdate>>()
     val versionLiveData = MediatorLiveData<UIDataBean<VersionInfoBean>>()
-    val checkInLiveData = MediatorLiveData<UIDataBean<Int>>()
+    val checkInLiveData = MediatorLiveData<UIDataBean<CoinBean>>()
     val bulletinLiveData = MediatorLiveData<UIDataBean<BulletinBean>>()
+    val channelInfoLiveData = MediatorLiveData<UIDataBean<ChannelInfoBean>>()
+    val historyLiveData = MediatorLiveData<UIDataBean<List<HistoryBean>>>()
     val wxNumberLiveData = MediatorLiveData<UIDataBean<WeixinAdBean>>()
     val wxAttentionLiveData = MediatorLiveData<UIDataBean<WeixinAttentionBean>>()
     val signLiveData = MediatorLiveData<UIDataBean<SignAdBean>>()
+    val recommendLiveData = MediatorLiveData<UIDataBean<MutableList<RecommendBookBean>>>()
+    val adZoneLiveData = MediatorLiveData<UIDataBean<List<AdZoneBean>>>()
     val appupdateopLiveData = MediatorLiveData<UIDataBean<String>>()
     val appDrainageLiveData = MediatorLiveData<UIDataBean<String>>()
-    val adZoneLiveData = MediatorLiveData<UIDataBean<List<AdZoneBean>>>()
-    val videoDomainData = MediatorLiveData<UIDataBean<VideoDomainType1>>()
-    val updateAppgetLiveData = MediatorLiveData<UIDataBean<AppUpdate>>()
+    val channelHideLiveData = MediatorLiveData<UIDataBean<List<ChannelHideBean>>>()
 
 
-    fun appUpdateOp(lifecycleOwner: LifecycleOwner, uid: Int, utemp: Int, opType: Int) {
-        recommendRepository.appUpdateOp(lifecycleOwner, uid, utemp, opType).subscribe(StatusResourceObserver(appupdateopLiveData))
+    fun getUserChannelHide() {
+        viewModelScope.launch {
+            channelHideLiveData.value = channelRepository.getChannelHide()
+        }
     }
 
-    fun appDrainage(lifecycleOwner: LifecycleOwner, uid: Int, utemp: Int) {
-        recommendRepository.appDrainage(lifecycleOwner, uid, utemp).subscribe(StatusResourceObserver(appDrainageLiveData))
+    fun appUpdateOp(uid: Int, utemp: Int, opType: Int) {
+        viewModelScope.launch {
+            appupdateopLiveData.value = recommendRepository.appUpdateOp(uid, utemp, opType)
+        }
     }
 
-
-    fun getRecommend(lifecycleOwner: LifecycleOwner) {
-        recommendRepository.getRecommend(lifecycleOwner, BeanConstants.RecommendPosition.OPEN_APP_RECOMMEND.rid)
-                .subscribe(StatusResourceObserver(recommendLiveData))
-    }
-
-    fun getUserChannelInfo(lifecycleOwner: LifecycleOwner) {
-        val channel = WalleChannelReader.getChannel(ReaderApplication.instance, "1") ?: "1"
-        channelRepository.getChannelInfo(lifecycleOwner, channel)
-                .subscribe(StatusResourceObserver(channelInfoLiveData, silent = true))
-    }
-
-    fun versionCheck(lifecycleOwner: LifecycleOwner, appid: String, version: String) {
-        versionRepository.checkVersion(lifecycleOwner, appid, version)
-                .subscribe(StatusResourceObserver(versionLiveData, silent = true))
-    }
-
-    fun getReadHistory(lifecycleOwner: LifecycleOwner) {
-        historyRepository.loadHistory(lifecycleOwner)
-                .subscribe(StatusResourceObserver(historyLiveData))
-    }
-
-    fun autoCheckIn(lifecycleOwner: LifecycleOwner, date: String = "") {
-        checkInRepository.checkIn(lifecycleOwner, date)
-                .subscribe(StatusResourceObserver(checkInLiveData, silent = true))
-    }
-
-    fun getBulletin(lifecycleOwner: LifecycleOwner) {
-        checkInRepository.getBulletin(lifecycleOwner)
-                .subscribe(StatusResourceObserver(bulletinLiveData, silent = true))
-    }
-
-    fun getSignAd(lifecycleOwner: LifecycleOwner) {
-        welfareRepository.getSignAd(lifecycleOwner)
-                .subscribe(StatusResourceObserver(signLiveData))
-    }
-
-    fun getWxAd(lifecycleOwner: LifecycleOwner) {
-        welfareRepository.getWxAd(lifecycleOwner)
-                .subscribe(StatusResourceObserver(wxNumberLiveData))
-    }
-
-    fun getWxAttention(lifecycleOwner: LifecycleOwner, installTime: Long, chapter: String) {
-        welfareRepository.getWxAttention(lifecycleOwner, installTime, chapter)
-                .subscribe(StatusResourceObserver(wxAttentionLiveData))
-    }
-
-    fun getAdZone(lifecycleOwner: LifecycleOwner, status: Int) {
-        recommendRepository.adZone(lifecycleOwner, status)
-                .subscribe(StatusResourceObserver(adZoneLiveData))
-    }
-
-    fun getVideoDomain(lifecycleOwner: LifecycleOwner) {
-        repository.getVideoDomain(lifecycleOwner)
-                .subscribe(StatusResourceObserver(videoDomainData))
+    fun appDrainage(uid: Int, utemp: Int) {
+        viewModelScope.launch {
+            appDrainageLiveData.value = recommendRepository.appDrainage(uid, utemp)
+        }
     }
 
 
-    fun updateAppop(lifecycleOwner: LifecycleOwner, opType: Int, uid: Int, utemp: Int) {
-        versionRepository.appop(lifecycleOwner, opType, uid, utemp)
-                .subscribe()
+    fun getAdZone( status: Int) {
+        viewModelScope.launch {
+            adZoneLiveData.value = recommendRepository.getAdZone(status)
+        }
     }
 
-    fun updateAppget(lifecycleOwner: LifecycleOwner, uid: Int, utemp: Int) {
-        versionRepository.appget(lifecycleOwner, uid, utemp)
-                .subscribe(StatusResourceObserver(updateAppgetLiveData))
+    fun getRecommend() {
+        viewModelScope.launch {
+            val id = BeanConstants.RecommendPosition.OPEN_APP_RECOMMEND.rid
+            recommendLiveData.value =  recommendRepository.getRecommend(id)
+        }
     }
 
-    fun videoMemberInfo(lifecycleOwner: LifecycleOwner) {
-        userInfoRepository.getMemberInfo(lifecycleOwner)
-                .subscribe()
+    fun getSignAd() {
+        viewModelScope.launch {
+            signLiveData.value = welfareRepository.getSignAd()
+        }
     }
 
-    fun mainTags(lifecycleOwner: LifecycleOwner) {
-        mainVideoRepository.mainTags(lifecycleOwner)
-                .subscribe()
+    fun getWxAd() {
+        viewModelScope.launch {
+            wxNumberLiveData.value = welfareRepository.getWxAd()
+        }
     }
 
-    fun autoPlay(lifecycleOwner: LifecycleOwner){
-        mainVideoRepository.getAutoPlay(lifecycleOwner)
-                .subscribe()
+    fun getWxAttention(installTime: Long, chapter: String) {
+        viewModelScope.launch {
+            wxAttentionLiveData.value = welfareRepository.getWxAttention(installTime, chapter)
+        }
     }
+
+    fun videoMemberInfo() {
+        viewModelScope.launch {
+            val it = userInfoRepository.videoMemberInfo()
+            CommonDataProvider.instance.saveFreeTime(it?.freetime.toString())
+        }
+    }
+
+    fun loadHistory() {
+        viewModelScope.launch {
+            historyLiveData.value = historyRepository.loadHistory()
+        }
+    }
+
+    fun getUserChannelInfo() {
+        viewModelScope.launch {
+            channelInfoLiveData.value = channelRepository.getUserChannelInfo()
+        }
+    }
+
+    fun getVideoDomain() {
+        viewModelScope.launch {
+            videoDomainData.value = launchRepository.getVideoDomain()
+        }
+    }
+
+    fun updateAppop(opType: Int, uid: Int, utemp: Int) {
+        viewModelScope.launch {
+            val data = versionRepository.updateAppop(opType, uid, utemp)
+        }
+    }
+
+    fun updateAppget(uid: Int, utemp: Int) {
+        viewModelScope.launch {
+            updateAppgetLiveData.value = versionRepository.updateAppget( uid, utemp)
+        }
+    }
+
+    fun versionCheck(appid: String, version: String) {
+        viewModelScope.launch {
+            versionLiveData.value = versionRepository.getVersionInfo(appid, version)
+        }
+    }
+
+    fun autoCheckIn(date: String = "") {
+        viewModelScope.launch {
+            checkInLiveData.value = checkInRepository.autoCheckIn(date)
+        }
+    }
+
+    fun getBulletin() {
+        viewModelScope.launch {
+            bulletinLiveData.value = checkInRepository.getBulletin()
+        }
+    }
+
+    fun mainTags() {
+        viewModelScope.launch {
+            mainVideoRepository.mainTags()
+        }
+    }
+
+    fun autoPlay(){
+        viewModelScope.launch {
+            mainVideoRepository.autoPlay()
+        }
+    }
+
 }

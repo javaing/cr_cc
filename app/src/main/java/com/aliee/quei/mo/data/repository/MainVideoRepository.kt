@@ -3,6 +3,8 @@ package com.aliee.quei.mo.data.repository
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import android.util.Log
+import com.aliee.quei.mo.base.response.Status
+import com.aliee.quei.mo.base.response.UIDataBean
 import com.aliee.quei.mo.component.CommonDataProvider
 import com.aliee.quei.mo.data.bean.*
 import com.aliee.quei.mo.data.exception.RequestException
@@ -17,192 +19,160 @@ import kotlin.math.log
 
 class MainVideoRepository : BaseRepository() {
     private val service = RetrofitClient.createService(MainVideoService::class.java)
+    private val videoService = RetrofitClient.createVideoService(MainVideoService::class.java)
 
-    fun getLongVideo(lifecycleOwner: LifecycleOwner): Observable<MutableList<Video>> {
-        return service.longVideo()
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
-                .map {
-                    it
-                }
+    suspend fun getLongVideo(): UIDataBean<MutableList<Video>> {
+        return try {
+            videoService.longVideo().toDataBean()
+        } catch (e: Exception) {
+            UIDataBean(Status.Error)
+        }
     }
 
     /**
      * 随机视频
      */
-    fun randomList(lifecycleOwner: LifecycleOwner): Observable<MutableList<Video>> {
-        return service.randomList()
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
-                .map {
-                    it
-                }
+    suspend fun randomList(): UIDataBean<MutableList<Video>> {
+        return try {
+            videoService.randomList().toDataBean()
+        } catch (e: Exception) {
+            UIDataBean(Status.Error)
+        }
     }
 
     /**
      * 首页视频
      */
-    fun mainVideoList(lifecycleOwner: LifecycleOwner, page: Int, pageCount: Int, totalsec: String): Observable<MutableList<Video>> {
-        return service.mainVideoList(page, pageCount, totalsec)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
-                .map {
-                    it
-                }
+    suspend fun mainVideoList(page: Int, pageCount: Int, totalsec: String): UIDataBean<MutableList<Video>> {
+        return try {
+            videoService.mainVideoList(page, pageCount, totalsec).toDataBean()
+        } catch (e: Exception) {
+            UIDataBean(Status.Error)
+        }
     }
 
     /**
      * 视频分类，标签
      */
-    fun mainTags(lifecycleOwner: LifecycleOwner): Observable<MutableList<Tag>> {
-        return service.mainTags()
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
-                .map {
-                    val tags: MutableList<Tag> = it
-                    tags.add(0, Tag(-1, "推荐"))
-                    CommonDataProvider.instance.saveVideoTags(tags)
-                    tags
-                }
+    suspend fun mainTags() {
+        try {
+            val data : MutableList<Tag>? = videoService.mainTagsK().dataConvert()
+            data?.let {
+                data.add(0, Tag(-1, "推荐"))
+                CommonDataProvider.instance.saveVideoTags(data)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     /**
      * 排行榜
      */
-    fun rankingList(lifecycleOwner: LifecycleOwner, type: Int, tag: Int, page: Int, pageCount: Int): Observable<MutableList<Video>> {
-        return service.videoRankingList(type, tag, page, pageCount)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
-                .map {
-                    it
-                }
+    suspend fun rankingList(type: Int, tag: Int, page: Int, pageCount: Int): UIDataBean<MutableList<Video>> {
+        return try {
+            videoService.videoRankingList(type, tag, page, pageCount).toDataBean()
+        } catch (e: Exception) {
+            UIDataBean(Status.Error)
+        }
     }
 
     /**
      * 观看记录
      */
-    fun videoRecommend(lifecycleOwner: LifecycleOwner, page: Int, pageCount: Int): Observable<MutableList<Video>> {
-        return service.videoRecommend(page, pageCount)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
-                .map {
-                    it
-                }
+    suspend fun videoRecommend(page: Int, pageCount: Int): UIDataBean<MutableList<Video>> {
+        return try {
+            videoService.videoRecommend(page, pageCount).toDataBean()
+        } catch (e: Exception) {
+            UIDataBean(Status.Error)
+        }
     }
 
     /**
      * 删除观看记录
      */
 
-    fun delVideoRecommend(lifecycleOwner: LifecycleOwner, hisId: Int): Observable<String> {
-        return service.delRecommend(hisId)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .map {
-                    if (it.code != 0) {
-                        throw RequestException(it.code, it.msg.toString())
-                    }
-                    it.toString()
-                }
+    suspend fun delVideoRecommend(hisId: Int): UIDataBean<String> {
+        return try {
+            val it = videoService.delRecommend(hisId)
+            if (it.code != 0) {
+                throw RequestException()
+            }
+            UIDataBean(Status.Success, it.toString())
+        } catch (e: Exception) {
+            UIDataBean(Status.Error)
+        }
     }
 
-
-    fun getMyVideoList(lifecycleOwner: LifecycleOwner, page: Int, pageCount: Int): Observable<MutableList<Video>> {
-        return service.getMyVideoList(page, pageCount)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
-                .map {
-                    it
-                }
+    suspend fun getMyVideoList(page: Int, pageCount: Int): UIDataBean<MutableList<Video>> {
+        return try {
+            videoService.getMyVideoList(page, pageCount).toDataBean()
+        } catch (e: Exception) {
+            UIDataBean(Status.Error)
+        }
     }
 
-    fun getGuessLikes(lifecycleOwner: LifecycleOwner, id: Int?, page: Int): Observable<MutableList<Video>> {
-        return service.getGuessLike(id = id, page = page)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
-                .map {
-                    it
-                }
+    suspend fun getGuessLikes(id: Int?, page: Int): UIDataBean<MutableList<Video>> {
+        return try {
+            videoService.getGuessLike(id = id, page = page).toDataBean()
+        } catch (e: Exception) {
+            UIDataBean(Status.Error)
+        }
     }
 
-    fun getSearchVideo(lifecycleOwner: LifecycleOwner, keywords: String, page: Int, pageCount: Int): Observable<MutableList<Video>> {
-        return service.getSearchVideo(keywords, page, pageCount)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
-
+    suspend fun getSearchVideo(keywords: String, page: Int, pageCount: Int): UIDataBean<MutableList<Video>> {
+        return try {
+            videoService.getSearchVideo(keywords, page, pageCount).toDataBean()
+        } catch (e: Exception) {
+            UIDataBean(Status.Error)
+        }
     }
 
-    fun getHotSearchTag(lifecycleOwner: LifecycleOwner): Observable<Array<String>> {
-        return service.getHotSearchTag()
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
-                .map {
-                    it
-                }
+    suspend fun getHotSearchTag(): UIDataBean<Array<String>> {
+        return try {
+            videoService.getHotSearchTag().toDataBean()
+        } catch (e: Exception) {
+            UIDataBean(Status.Error)
+        }
     }
 
     //tag 点击统计
-    fun analyticsVideoTag(lifecycleOwner: LifecycleOwner, tag: Int): Observable<Any> {
-        return service.analyticsVideoTag(tag)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
+    suspend fun analyticsVideoTag(tag: Int): UIDataBean<Any> {
+        return try {
+            videoService.analyticsVideoTag(tag).toDataBean()
+        } catch (e: Exception) {
+            UIDataBean(Status.Error)
+        }
     }
 
     //视频完成播放统计
-    fun videoEndPlay(lifecycleOwner: LifecycleOwner, vid: Int, minsec: String = "", done: Int): Observable<String> {
-        return service.analyticsClinetPlayRecord(vid, minsec, done)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
+    suspend fun videoEndPlay(vid: Int, minsec: String = "", done: Int): UIDataBean<String> {
+        return try {
+            videoService.analyticsClinetPlayRecord(vid, minsec, done).toDataBean()
+        } catch (e: Exception) {
+            UIDataBean(Status.Error)
+        }
     }
 
-    /* fun getShareDomain(lifecycleOwner: LifecycleOwner):Observable<<List<ImgDomainConfig>>{
-         return service.getShareDomain()
-                 .compose(SchedulersUtil.applySchedulers())
-                 .bindUntilEvent(lifecycleOwner,Lifecycle.Event.ON_DESTROY)
-                 .compose(handleBean())
-     }*/
-    fun getShareDomain(lifecycleOwner: LifecycleOwner): Observable<String> {
-        return service.getShareDomain()
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
-                .map {
-                    /*CommonDataProvider.instance.saveImgDomain(it[0].domain.toString())
-                    Log.d("tag---url", it[0].domain.toString())
-                    var domains = ""
-                    it.forEach { config ->
-                        domains += "${config.domain},"
-                    }
-                    if (domains.endsWith(",")) {
-                        domains = domains.substring(0, domains.length - 1)
-                    }
-                    CommonDataProvider.instance.saveApiDomain(domains)*/
-                    it[0].domain.toString()
-                }
+    suspend fun getShareDomain(): UIDataBean<String> {
+        return try {
+            val it = service.getShareDomain().data
+            UIDataBean(Status.Success, it?.first()?.domain.toString())
+        } catch (e: Exception) {
+            UIDataBean(Status.Error)
+        }
 
     }
 
-    fun getAutoPlay(lifecycleOwner: LifecycleOwner): Observable<AutoPlayConf> {
-        return service.getAutoPlay()
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
-                .map {
-                    val conf = Gson().toJson(it)
-                    CommonDataProvider.instance.saveAutoPlayCount(conf)
-                    it
-                }
+    suspend fun autoPlay(){
+        try {
+            val data = service.getAutoPlayK().toDataBean().data
+            data?.let {
+                val conf = Gson().toJson(it)
+                CommonDataProvider.instance.saveAutoPlayCount(conf)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }

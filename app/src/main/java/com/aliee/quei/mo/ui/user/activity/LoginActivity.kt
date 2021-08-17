@@ -103,7 +103,7 @@ class LoginActivity : BaseActivity(), TextWatcher {
         titleBack.click {
             if (to == 1) {
                 VM.tempLogin(this)
-                ARouterManager.goMainActivity(this, showPage = ARouterManager.TAB_SHOP)
+                ARouterManager.goContentActivity(this, showPage = ARouterManager.TAB_SHOP)
             }
             finish()
         }

@@ -4,6 +4,7 @@ import androidx.lifecycle.Observer
 import android.content.Context
 import androidx.viewpager.widget.ViewPager
 import android.util.Log
+import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.dueeeke.videoplayer.player.VideoViewManager
 import com.aliee.quei.mo.R
@@ -20,6 +21,7 @@ import com.aliee.quei.mo.utils.TagCountManager
 import com.aliee.quei.mo.utils.extention.click
 import com.aliee.quei.mo.widget.view.TabTitleView
 import kotlinx.android.synthetic.main.fragment_video.*
+import net.lucode.hackware.magicindicator.MagicIndicator
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
@@ -29,7 +31,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTit
 
 @Route(path = Path.PATH_MAIN_VIDEO_FRAGMENT)
 class VideoFragment : BaseFragment() {
-    private val VM = MainVideoModel()
+    //private val VM = MainVideoModel()
     var tags: MutableList<Tag> = mutableListOf()
 
 
@@ -47,13 +49,7 @@ class VideoFragment : BaseFragment() {
             ARouterManager.goSearchVideoActivity(context!!)
         }
 
-        view_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {
-
-            }
-
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-            }
+        view_pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
 
             override fun onPageSelected(position: Int) {
                     VideoViewManager.instance().releaseByTag("list")
@@ -69,7 +65,7 @@ class VideoFragment : BaseFragment() {
     }
 
     private fun initIndicator() {
-        val myContentPagerAdapter = VideoTabFragmentAdapter(childFragmentManager, tags)
+        val myContentPagerAdapter = VideoTabFragmentAdapter(requireActivity(), tags)
         view_pager.adapter = myContentPagerAdapter
 
         val commonNavigator = CommonNavigator(context)
@@ -103,19 +99,39 @@ class VideoFragment : BaseFragment() {
 
         }
         magic_indicator.navigator = commonNavigator
-        ViewPagerHelper.bind(magic_indicator, view_pager)
+        bindbind(magic_indicator, view_pager)
+
     }
 
-    private fun initVM() {
-        VM.mainVideoTags.observe(this, Observer {
-            when (it?.status) {
-                Status.Success -> {
-                    tags = it.data!!
-                    initIndicator()
-                }
+    private fun bindbind(magicIndicator: MagicIndicator, viewPager: ViewPager2) {
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                magicIndicator.onPageScrolled(position, positionOffset, positionOffsetPixels)
+            }
+
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                magicIndicator.onPageSelected(position)
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+                magicIndicator.onPageScrollStateChanged(state)
             }
         })
     }
+
+//    private fun initVM() {
+//        VM.mainVideoTags.observe(this, Observer {
+//            when (it?.status) {
+//                Status.Success -> {
+//                    tags = it.data!!
+//                    initIndicator()
+//                }
+//            }
+//        })
+//    }
 
     override fun onDetach() {
         super.onDetach()

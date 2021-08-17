@@ -2,25 +2,26 @@ package com.aliee.quei.mo.net.imageloader.glide
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Point
 import android.graphics.drawable.Drawable
 import android.util.Log
+import android.view.Display
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.annotation.Nullable
-import androidx.vectordrawable.graphics.drawable.Animatable2Compat
 import com.aliee.quei.mo.R
 import com.aliee.quei.mo.net.imageloader.ImageLoadListener
 import com.aliee.quei.mo.net.imageloader.ImageLoader
 import com.aliee.quei.mo.utils.ScreenUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -39,7 +40,7 @@ object GlideImageLoader : ImageLoader {
     init {
         intArray[ImageView.ScaleType.CENTER_INSIDE.ordinal] = 1
         intArray[ImageView.ScaleType.FIT_CENTER.ordinal] = 2
-        intArray[ImageView.ScaleType.CENTER_CROP.ordinal] = 3;
+        intArray[ImageView.ScaleType.CENTER_CROP.ordinal] = 3
     }
 
     open fun a(scaleType: ImageView.ScaleType): RequestOptions {
@@ -47,31 +48,34 @@ object GlideImageLoader : ImageLoader {
         val i4 = intArray[scaleType.ordinal]
         when {
             i4 == 1 -> {
-                requestOptions.centerInside();
+                requestOptions.centerInside()
             }
             i4 == 2 -> {
-                requestOptions.fitCenter();
+                requestOptions.fitCenter()
             }
             i4 != 3 -> {
-                requestOptions.centerCrop();
+                requestOptions.centerCrop()
             }
             else -> {
-                requestOptions.centerCrop();
+                requestOptions.centerCrop()
             }
         }
-        requestOptions.diskCacheStrategy(DiskCacheStrategy.DATA);
-        return requestOptions;
+        //requestOptions.diskCacheStrategy(DiskCacheStrategy.DATA);
+        return requestOptions
     }
 
     override fun loadImageScale(imageView: ImageView, url: String, viewParent: View) {
         val context = imageView.context
         val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val MAX_WIDTH = wm.defaultDisplay.width
-        val sHeight = wm.defaultDisplay.height
+        val display = wm.defaultDisplay
+        val point =  Point()
+        display.getRealSize(point)
 
+        val MAX_WIDTH = point.x
         val MAX_HEIGHT = ScreenUtils.dpToPx(380)
         val options: RequestOptions = RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .format(DecodeFormat.PREFER_RGB_565)
                 .dontAnimate()
 
 
@@ -79,7 +83,7 @@ object GlideImageLoader : ImageLoader {
                 .asBitmap()
                 .load(url)
                 .apply(options)
-                .into(object : SimpleTarget<Bitmap>() {
+                .into(object : CustomTarget<Bitmap>() {
                     override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap?>?) {
                         val width = resource.width
                         val height = resource.height
@@ -116,6 +120,9 @@ object GlideImageLoader : ImageLoader {
                         imageView.layoutParams = params
                         imageView.setImageBitmap(resource)
                     }
+
+                    override fun onLoadCleared(placeholder: Drawable?) {
+                    }
                 })
     }
 
@@ -135,7 +142,7 @@ object GlideImageLoader : ImageLoader {
         Glide.with(imageView.context)
                 .asBitmap()
                 .load(url)
-                .into(object : SimpleTarget<Bitmap?>() {
+                .into(object : CustomTarget<Bitmap?>() {
                     override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap?>?) {
                         var width: Int = resource.width
                         var height: Int = resource.height
@@ -145,6 +152,9 @@ object GlideImageLoader : ImageLoader {
                         params.height = LinearLayout.LayoutParams.MATCH_PARENT
                         imageView.layoutParams = params
                         imageView.setImageBitmap(resource)
+                    }
+
+                    override fun onLoadCleared(placeholder: Drawable?) {
                     }
                 })
     }
@@ -217,7 +227,7 @@ object GlideImageLoader : ImageLoader {
             GlideApp.with(imageView.context)
                     .load(url)
                     .listener(drawableListener)
-                    .placeholder(R.drawable.img_default_cover)
+                    .placeholder(R.mipmap.img_default_cover)
                     .into(imageView)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -245,7 +255,7 @@ object GlideImageLoader : ImageLoader {
     override fun loadImage(imageView: ImageView, url: String, loadingResId: Int, errorResId: Int) {
         GlideApp.with(imageView.context)
                 .asBitmap()
-                .placeholder(R.drawable.img_default_cover)
+                .placeholder(R.mipmap.img_default_cover)
                 .load(url)
                 .centerCrop()
                 .error(errorResId)

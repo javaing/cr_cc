@@ -2,11 +2,11 @@ package com.aliee.quei.mo.data.repository
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import com.aliee.quei.mo.data.bean.BaseResponse
-import com.aliee.quei.mo.data.bean.BulletinBean
-import com.aliee.quei.mo.data.bean.BulletinDetailBean
-import com.aliee.quei.mo.data.bean.CheckInStatsBean
+import com.aliee.quei.mo.base.response.Status
+import com.aliee.quei.mo.base.response.UIDataBean
+import com.aliee.quei.mo.data.bean.*
 import com.aliee.quei.mo.data.service.CheckInService
+import com.aliee.quei.mo.net.ApiConstants
 import com.aliee.quei.mo.net.retrofit.RetrofitClient
 import com.aliee.quei.mo.utils.rxjava.SchedulersUtil
 import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindUntilEvent
@@ -40,24 +40,29 @@ class CheckInRepository : BaseRepository() {
 
     }
 
-    fun getBulletinList(lifecycleOwner: LifecycleOwner,status : Int,page : Int,pageSize : Int) : Observable<BaseResponse<Object>> {
-        return service.getBulletinList(page,status,pageSize)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner,Lifecycle.Event.ON_DESTROY)
-                .map {
-                    //  CommonDataProvider.instance.currentReading = it[0].book
-                    it
-                }
-
+    suspend fun getBulletinList(status : Int,page : Int,pageSize : Int) : UIDataBean<BaseResponse<Any>> {
+        val data = service.getBulletinList(page,status,pageSize)
+        return UIDataBean(Status.Success, data)
     }
 
-    fun getBulletinDetail(lifecycleOwner: LifecycleOwner,bulletinId : Int) : Observable<BulletinDetailBean> {
-        return service.getBulletinDetail(bulletinId)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner,Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
+    suspend fun getBulletinDetail(bulletinId : Int) : UIDataBean<BulletinDetailBean> {
+        return service.getBulletinDetail(bulletinId).toDataBean()
+    }
 
 
+    suspend fun autoCheckIn(date: String = ""):UIDataBean<CoinBean> {
+        return try {
+            service.checkInK(date).toDataBean()
+        } catch (e:Exception) {
+            UIDataBean(Status.Error)
+        }
+    }
 
+    suspend fun getBulletin():UIDataBean<BulletinBean> {
+        return try {
+            service.getBulletinK().toDataBean()
+        } catch (e:Exception) {
+            UIDataBean(Status.Error)
+        }
     }
 }

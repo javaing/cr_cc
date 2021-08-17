@@ -44,7 +44,7 @@ class EventToMineFreeTime
 
 class EventToReLogin
 
-class EventModifyPwd()
+class EventModifyPwd
 
 class EventShowBulletin
 
