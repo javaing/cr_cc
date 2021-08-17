@@ -38,14 +38,13 @@ class HistoryRepository : BaseRepository(){
         return UIDataBean(Status.Success,bookId.toString())
     }
 
-    fun addHistory(lifecycleOwner: LifecycleOwner,bookId : Int,chapterId: Int) : Observable<Any> {
-        return service.addHistory(bookId,chapterId)
-            .compose(SchedulersUtil.applySchedulers())
-            .bindUntilEvent(lifecycleOwner,Lifecycle.Event.ON_DESTROY)
-            .map {
-                RxBus.getInstance().post(EventReadHistoryUpdated(bookId))
-                it
-            }
-            .compose(handleBean())
+    suspend fun addHistory(bookId : Int,chapterId: Int) : UIDataBean<Any> {
+        return try {
+            val it=service.addHistory(bookId,chapterId).toDataBean()
+            RxBus.getInstance().post(EventReadHistoryUpdated(bookId))
+            it
+        } catch (e: Exception){
+            UIDataBean(Status.Error)
+        }
     }
 }

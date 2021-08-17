@@ -21,5 +21,5 @@ interface HistoryService{
 
     @FormUrlEncoded
     @POST("${ApiConstants.API_VERSION}cartoon/history/join")
-    fun addHistory(@Field("bookId")bookid : Int,@Field("chapterId")chapterid : Int) : Observable<BaseResponse<Any>>
+    suspend fun addHistory(@Field("bookId")bookid : Int,@Field("chapterId")chapterid : Int) : BaseResponse<Any>
 }

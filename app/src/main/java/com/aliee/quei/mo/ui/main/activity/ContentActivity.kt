@@ -266,7 +266,6 @@ class ContentActivity : BaseActivity() {
                 vmK.updateAppget( userInfo?.uid!!, 0)
             }
         }
-        //VM.getVideoDomain(this)
         vmK.videoMemberInfo()
         vmK.mainTags()
         vmK.autoPlay()
@@ -295,19 +294,6 @@ class ContentActivity : BaseActivity() {
 
     @SuppressLint("CheckResult")
     private fun initVM() {
-
-//        launchModel.channelHideLiveData.observe(this, Observer { it ->
-//            when (it?.status) {
-//                Status.Success -> {
-//                    val bean = it.data ?: return@Observer
-//                    ReaderApplication.instance.updateIsHideVideo(bean)
-//
-//                }
-//                Status.Error -> {
-//                    Log.e("tag", it.toString())
-//                }
-//            }
-//        })
 
         vmK.signLiveData.observe(this, Observer {
             when (it?.status) {

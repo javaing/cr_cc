@@ -26,18 +26,6 @@ class AdRepository :BaseRepository() {
         }
     }
 
-    fun getAdInfo(lifecycleOwner: LifecycleOwner,url:String):Observable<AdInfo>{
-        return service.adInfo(url)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .map {
-                    val resp = it.string()
-                    Log.d("tag","url:$url, resp:${resp}")
-                   Gson().fromJson(resp,AdInfo::class.java)
-                }
-
-    }
-
     suspend fun getAdInfo(url:String):UIDataBean<AdInfo>{
         val resp = service.adInfoK(url).string()
         //Log.d("tag","AdRepository:$resp")

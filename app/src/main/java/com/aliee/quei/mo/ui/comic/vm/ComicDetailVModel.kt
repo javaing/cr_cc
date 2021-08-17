@@ -83,8 +83,9 @@ class ComicDetailVModel : BaseViewModel(){
             .subscribe(StatusResourceObserver(isInShelfLiveData))
     }
 
-    fun addHistory(lifecycleOwner: LifecycleOwner,bookid: Int,chapterId: Int) {
-        historyRepository.addHistory(lifecycleOwner,bookid,chapterId)
-            .subscribe(StatusResourceObserver(addHistoryLiveData))
+    fun addHistory(bookid: Int,chapterId: Int) {
+        viewModelScope.launch {
+            addHistoryLiveData.value=historyRepository.addHistory(bookid,chapterId)
+        }
     }
 }

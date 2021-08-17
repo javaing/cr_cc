@@ -200,9 +200,9 @@ class ComicDetailActivity : BaseActivity() {
                     if (record == null) {
                         catalogItem = it.data.getOrNull(0)?:return@Observer
                         val firstChapter = catalogItem
-                        VM.addHistory(this, bookid, firstChapter.id)
+                        VM.addHistory(bookid, firstChapter.id)
                     } else {
-                        VM.addHistory(this, bookid, record.chapterId)
+                        VM.addHistory(bookid, record.chapterId)
                     }
                 }
                 Status.NoNetwork -> {
@@ -312,9 +312,9 @@ class ComicDetailActivity : BaseActivity() {
                         val record = ReadRecordManager.getReadRecord(bookid)
                         if (record == null) {
                             val firstChapter = catalogItem
-                            VM.addHistory(this, bookid, firstChapter.id)
+                            VM.addHistory(bookid, firstChapter.id)
                         } else {
-                            VM.addHistory(this, bookid, record.chapterId)
+                            VM.addHistory(bookid, record.chapterId)
                         }
                     }else if (tokenflag ==2 ){
                         VM.addToShelf(bookid)

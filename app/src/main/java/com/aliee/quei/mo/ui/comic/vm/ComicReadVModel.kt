@@ -139,8 +139,9 @@ class ComicReadVModel : BaseViewModel(){
     }
 
     fun addHistory(bookid : Int,chapterId: Int) {
-        historyRepository.addHistory(ReaderApplication.instance,bookid,chapterId)
-            .subscribe(StatusResourceObserver(addHistoryLiveData))
+        viewModelScope.launch {
+            addHistoryLiveData.value=historyRepository.addHistory(bookid,chapterId)
+        }
     }
 
     fun getCatalog(lifecycleOwner: LifecycleOwner, bookid: Int) {
