@@ -21,7 +21,7 @@ import java.lang.Exception
  * Created by Administrator on 2018/4/20 0020.
  */
 class UserInfoRepository : BaseRepository() {
-    //private val service = RetrofitClient.createService(UserService::class.java)
+    private val service = RetrofitClient.createService(UserService::class.java)
     private val videoService = RetrofitClient.createVideoService(UserService::class.java)
 
     suspend fun videoMemberInfo():UserInfoBean? {
@@ -32,16 +32,13 @@ class UserInfoRepository : BaseRepository() {
         }
     }
 
-    /* fun getUserConfig(lifecycleOwner: LifecycleOwner) : Observable<UserConfigBean>{
-        return service.getUserConfig(createRequestBody(mutableMapOf<String,String>()))
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner,Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean(UserConfigBean::class.java))
-                .map {
-                    SharedPreUtils.getInstance().dailyShareCount = it.shareDisplay
-                    it
-                }
-    }*/
+    suspend fun getUserInfo() : UserInfoBean?{
+        return try {
+            service.getUserInfo().data
+        } catch (e: Exception){
+            null
+        }
+    }
 
 //    fun dailySign(lifecycleOwner: LifecycleOwner): Observable<Any> {
 //        return service.dailySign()

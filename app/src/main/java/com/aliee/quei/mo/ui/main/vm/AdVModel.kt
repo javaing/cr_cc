@@ -108,15 +108,13 @@ class AdVModel : BaseViewModel() {
      * 漫画首页广告
      */
     @SuppressLint("CheckResult")
-    fun multipleAdApi(lifecycleOwner: LifecycleOwner,
-                      bannerAd: AdBean,
+    fun multipleAdApi(bannerAd: AdBean,
                       flow90Ad: AdBean,
                       flowQuAd: AdBean,
                       flowQiangAd: AdBean,
                       successCall: (MutableMap<String, AdInfo>) -> Unit,
                       failed: () -> Unit) {
         val adMap = mutableMapOf<String, AdInfo>()
-        val preTasks = mutableListOf<Observable<AdInfo>>()
         viewModelScope.launch {
             try {
                 listOf(
@@ -191,7 +189,7 @@ class AdVModel : BaseViewModel() {
                     override fun onResponse(call: Call, response: Response) {
                         if (response.isSuccessful) {
                             val resp = response.body?.string()
-                            Log.d("tag", "adInfo --> id${adBean.zid},resp :${resp}")
+                            //Log.d("tag", "adInfo --> id${adBean.zid},resp :${resp}")
                             val adInfo = Gson().fromJson<AdInfo>(resp, AdInfo::class.java)
                             if (adInfo != null) {
                                 successCall.invoke(adInfo)

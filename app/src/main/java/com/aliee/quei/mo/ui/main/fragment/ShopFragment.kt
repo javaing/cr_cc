@@ -217,7 +217,7 @@ class ShopFragment : BaseFragment() {
             VM.loadShop(this)
             return
         }
-        adVModel.multipleAdApi(this, banner, flow90, flowQu!!, flowQiang, {
+        adVModel.multipleAdApi(banner, flow90, flowQu!!, flowQiang, {
             //Log.d("tag", "ad map:1")
             if (it["flowObs90"] != null) {
                 it["flowObs90"]!!.isClose = flow90.close

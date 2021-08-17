@@ -12,7 +12,7 @@ import retrofit2.http.POST
  * Created by Administrator on 2018/4/20 0020.
  */
 interface UserService{
-//    @FormUrlEncoded
+    @FormUrlEncoded
     @POST("${ApiConstants.API_VERSION}cartoon/user/info")
     suspend fun getUserInfo():BaseResponse<UserInfoBean>
 

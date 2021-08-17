@@ -6,7 +6,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
-import com.aliee.quei.mo.application.ReaderApplication
 import com.aliee.quei.mo.base.BaseViewModel
 import com.aliee.quei.mo.base.response.Status
 import com.aliee.quei.mo.base.response.StatusResourceObserver
@@ -18,7 +17,6 @@ import com.aliee.quei.mo.data.bean.*
 import com.aliee.quei.mo.data.repository.*
 import com.aliee.quei.mo.data.service.*
 import com.aliee.quei.mo.net.ApiConstants
-import com.aliee.quei.mo.net.retrofit.RetrofitClient
 import com.aliee.quei.mo.utils.AES
 import com.aliee.quei.mo.utils.SharedPreUtils
 import com.aliee.quei.mo.utils.SharedPreUtils.Key_ApiDomain
@@ -26,11 +24,8 @@ import com.aliee.quei.mo.utils.SharedPreUtils.Key_CSRoute
 import com.aliee.quei.mo.utils.rxjava.SchedulersUtil
 import com.elvishew.xlog.BuildConfig
 import com.google.gson.reflect.TypeToken
-import com.meituan.android.walle.WalleChannelReader
 import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindUntilEvent
 import io.reactivex.Observable
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.*
 import java.io.IOException
@@ -40,14 +35,11 @@ import java.io.IOException
  * Created by Administrator on 2018/4/28 0028.
  */
 class LaunchVModel : BaseViewModel() {
-    private val service = RetrofitClient.createService(VersionService::class.java)
-    private val recommendService = RetrofitClient.createService(RecommendService::class.java)
-    private val categoryService = RetrofitClient.createService(CategoryService::class.java)
-    private val userService = RetrofitClient.createService(UserService::class.java)
-
-    private lateinit var repository: LaunchRepository
-    //private lateinit var categoryRepository: CategoryRepository
-    //private lateinit var userInfoRepository: UserInfoRepository
+    private var versionRepository= VersionRepository()
+    private var repository= LaunchRepository()
+    private var recommendRepository= RecommendRepository()
+    private var categoryRepository= CategoryRepository()
+    private var userInfoRepository= UserInfoRepository()
 
     val prepareLiveData = MediatorLiveData<UIDataBean<Any>>()
     val getUserInfoLiveData = MediatorLiveData<UIDataBean<UserInfoBean>>()
@@ -59,18 +51,16 @@ class LaunchVModel : BaseViewModel() {
 
 
     fun appUpdateOp(uid: Int, utemp: Int, opType: Int) {
-        viewModelLaunch ({
-                appupdateopLiveData.value = recommendService.appUpdateOp(uid, utemp, opType).toDataBean()
-            }, {
-            appupdateopLiveData.value = UIDataBean(Status.Error)
-        })
+        viewModelScope.launch {
+            appupdateopLiveData.value = recommendRepository.appUpdateOp(uid, utemp, opType)
+        }
     }
 
     fun updateAppop(opType: Int, uid: Int, utemp: Int) {
-        viewModelLaunch ({
-                val data = service.updateAppopK(opType, uid, utemp).dataConvert()
-                Log.e("tag", "请求 LaunchVModel updateAppop $data")
-        }, {})
+        viewModelScope.launch {
+                val data = versionRepository.updateAppop(opType, uid, utemp)
+                Log.e("tag", "LaunchVModel updateAppop $data")
+        }
     }
 
 
@@ -294,10 +284,7 @@ class LaunchVModel : BaseViewModel() {
 
     @SuppressLint("CheckResult")
     fun doLaunch(lifecycleOwner: LifecycleOwner, success: () -> Unit) {
-        repository = LaunchRepository()
-        //userInfoRepository = UserInfoRepository()
-        //recommendRepository = RecommendRepository()
-
+        //repository = LaunchRepository()
 
         preAll(lifecycleOwner) {
             prepareLiveData.value = UIDataBean(Status.Success)
@@ -317,13 +304,10 @@ class LaunchVModel : BaseViewModel() {
                         }, {}, {})
             }
 
-            viewModelLaunch ({
-                CommonDataProvider.instance.saveUserInfo( userService.getUserInfo().dataConvert() )
-            }, {})
-
-            viewModelLaunch ({
-                CommonDataProvider.instance.categoryConfig = categoryService.getCategory().dataConvert()
-            }, {})
+            viewModelScope.launch {
+                CommonDataProvider.instance.saveUserInfo( userInfoRepository.getUserInfo() )
+                CommonDataProvider.instance.categoryConfig = categoryRepository.getCategory().data
+            }
 
             success.invoke()
         }
@@ -331,7 +315,7 @@ class LaunchVModel : BaseViewModel() {
 
 
     fun registerToken(lifecycleOwner: LifecycleOwner) {
-        repository = LaunchRepository()
+        //repository = LaunchRepository()
         repository.registerToken(lifecycleOwner)
                 .subscribe(StatusResourceObserver(registerTokenLiveData))
     }
@@ -340,7 +324,7 @@ class LaunchVModel : BaseViewModel() {
 
     @SuppressLint("CheckResult")
     fun retryRegisterToken(lifecycleOwner: LifecycleOwner) {
-        repository = LaunchRepository()
+        //repository = LaunchRepository()
         repository.registerToken(lifecycleOwner).subscribe({}, {
             it.printStackTrace()
             tokenRetryTime++
@@ -354,7 +338,7 @@ class LaunchVModel : BaseViewModel() {
 
     @SuppressLint("CheckResult")
     fun retryImgDomain(lifecycleOwner: LifecycleOwner, successCall: () -> Unit) {
-        repository = LaunchRepository()
+        //repository = LaunchRepository()
         repository.getImgDomain(lifecycleOwner).subscribe({ successCall.invoke() }, {
             it.printStackTrace()
             imgRetryTime++
@@ -368,26 +352,17 @@ class LaunchVModel : BaseViewModel() {
 
     @SuppressLint("CheckResult")
     fun retryUserInfo(successCall: (userInfo: UserInfoBean) -> Unit) {
-        //userInfoRepository = UserInfoRepository()
-//        userInfoRepository.getUserInfo(lifecycleOwner).subscribe({
-//            successCall.invoke(it)
-//        }, {
-//            it.printStackTrace()
-//            userInfoRetry++
-//            if (userInfoRetry < 5) {
-//                retryUserInfo(lifecycleOwner, successCall)
-//            }
-//        })
-        viewModelLaunch ({
-            val userBean = userService.getUserInfo().dataConvert()
-            userBean?.let { successCall.invoke(userBean) }
-        }, {
-            userInfoRetry++
-            if (userInfoRetry < 5) {
-                retryUserInfo(successCall)
+        viewModelScope.launch {
+            val userBean = userInfoRepository.getUserInfo()
+            if(userBean==null) {
+                userInfoRetry++
+                if (userInfoRetry < 5) {
+                    retryUserInfo(successCall)
+                }
+                return@launch
             }
-        })
-
+            successCall.invoke(userBean)
+        }
     }
 
     /**
@@ -400,18 +375,7 @@ class LaunchVModel : BaseViewModel() {
         val preTasks = mutableListOf<Observable<*>>()
         preTasks.add(repository.registerToken(lifecycleOwner))
         preTasks.add(repository.getImgDomain(lifecycleOwner))
-        //preTasks.add(userInfoRepository.getUserInfo(lifecycleOwner))
-        //preTasks.add(mainVideoRepository.getAutoPlay(lifecycleOwner))
-        // preTasks.add(userInfoRepository.getMemberInfo(lifecycleOwner))
-        // preTasks.add(repository.videoLogin(lifecycleOwner))
-        /*    var token = CommonDataProvider.instance.getToken()
-             if (token.isEmpty()) {
-                 preTasks.add(userInfoRepository.getUserInfo(lifecycleOwner))
-            } else {
-              // preTasks.add(repository.registerToken(lifecycleOwner))
-                preTasks.add(userInfoRepository.getUserInfo(lifecycleOwner))
-            }*/
-//        preTasks.add(rechargeRepository.getPayConfig(lifecycleOwner))
+
         Observable.merge(preTasks)
                 .compose(SchedulersUtil.applySchedulers())
                 .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
