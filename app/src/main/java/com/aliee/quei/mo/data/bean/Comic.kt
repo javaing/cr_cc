@@ -1,7 +1,10 @@
 package com.aliee.quei.mo.data.bean
 
+import com.aliee.quei.mo.base.response.Status
+import com.aliee.quei.mo.base.response.UIDataBean
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
+import java.util.*
 
 open class ComicBookBean : RealmObject(){
     @PrimaryKey
@@ -25,16 +28,16 @@ data class RecommendPositionList(
 )
 
 data class RecommendBookBean(
-        val author: String?,
-        val bookcover: String?,
-        val id: Int,
-        val desc: String?,
-        val status: Int?,
-        var thumb: String?,
-        val title: String?,
-        val typename: String?
+    val author: String?,
+    val bookcover: String?,
+    val id: Int,
+    val desc: String?,
+    val status: Int?,
+    var thumb: String?,
+    val title: String?,
+    val typename: String?
 ) {
-    var showType: Int = 0;// 0 grid ,1 linear
+    var showType: Int = 0// 0 grid ,1 linear
     var tagText : String = ""
     var tagColor : Int = 0
     var rid : String? = ""
@@ -50,3 +53,9 @@ data class RecommendBookBean(
 }
 
 data class RecommendListBean(val rid : String,val name : String,val list : MutableList<RecommendBookBean>? = null)
+
+fun TreeMap<String, RecommendPositionList>.getByRid(id:String):UIDataBean<MutableList<RecommendBookBean>> {
+    val pickedList = this[id]
+    pickedList?.list?.forEach { it.rid = id }
+    return  UIDataBean(Status.Success, pickedList?.list)
+}

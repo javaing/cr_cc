@@ -59,39 +59,41 @@ class SearchFragment : BaseFragment() {
     fun guessLikeAd(list : MutableList<RecommendBookBean>?) {
         val adBean = AdConfig.getAd(AdEnum.COMIC_GUESS_LIKE_RANK.zid)
         if (adBean==null){
+//            if (list!!.size > 6) {
+//                adapter.setRecommend(list.shuffled().subList(0, 6))
+//            } else {
+//                adapter.setRecommend(list)
+//            }
+            applyToUI(list)
+            return
+        }
+        adBean.also { adBean ->
+            AdConfig.getAdInfo(adBean, { adInfo->
+                val option = Gson().fromJson<Option>(adInfo.optionstr, Option::class.java)
+                adInfo.title = option.title
+                adInfo.desc = option.desc
+                Log.d("tag","猜你喜欢：interval:${adBean.interval},物料：$adInfo")
+                val recommendBookBean = RecommendBookBean("", adInfo.imgurl, -321, adInfo.desc, 1, "", adInfo.title, "")
+                recommendBookBean.adCallbackUrl = adInfo.callbackurl
+                recommendBookBean.adClickUrl = adInfo.clickurl
+                list?.add(0,recommendBookBean)
+                applyToUI(list)
+            }, {
+                applyToUI(list)
+            })
+        }
+    }
+
+    private fun applyToUI(list: MutableList<RecommendBookBean>?) {
+        context?.runOnUiThread {
             if (list!!.size > 6) {
                 adapter.setRecommend(list.shuffled().subList(0, 6))
             } else {
                 adapter.setRecommend(list)
             }
-            return
-        }
-        adBean?.also { adBean ->
-            AdConfig.getAdInfo(adBean, { adInfo->
-                val option = Gson().fromJson<Option>(adInfo.optionstr, Option::class.java)
-                adInfo.title = option.title
-                adInfo.desc = option.desc
-                context!!.runOnUiThread {
-                    Log.d("tag","猜你喜欢：interval:${adBean.interval},物料：${adInfo.toString()}")
-                    val recommendBookBean = RecommendBookBean("", adInfo.imgurl, -321, adInfo.desc, 1, "", adInfo.title, "")
-                    recommendBookBean.adCallbackUrl = adInfo.callbackurl
-                    recommendBookBean.adClickUrl = adInfo.clickurl
-                    list?.add(0,recommendBookBean)
-                    if (list!!.size > 6) {
-                        adapter.setRecommend(list.shuffled().subList(0, 6))
-                    } else {
-                        adapter.setRecommend(list)
-                    }
-                }
-            }, {
-                if (list!!.size > 6) {
-                    adapter.setRecommend(list.shuffled().subList(0, 6))
-                } else {
-                    adapter.setRecommend(list)
-                }
-            })
         }
     }
+
     private fun initVM() {
         VM.recommendLiveData.observe(this, Observer {
             when (it?.status) {
@@ -129,7 +131,7 @@ class SearchFragment : BaseFragment() {
             override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView) {
                 val viewType = adapter.getItemViewType(itemPosition)
                 if (viewType == SearchAdapter.VIEW_TYPE_RECOMMEND_TITLE) {
-                    outRect?.top = ScreenUtils.dpToPx(10)
+                    outRect.top = ScreenUtils.dpToPx(10)
                 }
             }
         })
@@ -158,12 +160,12 @@ class SearchFragment : BaseFragment() {
             }
         }
         adapter.shiftClick = {
-            VM.shiftRecommend(this)
+            VM.shiftRecommend()
         }
     }
 
     override fun initData() {
-        VM.loadRecommend(this)
+        VM.loadRecommend()
         realm.where(SearchHistoryBean::class.java)
                 .limit(5)
                 .sort("time", Sort.DESCENDING)
@@ -183,7 +185,7 @@ class SearchFragment : BaseFragment() {
         val adBean = AdConfig.getAd(AdEnum.COMIC_SEARCH.zid)
         adBean?.also { adBean ->
             AdConfig.getAdInfo(adBean, { adInfo ->
-                context!!.runOnUiThread {
+                context?.runOnUiThread {
                     if (AdConfig.isClosed(adBean.close)) {
                         search_ad_iv_close.show()
                         search_ad_iv_close.click {

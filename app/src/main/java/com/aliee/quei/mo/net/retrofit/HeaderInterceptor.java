@@ -19,6 +19,7 @@ import com.tencent.mmkv.MMKV;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.StringTokenizer;
@@ -60,7 +61,7 @@ public final class HeaderInterceptor implements Interceptor {
         RequestBody requestBody = request.body();
         Buffer buffer = new Buffer();
         requestBody.writeTo(buffer);
-        Charset charset = Charset.forName("UTF-8");
+        Charset charset = StandardCharsets.UTF_8;
         MediaType contentType = requestBody.contentType();
         if (contentType != null) {
             contentType.charset(charset);
@@ -140,7 +141,7 @@ public final class HeaderInterceptor implements Interceptor {
         TreeMap<String, String> map = new TreeMap<>();
         java.util.StringTokenizer items;
         for (StringTokenizer entrys = new StringTokenizer(mapString, "&"); entrys.hasMoreTokens();
-             map.put(items.nextToken(), items.hasMoreTokens() ? ((String) (items.nextToken())) : null))
+             map.put(items.nextToken(), items.hasMoreTokens() ? items.nextToken() : null))
             items = new StringTokenizer(entrys.nextToken(), "=");
         return map;
     }

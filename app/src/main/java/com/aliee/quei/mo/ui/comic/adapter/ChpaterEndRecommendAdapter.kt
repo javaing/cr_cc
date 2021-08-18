@@ -45,7 +45,7 @@ class ChpaterEndRecommendAdapter : RecyclerView.Adapter<ComicGrid3Holder>(){
     override fun onBindViewHolder(holder: ComicGrid3Holder, position: Int) {
         val thumb_rl = holder.itemView.find<RelativeLayout>(R.id.thumb_rl)
         val thumb_ = holder.itemView.find<ImageView>(R.id.thumb)
-        val mDensity : Float = ScreenUtils.getDisplayMetrics().density;
+        val mDensity : Float = ScreenUtils.getDisplayMetrics().density
         if(mDensity.toInt() == 2){
             thumb_rl.layoutParams.width = (RelativeLayout.LayoutParams.MATCH_PARENT)
             thumb_rl.layoutParams.height = (370)

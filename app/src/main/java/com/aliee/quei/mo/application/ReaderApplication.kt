@@ -29,10 +29,14 @@ import com.aliee.quei.mo.base.ActivityLifecycle
 import com.aliee.quei.mo.base.AppManager
 import com.aliee.quei.mo.component.EventRefreshHome
 import com.aliee.quei.mo.data.Channel
+import com.aliee.quei.mo.data.bean.ChannelHideBean
 import com.aliee.quei.mo.data.bean.UserInfoBean
 import com.aliee.quei.mo.net.retrofit.RetrofitClient
 import com.aliee.quei.mo.ui.launch.activity.LaunchActivity
+import com.aliee.quei.mo.utils.AES
+import com.aliee.quei.mo.utils.SharedPreUtils
 import com.dueeeke.videoplayer.player.AndroidMediaPlayerFactory
+import com.meituan.android.walle.WalleChannelReader
 import com.tencent.mmkv.MMKV
 import com.umeng.analytics.MobclickAgent
 import com.umeng.commonsdk.UMConfigure
@@ -88,9 +92,6 @@ class ReaderApplication : Application(), LifecycleOwner, Application.ActivityLif
 
     lateinit var activityLifecycle: ActivityLifecycle
 
-
-//    lateinit var globalEventHandler : GlobalEventHandler
-
     override fun onCreate() {
         super.onCreate()
         lifecycleRegistry.markState(Lifecycle.State.CREATED)
@@ -134,6 +135,8 @@ class ReaderApplication : Application(), LifecycleOwner, Application.ActivityLif
             //异常处理
             Log.d("RxJavaPlugins","it:${it.message}")
         }
+
+        aes.init(password)
     }
 
     private fun StrictMode() {
@@ -227,14 +230,6 @@ class ReaderApplication : Application(), LifecycleOwner, Application.ActivityLif
         activityLifecycle = ActivityLifecycle(appManager)
     }
 
-    override fun onLowMemory() {
-        super.onLowMemory()
-    }
-
-    override fun onTrimMemory(level: Int) {
-        super.onTrimMemory(level)
-    }
-
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
         // you must install multiDex whatever tinker is installed!
@@ -284,4 +279,23 @@ class ReaderApplication : Application(), LifecycleOwner, Application.ActivityLif
                 //                .setProgressManager(new ProgressManagerImpl())
                 .build())
     }
+
+    fun updateIsHideVideo(bean:List<ChannelHideBean>) {
+        var channelId = Channel.channelName
+        Log.d("tag", "updateIsHideVideo channelId:$channelId")
+        Log.d("tag", "updateIsHideVideo channelId:${bean}")
+        val filter = bean.filter { it.id==channelId.toInt()}
+        var isHideVideo= false
+        if(filter.isNotEmpty()) {
+            //1:app, 2:wap, 3:all from Paul
+            isHideVideo = filter[0].hideVideo==1||filter[0].hideVideo==3
+        }
+        SharedPreUtils.getInstance().putBoolean(SharedPreUtils.Key_ISHIDEVIDEO, isHideVideo)
+
+        //for TEST
+        //SharedPreUtils.getInstance().putBoolean(SharedPreUtils.Key_ISHIDEVIDEO, true)
+    }
+
+    val aes = AES()
+    val password = "0123456789abcdef".toByteArray()
 }

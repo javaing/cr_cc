@@ -52,7 +52,7 @@ class H5PayResultActivity : BaseActivity(){
         doDelay({
             VM.checkH5PayResult(this,tradeNo)
         },2000)
-        guessLikeVModel.getGuessLike(this,bookid,CommonDataProvider.instance.currentReading?.typename?:"")
+        guessLikeVModel.getGuessLike(CommonDataProvider.instance.currentReading?.typename?:"")
     }
 
     override fun initView() {
@@ -68,11 +68,6 @@ class H5PayResultActivity : BaseActivity(){
     private fun initRecyclerView() {
         recyclerView.layoutManager = GridLayoutManager(this, 3)
         recyclerView.adapter = adapter
-    }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-//        toast("onNewIntent")
     }
 
     private fun showSuccess(){

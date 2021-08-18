@@ -137,7 +137,7 @@ class HistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     }
 
-    class TitleHolder(itemView: View) : RecyclerView.ViewHolder(itemView){}
+    class TitleHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun getItemCount(): Int {
         return mHistory.size + 1 + mRecommend.size + 1

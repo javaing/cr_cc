@@ -8,5 +8,5 @@ package com.aliee.quei.mo.database
  */
 object MMDatabase {
     val DATABASE_NAME = "comic.realm"
-    val DATABASE_VERSION = 3L
+    val DATABASE_VERSION = 4L
 }

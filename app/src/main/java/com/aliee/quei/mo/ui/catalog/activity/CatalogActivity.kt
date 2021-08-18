@@ -131,14 +131,14 @@ class CatalogActivity : BaseActivity(){
                 super.getItemOffsets(outRect, itemPosition, parent)
                 val column = itemPosition % 3
                 when(column){
-                    0 -> outRect?.left = DensityUtil.dp2px(15f)
+                    0 -> outRect.left = DensityUtil.dp2px(15f)
                     1 -> {
-                        outRect?.left = DensityUtil.dp2px(10f)
-                        outRect?.right = DensityUtil.dp2px(10f)
+                        outRect.left = DensityUtil.dp2px(10f)
+                        outRect.right = DensityUtil.dp2px(10f)
                     }
-                    2 -> outRect?.right = DensityUtil.dp2px(15f)
+                    2 -> outRect.right = DensityUtil.dp2px(15f)
                 }
-                outRect?.top = DensityUtil.dp2px(15f)
+                outRect.top = DensityUtil.dp2px(15f)
             }
         })
         grid.adapter = gridAdapter

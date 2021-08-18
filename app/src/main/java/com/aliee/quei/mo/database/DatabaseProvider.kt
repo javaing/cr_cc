@@ -14,6 +14,7 @@ object DatabaseProvider {
             .name(MMDatabase.DATABASE_NAME) //文件名
             .schemaVersion(MMDatabase.DATABASE_VERSION) //版本号
             .migration(DBMigration())
+            .allowWritesOnUiThread(true)
             .build()
 
     fun getRealm(): Realm {

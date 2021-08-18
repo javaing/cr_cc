@@ -6,8 +6,8 @@ import com.aliee.quei.mo.data.exception.RequestException;
 import io.reactivex.functions.Function;
 
 public class PageSuccessFunc<T> implements Function<BaseResponse<T>, T> {
-    private int page;
-    private int pageSize;
+    private final int page;
+    private final int pageSize;
 
     public PageSuccessFunc(int page, int pageSize) {
         this.page = page;

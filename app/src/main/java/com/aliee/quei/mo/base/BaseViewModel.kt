@@ -1,7 +1,12 @@
 package com.aliee.quei.mo.base
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.aliee.quei.mo.base.response.UIDataBean
+import com.aliee.quei.mo.data.bean.safeCall
+import com.aliee.quei.mo.data.bean.toDataBean
+import kotlinx.coroutines.launch
+import java.lang.Exception
 
 /**
  * @Author: YangYang
@@ -11,12 +16,14 @@ import com.aliee.quei.mo.base.response.UIDataBean
  */
 open class BaseViewModel : ViewModel() {
 
-    fun <T> createErrorUIData(e: Throwable): UIDataBean<T> {
-        return UIDataBean(e)
+    fun viewModelLaunch(job: suspend () -> Unit, fail: ()->Unit) {
+        viewModelScope.launch {
+            try {
+                job.invoke()
+            } catch (e: Exception) {
+                fail.invoke()
+            }
+        }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-
-    }
 }

@@ -15,7 +15,7 @@ interface ShelfService{
 
     @FormUrlEncoded
     @POST("${ApiConstants.API_VERSION}cartoon/fav/add")
-    fun addToShelf(@Field("bookid") bookid : Int) : Observable<BaseResponse<Any>>
+    suspend fun addToShelf(@Field("bookid") bookid : Int) : BaseResponse<Any>
 
     @FormUrlEncoded
     @POST("${ApiConstants.API_VERSION}cartoon/fav/list")

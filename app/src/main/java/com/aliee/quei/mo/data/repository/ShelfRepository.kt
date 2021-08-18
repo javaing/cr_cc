@@ -2,6 +2,8 @@ package com.aliee.quei.mo.data.repository
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import com.aliee.quei.mo.base.response.Status
+import com.aliee.quei.mo.base.response.UIDataBean
 import com.aliee.quei.mo.component.EventShelfChanged
 import com.aliee.quei.mo.data.bean.ListBean
 import com.aliee.quei.mo.data.bean.ShelfBean
@@ -19,16 +21,27 @@ import io.reactivex.Observable
  */
 class ShelfRepository : BaseRepository(){
     private val service = RetrofitClient.createService(ShelfService::class.java)
-    fun addToShelf(lifecycleOwner: LifecycleOwner,bookid : Int): Observable<Any>{
-        return service.addToShelf(bookid)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner,Lifecycle.Event.ON_DESTROY)
-                .map {
-                    it.data = bookid
-                    RxBus.getInstance().post(EventShelfChanged())
-                    it
-                }
-                .compose(handleBean())
+//    fun addToShelf(lifecycleOwner: LifecycleOwner,bookid : Int): Observable<Any>{
+//        return service.addToShelf(bookid)
+//                .compose(SchedulersUtil.applySchedulers())
+//                .bindUntilEvent(lifecycleOwner,Lifecycle.Event.ON_DESTROY)
+//                .map {
+//                    it.data = bookid
+//                    RxBus.getInstance().post(EventShelfChanged())
+//                    it
+//                }
+//                .compose(handleBean())
+//    }
+
+    suspend fun addToShelf(bookid : Int): UIDataBean<Any>{
+       return try {
+            val it= service.addToShelf(bookid)
+            it.data = bookid
+            RxBus.getInstance().post(EventShelfChanged())
+            UIDataBean(Status.Success, it)
+        } catch (e: Exception) {
+            UIDataBean(Status.Error)
+        }
     }
 
 

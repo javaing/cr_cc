@@ -153,6 +153,9 @@ class RechargeAdapter1 : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             tvPrice1.text = "${bean.price.toInt()}"
             tv_price2.paint.flags = Paint.STRIKE_THRU_TEXT_FLAG
 
+            //request by 彭總
+            tv_price2.gone()
+
             if (bean.isPromote == 1) {
                 tag_promote.visibility = View.VISIBLE
             } else {
@@ -230,7 +233,7 @@ class RechargeAdapter1 : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             }
 
-            if (TextUtils.isEmpty(bean?.getTag()!!.label)) {
+            if (TextUtils.isEmpty(bean.getTag()!!.label)) {
                 rotate_textview.visibility = View.GONE
             } else {
                 rotate_textview.visibility = View.VISIBLE
@@ -293,7 +296,7 @@ class RechargeAdapter1 : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             tvNickName.text = if (bean.phone.isNullOrEmpty()) "游客" else bean.phone
             tvId.text = context.getString(R.string.user_id, bean.uid)
             tvBalance.text = bean.bookBean.toString()
-            val vipEndTime = bean.vipEndtime ?: 0
+            val vipEndTime = bean.vipEndtime
             if (vipEndTime > System.currentTimeMillis()) {
                 val sdf = SimpleDateFormat("yyyy-MM-dd")
                 tvEndTime.text = sdf.format(Date(vipEndTime))

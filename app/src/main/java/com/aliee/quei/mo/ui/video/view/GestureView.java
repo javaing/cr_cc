@@ -39,11 +39,11 @@ public class GestureView extends FrameLayout implements IGestureComponent {
 
     private ControlWrapper mControlWrapper;
 
-    private ImageView mIcon;
-    private ProgressBar mProgressPercent;
-    private TextView mTextPercent;
+    private final ImageView mIcon;
+    private final ProgressBar mProgressPercent;
+    private final TextView mTextPercent;
 
-    private LinearLayout mCenterContainer;
+    private final LinearLayout mCenterContainer;
 
 
     {

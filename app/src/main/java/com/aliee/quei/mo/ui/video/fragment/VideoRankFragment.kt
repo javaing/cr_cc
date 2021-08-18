@@ -15,7 +15,6 @@ import android.view.View
 import android.widget.FrameLayout
 import com.alibaba.fastjson.JSONObject
 import com.dueeeke.videocontroller.component.TitleView
-import com.dueeeke.videoplayer.player.AbstractPlayer
 import com.dueeeke.videoplayer.player.VideoView
 import com.dueeeke.videoplayer.player.VideoViewManager
 import com.google.gson.Gson
@@ -37,6 +36,7 @@ import com.aliee.quei.mo.ui.video.view.*
 import com.aliee.quei.mo.utils.StringUtils
 import com.aliee.quei.mo.utils.TagCountManager
 import com.aliee.quei.mo.utils.extention.click
+import com.aliee.quei.mo.utils.extention.videoPath
 import com.aliee.quei.mo.utils.rxjava.RxBus
 import io.reactivex.annotations.NonNull
 import kotlinx.android.synthetic.main.fragment_shop.*
@@ -117,7 +117,7 @@ class VideoRankFragment : BaseFragment() {
      * 自动播放位置控制
      */
     fun autoPlayVideo(view: RecyclerView) {
-        view ?: return
+        view
         var count = view.childCount
         for (i in 0 until count) {
             val itemView = view.getChildAt(i) ?: continue
@@ -140,10 +140,10 @@ class VideoRankFragment : BaseFragment() {
 
     private fun initRefresh() {
         refreshLayout.setOnRefreshListener {
-            VM.videoRankingList(this, tag = tag)
+            VM.videoRankingList(tag = tag)
         }
         refreshLayout.setOnLoadMoreListener {
-            VM.videoRankingLoadMoreList(this, tag = tag)
+            VM.videoRankingLoadMoreList(tag = tag)
         }
     }
 
@@ -171,7 +171,7 @@ class VideoRankFragment : BaseFragment() {
         recyclerView.addOnChildAttachStateChangeListener(object : RecyclerView.OnChildAttachStateChangeListener {
             override fun onChildViewAttachedToWindow(@NonNull view: View) {}
             override fun onChildViewDetachedFromWindow(@NonNull view: View) {
-                Log.d("tag", "view:${view.toString()}")
+                Log.d("tag", "view:$view")
                 viewStatus(view)
             }
         })
@@ -189,9 +189,9 @@ class VideoRankFragment : BaseFragment() {
 
             videoId = video.id!!
             if (isAutoPlay) {
-                getVideoUrl(video.id!!)
+                getVideoUrl(video.id)
             } else {
-                showAutoPlayDialog(video.id!!)
+                showAutoPlayDialog(video.id)
             }
 
             //记录tag分数
@@ -199,7 +199,7 @@ class VideoRankFragment : BaseFragment() {
         }
         adapter.onAddVideoClick = { position, video ->
             mCurrentAddVideoPos = position
-            VM.addMyVideo(this@VideoRankFragment, video.id!!)
+            VM.addMyVideo(video.id!!)
         }
         adapter.onItemShareClick = { position, video, thumbUrl ->
             VideoShareActivity.toThis(activity!!, video, thumbUrl)
@@ -211,7 +211,7 @@ class VideoRankFragment : BaseFragment() {
         mVideoView.setPlayerBackgroundColor(Color.TRANSPARENT)
 
         mVideoView.setOnStateChangeListener(object : VideoView.SimpleOnStateChangeListener() {
-            var videoPlayTime = "";
+            var videoPlayTime = ""
             override fun onPlayStateChanged(playState: Int) {
                 //监听VideoViewManager释放，重置状态
                 when (playState) {
@@ -227,7 +227,7 @@ class VideoRankFragment : BaseFragment() {
                     VideoView.STATE_PLAYBACK_COMPLETED -> {
                         Log.d("tag", "STATE_PLAYBACK_COMPLETED:videoTime:${mVideoView.duration}")
                         //记录当前视频完成播放次数
-                        VM.videoEndPlay(this@VideoRankFragment, videoId, videoPlayTime, done = 1)
+                        VM.videoEndPlay(videoId, videoPlayTime, done = 1)
                     }
                 }
 
@@ -275,12 +275,12 @@ class VideoRankFragment : BaseFragment() {
         val itemView: View = mLinearLayoutManager.findViewByPosition(position) ?: return
         val viewHolder = itemView.tag as VideoListAdapter.VideoHolder
         mTitleView.setTitle(videoInfo?.name)
-        mController.addControlComponent(viewHolder?.prepareView, true)
+        mController.addControlComponent(viewHolder.prepareView, true)
         Utils.removeViewFormParent(mVideoView)
         viewHolder.playerContainer.addView(mVideoView, 1)
         VideoViewManager.instance().add(mVideoView, "list")
         if (isPlay) {
-            mVideoView.setUrl("http://vapi.yichuba.com${videoInfo?.video_path}")
+            mVideoView.setUrl(videoInfo?.video_path?.videoPath())
             mVideoView.start()
 
         } else {
@@ -294,12 +294,12 @@ class VideoRankFragment : BaseFragment() {
     }
 
     private fun getVideoUrl(videoId: Int) {
-        VM.getVideoDomain(this, videoId, "u_temp_user_0")
+        VM.getVideoPath(videoId, "u_temp_user_0")
     }
 
     override fun initData() {
-        VM.videoRankingList(this, tag = tag)
-        VM.analyticsVideoTag(this, tag)
+        VM.videoRankingList(tag = tag)
+        VM.analyticsVideoTag(tag)
     }
 
     fun initVM() {
@@ -347,7 +347,7 @@ class VideoRankFragment : BaseFragment() {
             }
         })
 
-        VM.videoDomain.observe(this, Observer {
+        VM.videoPath.observe(this, Observer {
             when (it?.status) {
                 Status.Success -> {
                     val json = Gson().toJson(it.data!!)

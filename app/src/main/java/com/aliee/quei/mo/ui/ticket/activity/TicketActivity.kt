@@ -52,7 +52,7 @@ class TicketActivity : BaseActivity() {
         recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView) {
                 super.getItemOffsets(outRect, itemPosition, parent)
-                outRect?.top = ScreenUtils.dpToPx(20)
+                outRect.top = ScreenUtils.dpToPx(20)
             }
         })
         adapter.itemClick = {bean: TicketBean,status ->

@@ -21,7 +21,7 @@ public class ZoomRecyclerView extends RecyclerView {
      */
     private static final int INVALID_POINTER_ID = -1;
 
-    private Context mContext;
+    private final Context mContext;
 
     /**
      * 第一根按下的手指的ID,进行拖动事件处理
@@ -91,11 +91,11 @@ public class ZoomRecyclerView extends RecyclerView {
         /**
          * 目标Scale
          */
-        private float mTargetScale;
+        private final float mTargetScale;
         /**
          * Scale变化梯度
          */
-        private float mGrad;
+        private final float mGrad;
         /**
          * 缩放中心
          */

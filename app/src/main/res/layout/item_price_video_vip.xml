@@ -68,7 +68,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/boxing_black"
                         android:textSize="14sp"
-                        android:text="超值特惠原价" />
+                        android:text="@string/recharge_price_vip_desc" />
 
                     <TextView
                         android:id="@+id/tv_price2"
@@ -79,6 +79,7 @@
                         android:text="50" />
 
                     <TextView
+                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/boxing_black"

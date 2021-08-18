@@ -102,8 +102,8 @@ class RecommendCodeActivity : BaseActivity(), TextWatcher {
                     Log.d("RecommendCodeActivity", "RecommendCodeData:" + it.data)
                     val bean = it.data
                     val parentUid = bean!!.parentUid
-                    val errMsg = bean!!.errmsg
-                    val uid = bean!!.uid
+                    val errMsg = bean.errmsg
+                    val uid = bean.uid
                     val isTemp = bean.isTemp
 
                     if (closeWindow) {
@@ -246,11 +246,11 @@ class RecommendCodeActivity : BaseActivity(), TextWatcher {
     fun copyText(view: View, shareUrl: String) {
         var myClipboard: ClipboardManager? = null
         var myClip: ClipData? = null
-        myClipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?;
-        myClip = ClipData.newPlainText("text", shareUrl);
-        myClipboard?.setPrimaryClip(myClip);
+        myClipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
+        myClip = ClipData.newPlainText("text", shareUrl)
+        myClipboard?.primaryClip = myClip
 
-        Toast.makeText(this, "复制分享链接成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "复制分享链接成功", Toast.LENGTH_SHORT).show()
     }
 
     override fun getPageName() = ""

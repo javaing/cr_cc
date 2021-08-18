@@ -18,14 +18,13 @@ public class AES {
     //
     private Key key;
     private Cipher cipher;
-    boolean isInited = false;
 
-    String iv = "0123456789abcdef";
+    final String iv = "0123456789abcdef";
     public void init(byte[] keyBytes) {
         // 如果密钥不足16位，那么就补足.  这个if 中的内容很重要
         int base = 16;
         if (keyBytes.length % base != 0) {
-            int groups = keyBytes.length / base + (keyBytes.length % base != 0 ? 1 : 0);
+            int groups = keyBytes.length / base + 1;
             byte[] temp = new byte[groups * base];
             Arrays.fill(temp, (byte) 0);
             System.arraycopy(keyBytes, 0, temp, 0, keyBytes.length);
@@ -37,14 +36,8 @@ public class AES {
         key = new SecretKeySpec(keyBytes, KEY_ALGORITHM);
         try {
             // 初始化cipher
-            cipher = Cipher.getInstance(algorithmStr, "BC");
-        } catch (NoSuchAlgorithmException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (NoSuchProviderException e) {
+            cipher = Cipher.getInstance(algorithmStr);
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -75,13 +68,13 @@ public class AES {
      *
      * @param encryptedData
      *            要解密的字符串
-     * @param keyBytes
+     * //@param keyBytes
      *            解密密钥
      * @return
      */
-    public byte[] decrypt(byte[] encryptedData, byte[] keyBytes) {
+    public byte[] decrypt(byte[] encryptedData) {
         byte[] encryptedText = null;
-        init(keyBytes);
+        //init(keyBytes);
         try {
             cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv.getBytes()));
             encryptedText = cipher.doFinal(encryptedData);

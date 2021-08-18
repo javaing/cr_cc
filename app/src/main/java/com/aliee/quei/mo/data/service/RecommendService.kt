@@ -14,13 +14,17 @@ interface RecommendService {
     @POST("${ApiConstants.API_VERSION}cartoon/recommend/lists")
     fun getRecommend(@Field("ids") ids: String): Observable<BaseResponse<TreeMap<String, RecommendPositionList>>>
 
+    @FormUrlEncoded
+    @POST("${ApiConstants.API_VERSION}cartoon/recommend/lists")
+    suspend fun getRecommendK(@Field("ids") ids: String): BaseResponse<TreeMap<String, RecommendPositionList>>
+
     /**
      * @param sortField 排序字段订单转化率rate_order，rate_click收费章节
      * @param sort    排序方式，默认desc
      */
     @FormUrlEncoded
     @POST("${ApiConstants.API_VERSION}cartoon/statiscartoon/minlist")
-    fun getComicList(@Field("num") pageSize: Int, @Field("sortField") sortField: String, @Field("page") page: Int, @Field("sort") sort: Int = 1): Observable<BaseResponse<List<ComicBookBean>>>
+    suspend fun getComicList(@Field("num") pageSize: Int, @Field("sortField") sortField: String, @Field("page") page: Int, @Field("sort") sort: Int = 1): BaseResponse<List<ComicBookBean>>
 
 
     /**
@@ -28,17 +32,17 @@ interface RecommendService {
      */
     @FormUrlEncoded
     @POST("${ApiConstants.API_VERSION}cartoon/appupdateop")
-    fun appUpdateOp(@Field("uid") uid: Int, @Field("utemp") utemp: Int, @Field("opType") opType: Int): Observable<BaseResponse<String>>
+    suspend fun appUpdateOp(@Field("uid") uid: Int, @Field("utemp") utemp: Int, @Field("opType") opType: Int): BaseResponse<String>
 
     /**
      * 导流事件是否弹出更新提示
      */
     @FormUrlEncoded
     @POST("${ApiConstants.API_VERSION}cartoon/appdrainage")
-    fun appDrainage(@Field("uid") uid: Int, @Field("utemp") utemp: Int): Observable<BaseResponse<String>>
+    suspend fun appDrainage(@Field("uid") uid: Int, @Field("utemp") utemp: Int): BaseResponse<String>
 
     @FormUrlEncoded
     @POST("${ApiConstants.API_VERSION}adzone/selectZoneIdByStatus?status=1")
-    fun getadzone(@Field("status") status: Int): Observable<BaseResponse<List<AdZoneBean>>>
+    suspend fun getadzone(@Field("status") status: Int): BaseResponse<List<AdZoneBean>>
 
 }

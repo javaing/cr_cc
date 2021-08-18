@@ -14,10 +14,7 @@ import com.aliee.quei.mo.data.bean.Tags
 import com.aliee.quei.mo.data.bean.Video
 import com.aliee.quei.mo.ui.main.adapter.MainVideoAdapter
 import com.aliee.quei.mo.ui.video.view.PrepareView
-import com.aliee.quei.mo.utils.extention.click
-import com.aliee.quei.mo.utils.extention.inflate
-import com.aliee.quei.mo.utils.extention.loadBlurCover
-import com.aliee.quei.mo.utils.extention.loadImageScale
+import com.aliee.quei.mo.utils.extention.*
 import com.bumptech.glide.Glide
 import com.dueeeke.videoplayer.util.PlayerUtils
 import com.zhy.view.flowlayout.FlowLayout
@@ -41,7 +38,7 @@ class VideoListAdapter : RecyclerView.Adapter<VideoListAdapter.VideoHolder>() {
 
     fun loadMore(videos: MutableList<Video>) {
         mData.addAll(videos)
-        notifyItemRangeChanged(mData.size, mData.size);
+        notifyItemRangeChanged(mData.size, mData.size)
     }
     fun setCollectionStatus(position: Int) {
         val video = mData[position]
@@ -85,7 +82,7 @@ class VideoListAdapter : RecyclerView.Adapter<VideoListAdapter.VideoHolder>() {
                 val imageUrl = imageUrl(url, thumbImg!!)
                 Log.d("tag", "imageUrl:${imageUrl}")
                 ivThumb.loadImageScale(imageUrl,playerContainer)
-                ivBlueThumb.loadBlurCover(imageUrl)
+                ivBlueThumb.loadBlurCover(imageUrl.videoUrl())
                 tvTitle.text = Html.fromHtml(name).trim()
                 tvCollectionNum.text = favcounts
                 tvWatchNum.text = playcounts
@@ -104,9 +101,9 @@ class VideoListAdapter : RecyclerView.Adapter<VideoListAdapter.VideoHolder>() {
                     tag_layout.visibility = View.GONE
                 } else {
                     tag_layout.visibility = View.VISIBLE
-                    tag_layout.adapter = object : TagAdapter<Tags?>(video?.tags) {
+                    tag_layout.adapter = object : TagAdapter<Tags?>(video.tags) {
                         override fun getView(parent: FlowLayout, position: Int, t: Tags?): View? {
-                            val textView = parent?.context?.inflate(R.layout.video_tag_layout, parent, false) as TextView
+                            val textView = parent.context?.inflate(R.layout.video_tag_layout, parent, false) as TextView
                             textView.text = t?.name
                             return textView
                         }

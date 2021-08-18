@@ -51,7 +51,6 @@ import kotlin.collections.HashMap
 class ShopFragment : BaseFragment() {
     override fun getPageName() = "书城"
     private val VM = ShopVModel()
-    private val launchVM = LaunchVModel()
     private val adVModel = AdVModel()
     private val adapter = ShopAdapter()
 
@@ -166,17 +165,16 @@ class ShopFragment : BaseFragment() {
             //  VM.loadShop(this)
         }
         refreshLayout.setOnLoadMoreListener {
-
-            VM.loadMore(this)
+            VM.loadMore()
         }
     }
 
 
     private fun doRetry() {
         statuslayout.showLoading()
-        VM.retryInitData(this)
-        Log.d("tag", "重试")
-        // loadAdInfoFolw()
+        //VM.retryInitData(this)
+        Log.d("tag", "err 重试")
+        loadAdInfoFolw()
 
     }
 
@@ -202,30 +200,42 @@ class ShopFragment : BaseFragment() {
      */
     private var adMap = mutableMapOf<String, AdInfo>()
     private fun loadAdInfoFolw() {
+//        if(1+1==2){
+//            VM.loadShop(this)
+//            return
+//        }
         val banner = AdConfig.getAd(AdEnum.BANNER.zid)
         val flow90 = AdConfig.getAd(AdEnum.COMIC_INFO_FLOW_90.zid)
         val flowQu = AdConfig.getAd(AdEnum.COMIC_INFO_FLOW_QU.zid)
         val flowQiang = AdConfig.getAd(AdEnum.COMIC_INFO_FLOW_QIANG.zid)
+//        Log.e("ad", "ad banner:$banner")
+//        Log.e("ad", "ad flow90:$flow90")
+//        Log.e("ad", "ad flowQu:$flowQu")
+//        Log.e("ad", "ad flowQiang:$flowQiang")
         if (banner == null || flow90==null || flow90==null || flowQiang==null){
-            VM.loadShop(this)
+            VM.loadShop()
             return
         }
-        adVModel.multipleAdApi(this, banner!!, flow90!!, flowQu!!, flowQiang!!, {
+        adVModel.multipleAdApi(banner, flow90, flowQu!!, flowQiang, {
+            //Log.d("tag", "ad map:1")
             if (it["flowObs90"] != null) {
                 it["flowObs90"]!!.isClose = flow90.close
             }
+            //Log.d("tag", "ad map:2")
             if (it["flowObsQu"] != null) {
                 it["flowObsQu"]!!.index = flowQu.interval
             }
+            //Log.d("tag", "ad map:3")
             if (it["flowObsQiang"] != null) {
                 it["flowObsQiang"]!!.index = flowQiang.interval
             }
+            //Log.d("tag", "ad map:4")
             adMap.clear()
             adMap.putAll(it)
-            Log.d("tag", "ad map:${adMap.toString()}")
-            VM.loadShop(this)
+            //Log.d("tag", "ad map:$adMap")
+            VM.loadShop()
         }, {
-            VM.loadShop(this)
+            VM.loadShop()
         })
     }
 
@@ -246,6 +256,7 @@ class ShopFragment : BaseFragment() {
         VM.shopLiveData.observe(this, Observer {
             when (it?.status) {
                 Status.Error -> {
+                    Log.d("tag", "数据加载err: shopLiveData")
                     isFirst = true
                     statuslayout.showError {
                         doRetry()
@@ -267,7 +278,7 @@ class ShopFragment : BaseFragment() {
                 Status.Success -> {
                     refreshLayout.finishRefresh()
                     statuslayout.showContent()
-                    Log.d("tag", "数据加载成功:${adMap.toString()}")
+                    Log.d("tag", "数据加载成功:$adMap")
                     adapter.setData(it.data, adMap)
                 }
             }
@@ -279,6 +290,9 @@ class ShopFragment : BaseFragment() {
                     val bean = it.data ?: return@Observer
                     VM.getHistoryChapter(activity!!, bean.id)
                 }
+                Status.Error -> {
+                    Log.d("tag", "数据加载err:comicDetailLiveData")
+                }
             }
         })
 
@@ -289,7 +303,7 @@ class ShopFragment : BaseFragment() {
                     ARouterManager.goReadActivity(activity!!, bean.bookid, bean.id)
                 }
                 Status.Error -> {
-
+                    Log.d("tag", "数据加载err: historyChapterLiveData")
                 }
                 Status.NoNetwork -> {
 
@@ -304,7 +318,7 @@ class ShopFragment : BaseFragment() {
 //                    Log.d("ShopFragment", "ShareLink：" + shareLink)
                 }
                 Status.Error -> {
-
+                    Log.d("tag", "数据加载err: shareLinkLiveData")
                 }
                 Status.NoNetwork -> {
 
@@ -386,11 +400,11 @@ class ShopFragment : BaseFragment() {
     fun copyText() {
         var myClipboard: ClipboardManager? = null
         var myClip: ClipData? = null
-        myClipboard = activity!!.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager?;
-        myClip = ClipData.newPlainText("text", shareLink);
-        myClipboard?.setPrimaryClip(myClip);
+        myClipboard = activity!!.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager?
+        myClip = ClipData.newPlainText("text", shareLink)
+        myClipboard?.primaryClip = myClip
 
-        Toast.makeText(activity!!, "复制链结成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(activity!!, "复制链结成功", Toast.LENGTH_SHORT).show()
     }
 
 

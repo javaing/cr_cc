@@ -19,7 +19,7 @@ class BulletinAdapter : RecyclerView.Adapter<BulletinAdapter.BulletinLinearHolde
     var itemClick : ((title: String) -> Unit)? = null
 
     fun setData(list : ArrayList<BulletinInfo>){
-        list?:return
+        list
         this.mData = list
         notifyDataSetChanged()
     }

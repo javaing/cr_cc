@@ -28,6 +28,7 @@ import com.aliee.quei.mo.ui.comic.adapter.ComicDetailAdapter
 import com.aliee.quei.mo.ui.comic.vm.ComicDetailVModel
 import com.aliee.quei.mo.ui.launch.vm.LaunchVModel
 import com.aliee.quei.mo.utils.extention.click
+import com.aliee.quei.mo.utils.extention.orElse
 import com.aliee.quei.mo.utils.rxjava.RxBus
 import com.google.gson.Gson
 import com.umeng.analytics.MobclickAgent
@@ -67,11 +68,16 @@ class ComicDetailActivity : BaseActivity() {
     override fun initData() {
 //        Log.d("ComicDetailActivity", "RID:" + rid)
         if (rand && rid.isNotEmpty()) {
+            Log.e("tag", "get Rand:$rid")
             VM.getComicDetailRand(this, bookid, rid)
         } else {
+            Log.e("tag", "getComic :$bookid")
             VM.getComicDetail(this, bookid)
         }
-        VM.isInShelf(this, bookid)
+        doDelay({
+            VM.isInShelf(this, bookid)
+        },1000)
+
         statuslayout.showLoading()
     }
 
@@ -134,7 +140,7 @@ class ComicDetailActivity : BaseActivity() {
         }
         adapter.addShelfClick = {
             if (it != null) {
-                VM.addToShelf(this, it.id)
+                VM.addToShelf(it.id)
             }
         }
     }
@@ -149,17 +155,19 @@ class ComicDetailActivity : BaseActivity() {
                     adapter.setComic(bean)
                     titleText.text = bean.title
                     VM.getCatalog(this, bean.id)
-                    VM.getGuessLike(this, bean.id, bean.typename)
+                    VM.getGuessLike(bean.typename)
                 }
                 Status.Error -> {
-                    statuslayout.showError {
-                        initData()
-                    }
-                    val e = it.e
-                    if (e is HttpException) {
-                        MobclickAgent.onEvent(this, "error_detail")
-                    }
-
+//                    statuslayout.showError {
+//                        initData()
+//                    }
+//                    val e = it.e
+//                    if (e is HttpException) {
+//                        MobclickAgent.onEvent(this, "error_detail")
+//                    }
+                    //toast("Bingo!")
+                    Log.e("tag", "{\"code\":Bingo!")
+                    initData()
                 }
                 Status.NoNetwork -> {
                     statuslayout.showNoNetwork {
@@ -192,9 +200,9 @@ class ComicDetailActivity : BaseActivity() {
                     if (record == null) {
                         catalogItem = it.data.getOrNull(0)?:return@Observer
                         val firstChapter = catalogItem
-                        VM.addHistory(this, bookid, firstChapter.id)
+                        VM.addHistory(bookid, firstChapter.id)
                     } else {
-                        VM.addHistory(this, bookid, record.chapterId)
+                        VM.addHistory(bookid, record.chapterId)
                     }
                 }
                 Status.NoNetwork -> {
@@ -248,9 +256,10 @@ class ComicDetailActivity : BaseActivity() {
         VM.guessLikeLiveData.observe(this, Observer {
             when (it?.status) {
                 Status.Success -> {
-                    val list = it.data?.filterNot {
+                    Log.e("TAG", "initVM: ${it.data}" )
+                    val list = it.data?.filterNot { data->
                         val historyIds = CommonDataProvider.instance.getHistoryBookIds()
-                        historyIds.contains(it.id.toString())
+                        historyIds.contains(data.id.toString())
                     }  as MutableList
 
                     guessLikeAd(list)
@@ -258,10 +267,10 @@ class ComicDetailActivity : BaseActivity() {
                 }
             }
         })
-        VM.sameCategoryLiveData.observe(this, Observer {
-            when (it?.status) {
+        VM.sameCategoryLiveData.observe(this, Observer { bean ->
+            when (bean?.status) {
                 Status.Success -> {
-                    val list = it.data.map {
+                    val list = bean.data.map {
                         RecommendBookBean(
                             it.author,
                             it.thumb,
@@ -290,7 +299,7 @@ class ComicDetailActivity : BaseActivity() {
                         adapter.setIsInShelf(false)
                     }
                 }
-                Status.TokenError->{
+                Status.TokenError ->{
                     tokenflag = 3
                     launchVModel.registerToken(this)
                 }
@@ -303,16 +312,16 @@ class ComicDetailActivity : BaseActivity() {
                         val record = ReadRecordManager.getReadRecord(bookid)
                         if (record == null) {
                             val firstChapter = catalogItem
-                            VM.addHistory(this, bookid, firstChapter.id)
+                            VM.addHistory(bookid, firstChapter.id)
                         } else {
-                            VM.addHistory(this, bookid, record.chapterId)
+                            VM.addHistory(bookid, record.chapterId)
                         }
                     }else if (tokenflag ==2 ){
-                        VM.addToShelf(this,bookid)
+                        VM.addToShelf(bookid)
                     }else if (tokenflag == 3){
                         VM.isInShelf(this,bookid)
                     }else if (tokenflag == 4){
-                            VM.getComicDetailRand(this, bookid, rid)
+                        VM.getComicDetailRand(this, bookid, rid)
                     }
                 }
             }
@@ -321,25 +330,25 @@ class ComicDetailActivity : BaseActivity() {
     fun guessLikeAd(list : MutableList<RecommendBookBean>?) {
         val adBean = AdConfig.getAd(AdEnum.COMIC_GUESS_LIKE_RANK.zid)
         if (adBean==null){
-            adapter.setGuessLike(list)
+            runOnUiThread { adapter.setGuessLike(list) }
             return
         }
-        adBean?.also { adBean ->
+        adBean.also { adBean ->
             AdConfig.getAdInfo(adBean, { adInfo ->
                 val option = Gson().fromJson<Option>(adInfo.optionstr, Option::class.java)
                 adInfo.title = option.title
                 adInfo.desc = option.desc
-                runOnUiThread {
-                    Log.d("tag", "猜你喜欢：interval:${adBean.interval},物料：${adInfo.toString()}")
-                    val recommendBookBean = RecommendBookBean("", adInfo.imgurl, -321, adInfo.desc, 1, "", adInfo.title, "")
-                    recommendBookBean.adCallbackUrl = adInfo.callbackurl
-                    recommendBookBean.adClickUrl = adInfo.clickurl
-                    list?.shuffled()
-                    list?.add(0, recommendBookBean)
-                    adapter.setGuessLike(list)
-                }
+
+                Log.d("tag", "猜你喜欢：interval:${adBean.interval},物料：$adInfo")
+                val recommendBookBean = RecommendBookBean("", adInfo.imgurl, -321, adInfo.desc, 1, "", adInfo.title, "")
+                recommendBookBean.adCallbackUrl = adInfo.callbackurl
+                recommendBookBean.adClickUrl = adInfo.clickurl
+                list?.shuffled()
+                list?.add(0, recommendBookBean)
+                runOnUiThread { adapter.setGuessLike(list) }
+
             }, {
-                adapter.setGuessLike(list)
+                runOnUiThread { adapter.setGuessLike(list) }
             })
         }
     }

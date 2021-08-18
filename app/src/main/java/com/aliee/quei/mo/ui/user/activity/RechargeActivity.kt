@@ -3,8 +3,6 @@ package com.aliee.quei.mo.ui.user.activity
 import android.annotation.SuppressLint
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
-import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import android.util.Log
@@ -15,10 +13,10 @@ import com.aliee.quei.mo.base.BaseActivity
 import com.aliee.quei.mo.base.response.Status
 import com.aliee.quei.mo.component.CommonDataProvider
 import com.aliee.quei.mo.component.EventRechargeSuccess
-import com.aliee.quei.mo.component.EventRechargeUser
 import com.aliee.quei.mo.data.Global
 import com.aliee.quei.mo.data.Global.KEY_HAS_OPEN_H5_PAY
 import com.aliee.quei.mo.data.Global.KEY_TRADE_NO
+import com.aliee.quei.mo.data.bean.H5OrderBean
 import com.aliee.quei.mo.data.bean.PayWayBean
 import com.aliee.quei.mo.data.bean.PriceBean
 import com.aliee.quei.mo.net.ApiConstants
@@ -29,11 +27,11 @@ import com.aliee.quei.mo.router.Path
 import com.aliee.quei.mo.ui.launch.vm.LaunchVModel
 import com.aliee.quei.mo.ui.pay.dialog.PayWayDialog
 import com.aliee.quei.mo.ui.pay.dialog.PayWayTestDialog
-import com.aliee.quei.mo.ui.user.adapter.RechargeAdapter
 import com.aliee.quei.mo.ui.user.adapter.RechargeAdapter1
 import com.aliee.quei.mo.ui.user.vm.RechargeVModel
 import com.aliee.quei.mo.utils.SharedPreUtils
 import com.aliee.quei.mo.utils.extention.click
+import com.aliee.quei.mo.utils.extention.openExternalWeb
 import com.aliee.quei.mo.utils.rxjava.RxBus
 import com.aliee.quei.mo.utils.rxjava.SchedulersUtil
 import com.tencent.mm.opensdk.modelpay.PayReq
@@ -47,7 +45,6 @@ import okhttp3.Response
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
-import java.net.URLEncoder
 import java.util.concurrent.TimeUnit
 
 
@@ -152,7 +149,7 @@ class RechargeActivity : BaseActivity(), PayWayDialog.OnPayWayChooseListener, Pa
 
     override fun initData() {
         VM.getList(this)
-        VM.getBalance(this)
+        VM.getBalance()
 //        VM.getPayWayConfig(this,checkSum)
     }
 
@@ -167,7 +164,7 @@ class RechargeActivity : BaseActivity(), PayWayDialog.OnPayWayChooseListener, Pa
         RxBus.getInstance().toMainThreadObservable(this, Lifecycle.Event.ON_DESTROY)
                 .subscribe {
                     if (it is EventRechargeSuccess) {
-                        VM.getBalance(this)
+                        VM.getBalance()
                     }
                 }
 
@@ -328,22 +325,18 @@ class RechargeActivity : BaseActivity(), PayWayDialog.OnPayWayChooseListener, Pa
                     bean.payurl ?: return@Observer
                     Log.d("RechargeActivity", "Payurl:" + bean.payurl)
                     val data: Array<String> = bean.payurl.split("\\&".toRegex()).toTypedArray()
-                    Log.d("RechargeActivity", "PayMode:" + data[8])
-                    val payMode = data[8]
-                    if (payMode.equals("paymode=1")) {
-                       // val uri = Uri.parse(URLEncoder.encode(bean.payurl, "utf-8"))
-                       val uri = Uri.parse(bean.payurl)
-                        val intent = Intent(Intent.ACTION_VIEW, uri)
-                        startActivity(intent)
-                    } else {
-                        ARouterManager.goWebActivity2(
-                                this,
-                                bean.payurl,
-                                "",
-                                referer = bean.referer ?: ""
-                        )
 
-                        Log.d("referer","referer:${bean.referer}")
+                    if(data.size<8) {
+                        Log.d("RechargeActivity", "PayMode: data.size<8")
+                        openInternalWeb(bean)
+                    } else {
+                        Log.d("RechargeActivity", "PayMode:" + data[8])
+                        val payMode = data[8]
+                        if (payMode.equals("paymode=1")) { //後來
+                            openExternalWeb(bean.payurl)
+                        } else {
+                            openInternalWeb(bean)
+                        }
                     }
 
                     //http://deqfvfw.cn/cartoon/pay/recharge?money=30.00&paymentId=10233&orderId=CTT161051919298568383&isVip=1&paySdk=kaiyiyunWeixin&callback=http://deqfvfw.cn&isTemp=1&fromSite=D0&paymode=1&paymentIdInput=10233
@@ -405,7 +398,7 @@ class RechargeActivity : BaseActivity(), PayWayDialog.OnPayWayChooseListener, Pa
                             payInfo(payWayBean)
                         }
                         2 -> {
-                            VM.getBalance(this)
+                            VM.getBalance()
                         }
                         3 -> {
                             VM.getList(this)
@@ -415,6 +408,16 @@ class RechargeActivity : BaseActivity(), PayWayDialog.OnPayWayChooseListener, Pa
                 }
             }
         })
+    }
+
+    private fun openInternalWeb(bean: H5OrderBean) {
+        ARouterManager.goWebActivity2(
+                this,
+                bean.payurl ?: "",
+                "",
+                referer = bean.referer ?: ""
+        )
+        Log.d("referer", "referer:${bean.referer}")
     }
 
     private fun initTitle() {
@@ -451,7 +454,7 @@ class RechargeActivity : BaseActivity(), PayWayDialog.OnPayWayChooseListener, Pa
                         ARouterManager.goRegister(this)
                         finish()
                     } else {
-                        VM.getBalance(this)
+                        VM.getBalance()
                     }
                 }
                 .setPositiveButton("未支付") { dialog, _ ->
@@ -487,12 +490,12 @@ class RechargeActivity : BaseActivity(), PayWayDialog.OnPayWayChooseListener, Pa
                             req.extData = "app data" // optional
 
                             // 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
-                            api!!.sendReq(req)
+                            api.sendReq(req)
 //                            runOnUiThread {
 //                                Toast.makeText(applicationContext, "调起支付结果:" + result, Toast.LENGTH_SHORT).show()
 //                            }
                         } else {
-                            Log.d("PAY_GET", "返回错误" + json!!.getString("msg"))
+                            Log.d("PAY_GET", "返回错误" + json.getString("msg"))
 
                         }
                     } catch (e: JSONException) {

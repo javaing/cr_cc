@@ -32,7 +32,7 @@ class ComicCategoryActivity : BaseActivity(){
     }
 
     override fun initData() {
-        VM.getCategory(this)
+        VM.getCategory()
     }
 
     override fun initView() {
@@ -70,10 +70,10 @@ class ComicCategoryActivity : BaseActivity(){
         VM.categoryLiveData.observe(this, Observer {
             when (it?.status) {
                 Status.Start -> showLoading()
-                Status.Complete -> disLoading()
                 Status.Success -> {
                     Log.d("ComicCategoryActivity","ComicCategory "+it.data)
                     showTab(it.data)
+                    disLoading()
                 }
             }
         })

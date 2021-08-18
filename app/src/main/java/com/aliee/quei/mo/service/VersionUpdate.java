@@ -46,7 +46,7 @@ public class VersionUpdate extends Service {
     private Intent updateIntent;
     private PendingIntent pendingIntent;
 
-    private int notification_id = 0;
+    private final int notification_id = 0;
     NotificationCompat.Builder mBuilder;
     NotificationManager notificationManager;
 

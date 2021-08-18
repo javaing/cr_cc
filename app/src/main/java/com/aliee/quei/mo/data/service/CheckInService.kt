@@ -23,12 +23,22 @@ interface CheckInService {
 
     @FormUrlEncoded
     @POST("${ApiConstants.API_VERSION}cartoon/bulletin/list")
-    fun getBulletinList(@Field("status") status : Int,
+    suspend fun getBulletinList(@Field("status") status : Int,
                         @Field("page") page : Int,
-                        @Field("pagesize") pageSize : Int) : Observable<BaseResponse<Object>>
+                        @Field("pagesize") pageSize : Int) : BaseResponse<Any>
 
     @FormUrlEncoded
     @POST("${ApiConstants.API_VERSION}cartoon/bulletin/selectById")
-    fun getBulletinDetail(@Field("id") bulletinid : Int) : Observable<BaseResponse<BulletinDetailBean>>
+    suspend fun getBulletinDetail(@Field("id") bulletinid : Int) : BaseResponse<BulletinDetailBean>
 
+
+    /**
+     * @param date yyyy-MM-dd
+     */
+    @FormUrlEncoded
+    @POST("${ApiConstants.API_VERSION}fans/sign")
+    suspend fun checkInK(@Field("date") date : String) : BaseResponse<CoinBean>
+
+    @POST("${ApiConstants.API_VERSION}cartoon/event/advertising/latest")
+    suspend fun getBulletinK() : BaseResponse<BulletinBean>
 }

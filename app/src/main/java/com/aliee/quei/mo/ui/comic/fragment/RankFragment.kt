@@ -84,7 +84,7 @@ class RankFragment : BaseFragment() {
     }
 
     override fun initData() {
-        VM.loadRank(this, rid)
+        VM.loadRank(rid)
     }
 
 
@@ -95,7 +95,7 @@ class RankFragment : BaseFragment() {
                 val option = Gson().fromJson<Option>(it.optionstr,Option::class.java)
                 it.title = option.title
                 it.desc = option.desc
-                context!!.runOnUiThread {
+                context?.runOnUiThread {
                   adapter.insertAd(adBean.interval,it)
                 }
             }, {

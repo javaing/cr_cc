@@ -2,34 +2,35 @@ package com.aliee.quei.mo.ui.main.vm
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.viewModelScope
 import com.aliee.quei.mo.base.BaseViewModel
-import com.aliee.quei.mo.base.response.StatusResourceObserver
 import com.aliee.quei.mo.base.response.UIDataBean
-import com.aliee.quei.mo.data.bean.*
-import com.aliee.quei.mo.data.repository.*
+import com.aliee.quei.mo.data.bean.BaseResponse
+import com.aliee.quei.mo.data.bean.BulletinDetailBean
+import com.aliee.quei.mo.data.repository.CheckInRepository
+import kotlinx.coroutines.launch
 
 
 class BulletinVModel : BaseViewModel() {
 
     private val checkInRepository = CheckInRepository()
 
-    val bulletinFullLiveData = MediatorLiveData<UIDataBean<BaseResponse<Object>>>()
+    val bulletinFullLiveData = MediatorLiveData<UIDataBean<BaseResponse<Any>>>()
     val bulletinDetailLiveData = MediatorLiveData<UIDataBean<BulletinDetailBean>>()
 
     private var page = 1
     private var status = 2
     private val pageSize = 2
 
-    fun getBulletin(lifecycleOwner: LifecycleOwner) {
-        checkInRepository.getBulletinList(lifecycleOwner,page,status,pageSize)
-                .subscribe(StatusResourceObserver(bulletinFullLiveData,silent = true))
+    fun getBulletin() {
+        viewModelScope.launch {
+            bulletinFullLiveData.value = checkInRepository.getBulletinList(page,status,pageSize) }
     }
 
-    fun getBulletinDetail(lifecycleOwner: LifecycleOwner,bulletinId:Int) {
-        checkInRepository.getBulletinDetail(lifecycleOwner,bulletinId)
-                .subscribe(StatusResourceObserver(bulletinDetailLiveData,silent = true))
+    fun getBulletinDetail(bulletinId:Int) {
+        viewModelScope.launch {
+            bulletinDetailLiveData.value = checkInRepository.getBulletinDetail(bulletinId)
+        }
     }
-
-
 
 }

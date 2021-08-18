@@ -27,7 +27,10 @@ import com.aliee.quei.mo.data.bean.AdInfo
 import com.aliee.quei.mo.data.bean.RecommendBookBean
 import com.aliee.quei.mo.utils.ScreenUtils
 import com.aliee.quei.mo.utils.extention.click
+import com.aliee.quei.mo.utils.extention.gone
 import com.aliee.quei.mo.utils.extention.inflate
+import com.aliee.quei.mo.utils.extention.show
+import com.bumptech.glide.load.DecodeFormat
 import org.jetbrains.anko.find
 
 
@@ -35,9 +38,7 @@ class ReadAdapter constructor(private val context: Context) : RecyclerView.Adapt
     val imgs = mutableListOf<String>()
     private val screenWidth: Int
     private val screenHeight: Int
-
-    private var mPrice: Int? = 0
-    private var mBalance: Int? = 0
+    
     private var isPay: Int? = 0
 
     var isLoading = true
@@ -135,28 +136,14 @@ class ReadAdapter constructor(private val context: Context) : RecyclerView.Adapt
     }
 
 
-    fun setChapterPrice(price: Int?) {
-        mPrice = price
-        notifyDataSetChanged()
-    }
-
-    fun setUserBalance(balance: Int?) {
-        mBalance = balance
-        notifyDataSetChanged()
-    }
-
     fun clear() {
         imgs.clear()
         notifyDataSetChanged()
     }
 
-    fun getPreloadItems(position: Int): MutableList<String> {
-        return imgs.subList(position, position + 1)
-    }
 
     fun downloadFinish() {
         isLoading = false
-//        notifyDataSetChanged()
         notifyItemInserted(imgs.size)
     }
 
@@ -168,7 +155,6 @@ class ReadAdapter constructor(private val context: Context) : RecyclerView.Adapt
     private val mRecommend = mutableListOf<RecommendBookBean>()
 
     var nextChapterClick: (() -> Unit)? = null
-    var onRechargeClick: (() -> Unit)? = null
 
     fun setRecommendBottom(data: List<RecommendBookBean>?) {
         data ?: return
@@ -177,7 +163,6 @@ class ReadAdapter constructor(private val context: Context) : RecyclerView.Adapt
     }
 
     inner class ComicAdHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-
 
     inner class ComicLoadingHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -195,12 +180,12 @@ class ReadAdapter constructor(private val context: Context) : RecyclerView.Adapt
                 override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView) {
                     val column = itemPosition % 3
                     when (column) {
-                        0 -> outRect?.right = dp1 * 2
+                        0 -> outRect.right = dp1 * 2
                         1 -> {
-                            outRect?.right = dp1
-                            outRect?.left = dp1
+                            outRect.right = dp1
+                            outRect.left = dp1
                         }
-                        2 -> outRect?.left = dp1 * 2
+                        2 -> outRect.left = dp1 * 2
                     }
                 }
             })
@@ -222,46 +207,33 @@ class ReadAdapter constructor(private val context: Context) : RecyclerView.Adapt
         private val iv_read_ad_close = itemView.find<ImageView>(R.id.iv_read_ad_close)
         private val tv_num = itemView.find<TextView>(R.id.tv_num)
         private val view_readmode = itemView.find<View>(R.id.view_readmode)
-        private val ll_pay = itemView.find<LinearLayout>(R.id.pay_layout)
-        private val tv_recharge = itemView.find<TextView>(R.id.tv_recharge)
-        private val tv_price = itemView.find<TextView>(R.id.tv_price)
-        private val tv_balance = itemView.find<TextView>(R.id.tv_balance)
-        private val tv_vip_tip = itemView.find<TextView>(R.id.tv_vip_tip)
 
         fun bind(url: String?, position: Int) {
             image.layoutParams.width = screenWidth
             image.layoutParams.width = screenHeight
-//            image.setImageResource(R.mipmap.img_default_cover)
+
             tv_num.text = "${position + 1}"
-            tv_num.visibility = View.VISIBLE
+            tv_num.show()
 
-
-            /*tv_price.text = "本章价格：${mPrice}书币"
-            tv_balance.text = "您的余额：${mBalance}书币"
-
-            tv_recharge.click { onRechargeClick?.invoke() }
-            tv_vip_tip.click { onRechargeClick?.invoke() }*/
-            //  Log.e("图片地址L------", url)
 
             if (isPay == 1009) {
                 image.layoutParams.width = screenWidth
-                tv_num.visibility = View.GONE
+                tv_num.gone()
             } else {
-                tv_num.visibility = View.VISIBLE
+                tv_num.show()
             }
             if (readmodes.equals("2.0")) {
-                view_readmode.visibility = View.VISIBLE
+                view_readmode.show()
             }
 
 
             Log.d("tag", "imageUrl:${CommonDataProvider.instance.getImgDomain() + "/" + url}")
-            var imgUrl: String = ""
-            imgUrl = if (url!!.contains("http")) {
-                iv_read_ad_close.visibility = View.VISIBLE
+            var imgUrl = if (url!!.contains("http")) {
+                iv_read_ad_close.show()
                 AdConfig.adPreview(adInfo!!.callbackurl)
                 url
             } else {
-                iv_read_ad_close.visibility = View.GONE
+                iv_read_ad_close.gone()
                 CommonDataProvider.instance.getImgDomain() + "/" + url
             }
 
@@ -276,6 +248,7 @@ class ReadAdapter constructor(private val context: Context) : RecyclerView.Adapt
                                     .error(R.mipmap.img_default_cover)
                                     .placeholder(R.mipmap.img_default_cover)
                                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                                    .format(DecodeFormat.PREFER_RGB_565)
                     )
                     .into(object : SimpleTarget<Drawable>() {
                         override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
@@ -289,7 +262,7 @@ class ReadAdapter constructor(private val context: Context) : RecyclerView.Adapt
                                 var animation = AlphaAnimation(1f, 0f)
                                 animation.duration = 100
                                 tv_num.startAnimation(animation)
-                                tv_num.visibility = View.GONE
+                                tv_num.gone()
 
 
                                 image.layoutParams.height = (height * r).toInt()

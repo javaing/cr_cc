@@ -44,7 +44,7 @@ class MoreAdapter : RecyclerView.Adapter<ComicLinearHolder>() {
 
     override fun onBindViewHolder(holder: ComicLinearHolder, position: Int) {
         val bean = mData[position]
-        Log.d("tag","title:${bean!!.title}")
+        Log.d("tag","title:${bean.title}")
         holder.bindRecommend(bean, itemClick)
     }
 

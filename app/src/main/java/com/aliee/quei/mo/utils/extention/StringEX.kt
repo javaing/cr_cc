@@ -2,6 +2,9 @@ package com.aliee.quei.mo.utils.extention
 
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
+import android.util.Log
+import com.aliee.quei.mo.component.CommonDataProvider
+import com.aliee.quei.mo.net.ApiConstants
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -33,4 +36,21 @@ fun CharSequence.setSpanColor(text : String,color : Int) : CharSequence{
     }
 
     return sb
+}
+
+fun String.videoUrl():String {
+    var imgUrl = this
+    if (startsWith("null")) {
+        Log.e("tag", "Bingo! video imageUrl in:$imgUrl")
+        imgUrl = imgUrl.substring("null".length)
+    }
+    if (!startsWith("http://")) {
+        imgUrl = "${CommonDataProvider.instance.getVideoThumbDomain()}$imgUrl"
+    }
+    //Log.e("tag", "video out:$imgUrl")
+    return imgUrl
+}
+
+fun String.videoPath():String {
+    return ApiConstants.VIDEO_API_PATH+substring(1)
 }

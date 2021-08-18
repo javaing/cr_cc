@@ -3,7 +3,7 @@ package com.aliee.quei.mo.data.local
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 
-open class LoginRecordBean() : RealmObject() {
+open class LoginRecordBean : RealmObject() {
     @PrimaryKey
     var date : String = ""
 

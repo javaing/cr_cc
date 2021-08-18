@@ -13,13 +13,13 @@ import retrofit2.http.POST
  */
 interface HistoryService{
     @POST("${ApiConstants.API_VERSION}cartoon/history/lists")
-    fun loadHistory() : Observable<BaseResponse<List<HistoryBean>>>
+    suspend fun loadHistory() : BaseResponse<List<HistoryBean>>
 
     @FormUrlEncoded
     @POST("${ApiConstants.API_VERSION}cartoon/history/remove")
-    fun delHistory(@Field("bookId")bookid : Int) : Observable<BaseResponse<String>>
+    suspend fun delHistory(@Field("bookId")bookid : Int) : BaseResponse<String>
 
     @FormUrlEncoded
     @POST("${ApiConstants.API_VERSION}cartoon/history/join")
-    fun addHistory(@Field("bookId")bookid : Int,@Field("chapterId")chapterid : Int) : Observable<BaseResponse<Any>>
+    suspend fun addHistory(@Field("bookId")bookid : Int,@Field("chapterId")chapterid : Int) : BaseResponse<Any>
 }

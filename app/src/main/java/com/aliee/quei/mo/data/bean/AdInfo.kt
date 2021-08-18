@@ -21,3 +21,10 @@ data class AdInfo(
     }
 
 }
+
+fun AdInfo.checkLink():Boolean {
+    if (clickurl!=null && callbackurl!=null && imgurl!=null) {
+        return true
+    }
+    return false
+}

@@ -27,12 +27,12 @@ interface WelfareService {
     fun getIncome() : Observable<BaseResponse<TotalIncomeBean>>
 
     @POST("${ApiConstants.API_VERSION}cartoon/activity/user/sign")
-    fun getsignAd(): Observable<BaseResponse<SignAdBean>>
+    suspend fun getsignAd(): BaseResponse<SignAdBean>
 
     @POST("${ApiConstants.API_VERSION}cartoon/activity/WXAttention")
-    fun getwxNumber(): Observable<BaseResponse<WeixinAdBean>>
+    suspend fun getwxNumber(): BaseResponse<WeixinAdBean>
 
     @FormUrlEncoded
     @POST("${ApiConstants.API_VERSION}cartoon/activity/user/isWXAReceivable")
-    fun getisWxAttention(@Field("installTime")installTime : Long,@Field("chapter")chapter : String): Observable<BaseResponse<WeixinAttentionBean>>
+    suspend fun getisWxAttention(@Field("installTime")installTime : Long,@Field("chapter")chapter : String): BaseResponse<WeixinAttentionBean>
 }

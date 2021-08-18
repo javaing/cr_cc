@@ -23,8 +23,8 @@ public class IconListAdapter extends ArrayAdapter<ItemData> {
 // 建立佈局
         View oneTeacherView = LayoutInflater.from(getContext()).inflate(R.layout.listview_item, parent, false);
 // 獲取ImageView和TextView
-        ImageView imageView = (ImageView) oneTeacherView.findViewById(R.id.ic_image);
-        TextView textView = (TextView) oneTeacherView.findViewById(R.id.label);
+        ImageView imageView = oneTeacherView.findViewById(R.id.ic_image);
+        TextView textView = oneTeacherView.findViewById(R.id.label);
 // 根據圖示資料設定ImageView和TextView的展現
         imageView.setImageResource(item.getImageId());
         textView.setText(item.getText());

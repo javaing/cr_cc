@@ -14,8 +14,8 @@ import com.taobao.sophix.listener.PatchLoadStatusListener
 
 class SophixStubApplication : SophixApplication() {
     private val TAG = "SophixStubApplication"
-    private val APP_ID = "30846840";
-    private val APP_SECRET = "7888913f08de5f1a26ebcd3c9d272130";
+    private val APP_ID = "30846840"
+    private val APP_SECRET = "7888913f08de5f1a26ebcd3c9d272130"
     private val RSA_SECRET="MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCHVcHvCxleVV6VJHvU5C4U+MO8t6K977tBjzkFojWpiATqKsl5RL/xmlfhS7XFuM1kM6TX42Fk7/wHlIF5YSLgf1vYVq9pFr67KombrpLmPHJnm7nuGMWuLDvS8FVWX/uyDTsNs0Z6rbHZIFcGZPF3csBqAovUAET89vieneS2BYUJ68M9bNp8e6z6Eir/hKrsKbhivx1q3YygKxBClkpPHqrWL6mrGXbs75F0v3QbHfBkDXTGfg39uAA0SlPLktvbJ70Rl7qeS3eREuB8F7a6rHbYjrQIe6I6gPlN3SGW3Y5DFB8SBJFgwjiCM0LMk4NO+yuVeFhz0hGXhLxvENfzAgMBAAECggEAT0URAiZbJqEUdIFZMxqwT0JizEA3x88KvNzaRo17pyBv2IVVW33EfAyumt1QzE5xp9aEIJwj6Q6UbhAzQlh+KEcREge8WO6kq1bAIXtAujD/xeY2IttJtrpcFDMHmT9BW0pao6y1hJgGyyohLzKjKRcC01VId9XskstKVwYe9+orlzHvP0ACGq9N41lC/MBhDIq9fPWdlqoiZHk1/8eSOqE4xfNroKOEM1jljvj2Y6+D4byL7bYijjIyl94U0tcjGWBQoW0o5uy/CntoS7JSBT8M+8EWFJZmUsIWcpU7caHDTFHZy8kNzXiGikyXN4iP/OYrm8oiMAZQ1TEn93Mm2QKBgQDASE7+79TiJEi9ZkPKQ+kgifg2T7GNMd1eiYplUZ/pEsKgmYg4B53iBu/2TJwknoEYTjwYpu8BdHNJ3/h3qliOJZS5Nl+F6tasFZ9j064IDwcGfERNlJo0WjQxAo01WtGnBUrdr4B8Z/I94TFllEBiuZB2IIgW6/yiSIFBlP8D7wKBgQC0LnxYodBTqgYhVHGXQ7l8QK1Bp5Ujkhe7+qJU8g8Z+huAiuEXx/er37Bi9WkeTkjHTEDd01G4QkCvg2eQB/4oLFM2op8ttGmIASj5/jDrFlCyAr1mdiUSnGM1aBqlAufg00aY2aaObEGH3VVgKdx9hMpHHO/lYNtwEnrW2HmYPQKBgB9JpNEG5XUGwm9PPKik9EI/MQxlW1bGTmcbqlFiPssGKnVHhkrXsnEc/97sCFxNDmSOFmlMgIeUE05qC1wtc8ttgg3BMznvRI8r1YvA3gihqVr8zYByNcVfCC8RYzjTVln/GneIHzgfEePPyOHmhbOKzl7qXDqem7UsZxvsyrIxAoGAKfGIULmaXV9+/dNCfgvt6dbEfjwco6Mmk0PM9ilDCrEGJe4uZ/LM3N29mcu3JK7kkkBV+U1wAIyrsi/Ms+Kob4Gh/V3t4B3XUymx+EAL8y3GqymoHWnzR1nQXmZVjYQXpmaIUJyaAR2CQ7ZqYXBdO3rl+5fo4GSjsHsczVanN6ECgYAGpRUyqvkZk40xlqSjflVKQZWyY5cB7i7cEbZZeHSNLSHAZ348rAVmgJd5VpzwXq2F1OI2ViiRlyNPvcxkk6RTmigPsWUA7Q1bbFUZ1/fSRPOCbv8exasau3ldhHNQ8QPROka54zV9uZulp93Fs2aBXjJ9F5hlBqyHuIE/774c6w=="
 //    private val APP_ID = "30466133";
 //    private val APP_SECRET = "159c0c0be8156d9edfeff62f12041915";
@@ -30,7 +30,7 @@ class SophixStubApplication : SophixApplication() {
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         //如果需要使用MultiDex，需要在此处调用。
-        MultiDex.install(base);
+        MultiDex.install(base)
         initSophix()
     }
 
@@ -40,8 +40,8 @@ class SophixStubApplication : SophixApplication() {
     private fun initSophix() {
         var appVersion = "0.0.0"
         try {
-            appVersion = this.getPackageManager()
-                    .getPackageInfo(this.getPackageName(), 0).versionName
+            appVersion = this.packageManager
+                    .getPackageInfo(this.packageName, 0).versionName
         } catch (e: Exception) {
         }
         val instance: SophixManager = SophixManager.getInstance()

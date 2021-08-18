@@ -24,10 +24,10 @@ import java.util.List;
  * Created by wuhaojie on 2016/7/19 20:39.
  */
 public class MultiScrollNumber extends LinearLayout {
-    private Context mContext;
-    private List<Integer> mTargetNumbers = new ArrayList<>();
-    private List<Integer> mPrimaryNumbers = new ArrayList<>();
-    private List<ScrollNumber> mScrollNumbers = new ArrayList<>();
+    private final Context mContext;
+    private final List<Integer> mTargetNumbers = new ArrayList<>();
+    private final List<Integer> mPrimaryNumbers = new ArrayList<>();
+    private final List<ScrollNumber> mScrollNumbers = new ArrayList<>();
     private int mTextSize = 130;
 
     private int[] mTextColors = new int[]{R.color.text_color_212121};

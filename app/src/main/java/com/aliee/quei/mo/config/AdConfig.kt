@@ -16,15 +16,22 @@ object AdConfig {
 
     //banner 广告默认id，
     const val BANNER_DEF_ID: Int = -100
-
+    const val GROUP2_CACHE_EXPIRATION = 1000*60*10L ////超過10分鐘清空cache
 
     fun getAd(zid: Int): AdBean? {
-        val adList = CommonDataProvider.instance.getAdList()
-        if (adList == null || adList.size == 0) {
+        val adList: MutableList<AdBean>?
+        try {
+            adList = CommonDataProvider.instance.getAdList()
+            Log.e("tag", "getAD($zid)")
+            if (adList == null || adList.size == 0) {
+                return null
+            }
+            return adList.first {
+                it.id == zid
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
             return null
-        }
-        return adList.first {
-            it.id == zid
         }
     }
 
@@ -44,7 +51,7 @@ object AdConfig {
      * 获取广告物料
      */
     fun getAdInfo(adBean: AdBean, successCall: (AdInfo) -> Unit, failed: () -> Unit) {
-        Log.d("tag", "getAdInfo:${adBean.toString()}")
+        //Log.d("tag", "getAdInfo:$adBean")
         //广告拦截
         if (!interceptorAd(adBean)) {
             failed.invoke()
@@ -60,8 +67,8 @@ object AdConfig {
                 if (response.isSuccessful) {
                     val resp = response.body?.string()
                     val adInfo = Gson().fromJson<AdInfo>(resp, AdInfo::class.java)
-                    val option = Gson().fromJson<Option>(adInfo.optionstr, Option::class.java)
-                    Log.d("tag", "adInfo --> id${adBean.zid},resp :${resp}，adInfo:${adInfo.toString()}")
+                    //val option = Gson().fromJson<Option>(adInfo.optionstr, Option::class.java)
+                    //Log.d("tag", "adInfo --> id${adBean.zid},resp :${resp}，adInfo:$adInfo")
                     if (adInfo != null) {
                         if (adInfo.imgurl != null && adInfo.callbackurl != null && adInfo.clickurl != null) {
                             successCall.invoke(adInfo)
@@ -69,6 +76,8 @@ object AdConfig {
                             failed.invoke()
                         }
                     }
+                } else {
+                    failed.invoke()
                 }
             }
         })
@@ -116,7 +125,7 @@ object AdConfig {
      * 拦截请求
      */
     fun interceptorAd(adBean: AdBean): Boolean {
-        Log.e("tag", "interceptorAd adinfo :${adBean.toString()}")
+        Log.e("tag", "interceptorAd adinfo :$adBean")
         val userInfo = CommonDataProvider.instance.getUserInfo()
         Log.e("tag", " userInfo :${userInfo.toString()}")
         val isTempUser = CommonDataProvider.instance.getTempUser()

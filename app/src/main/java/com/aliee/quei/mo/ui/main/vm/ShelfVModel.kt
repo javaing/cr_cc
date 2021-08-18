@@ -2,6 +2,7 @@ package com.aliee.quei.mo.ui.main.vm
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.viewModelScope
 import com.aliee.quei.mo.base.BaseViewModel
 import com.aliee.quei.mo.base.response.ListStatusResourceObserver
 import com.aliee.quei.mo.base.response.StatusResourceObserver
@@ -12,6 +13,7 @@ import com.aliee.quei.mo.data.bean.RecommendBookBean
 import com.aliee.quei.mo.data.bean.ShelfBean
 import com.aliee.quei.mo.data.repository.RecommendRepository
 import com.aliee.quei.mo.data.repository.ShelfRepository
+import kotlinx.coroutines.launch
 
 /**
  * Created by Administrator on 2018/4/26 0026.
@@ -39,17 +41,19 @@ class ShelfVModel : BaseViewModel(){
                 .subscribe(ListStatusResourceObserver(getShelfListLiveData))
     }
 
-    fun delFromShelf(lifecycleOwner: LifecycleOwner,bookid : Int){
-        shelfRepository.addToShelf(lifecycleOwner,bookid)
-            .subscribe(StatusResourceObserver(delFromShelfLiveData))
+    fun delFromShelf(bookid : Int){
+        viewModelScope.launch {
+            delFromShelfLiveData.value = shelfRepository.addToShelf(bookid)
+        }
     }
 
 
     private var rPage = 1
     private val rPageSize = 10
-    fun loadRecommend(lifecycleOwner: LifecycleOwner) {
-        rPage ++
-        recommendRepository.getListByConversionRate(lifecycleOwner,rPage,rPageSize)
-            .subscribe(StatusResourceObserver(recommendLiveData,silent = true))
+    fun loadRecommend() {
+        viewModelScope.launch {
+            rPage ++
+            recommendLiveData.value = recommendRepository.getListByConversionRate(rPage,rPageSize)
+        }
     }
 }

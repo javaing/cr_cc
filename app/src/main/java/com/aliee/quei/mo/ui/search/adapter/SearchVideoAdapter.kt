@@ -152,7 +152,7 @@ class SearchVideoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 iv_start.gone()
                 videoTime.gone()
             }else{
-                val imageUrl = imageUrl(url,video!!.thumbImg!!)
+                val imageUrl = imageUrl(url, video.thumbImg!!)
                 videoThumb.loadNovelCover(imageUrl)
                 iv_start.show()
                 videoTime.show()

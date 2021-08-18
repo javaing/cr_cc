@@ -278,8 +278,11 @@
     <string name="methtwo">方式二 : 扫瞄QR code </string>
     <string name="meththree">方式三 : 点选 &quot; 复制我的分享钮 &quot; </string>
     <string name="methrefer">详情请见 公告 > 邀请好友活动 </string>
-    <string name="videoname">蟲蟲视频</string>
-
+    <string name="videoname">虫虫视频</string>
+    <string name="share_app_qrcode">扫码下载虫虫漫画App</string>
+    <string name="share_app_friends">保存二维码，分享给朋友加入虫虫\n即可增加观影次数</string>
+    <string name="share_app_slogan">虫虫漫画，给你不一样的体验</string>
+    <string name="recharge_price_vip_desc">超值特惠</string>
 
 
     <string-array name="labels">

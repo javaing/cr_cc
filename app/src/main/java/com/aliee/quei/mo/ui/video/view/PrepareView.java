@@ -27,14 +27,17 @@ public class PrepareView extends FrameLayout implements IControlComponent {
 
     private ControlWrapper mControlWrapper;
 
-    private ImageView mThumb, iv_blue_thumb;
-    private ImageView mStartPlay;
-    private ProgressBar mLoading;
-    private FrameLayout mNetWarning;
-    private LinearLayout mLayoutTips;
-    private TextView mBtnRecharge;
-    private TextView mTvTips, mTvFreeCountTips, tv_video_times;
-    private FrameLayout ll_preview_end_view;
+    private final ImageView mThumb;
+    private final ImageView iv_blue_thumb;
+    private final ImageView mStartPlay;
+    private final ProgressBar mLoading;
+    private final FrameLayout mNetWarning;
+    private final LinearLayout mLayoutTips;
+    private final TextView mBtnRecharge;
+    private final TextView mTvTips;
+    private final TextView mTvFreeCountTips;
+    private final TextView tv_video_times;
+    private final FrameLayout ll_preview_end_view;
     private boolean isShowTips;
     private boolean isPreview = false;
 

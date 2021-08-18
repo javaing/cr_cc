@@ -25,6 +25,7 @@ import com.aliee.quei.mo.utils.QrCodeUtils
 import com.aliee.quei.mo.utils.ScreenUtils
 import com.aliee.quei.mo.utils.extention.click
 import com.aliee.quei.mo.utils.extention.loadNovelCover
+import com.aliee.quei.mo.utils.extention.videoUrl
 import kotlinx.android.synthetic.main.activity_share.*
 import kotlinx.android.synthetic.main.activity_video_share.*
 import kotlinx.android.synthetic.main.activity_video_share.ivCode
@@ -83,10 +84,10 @@ class VideoShareActivity : BaseActivity() {
 
         mVideo.let {
             tv_title.text = Html.fromHtml(it.name).trim()
-            tv_thumb.loadNovelCover(imageUrl(thumbUrl, it.thumbImg!!))
+            tv_thumb.loadNovelCover(imageUrl(thumbUrl, it.thumbImg!!).videoUrl())
 
             tv_title1.text = Html.fromHtml(it.name).trim()
-            tv_thumb1.loadNovelCover(imageUrl(thumbUrl, it.thumbImg!!))
+            tv_thumb1.loadNovelCover(imageUrl(thumbUrl, it.thumbImg!!).videoUrl())
         }
         VM.videoShare(this, mVideo.id!!)
 
@@ -178,10 +179,10 @@ class VideoShareActivity : BaseActivity() {
     fun copyText(shareUrl: String) {
         var myClipboard: ClipboardManager? = null
         var myClip: ClipData? = null
-        myClipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?;
-        myClip = ClipData.newPlainText("text", shareUrl);
-        myClipboard?.setPrimaryClip(myClip);
+        myClipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
+        myClip = ClipData.newPlainText("text", shareUrl)
+        myClipboard?.primaryClip = myClip
 
-        Toast.makeText(this, "复制分享链接成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "复制分享链接成功", Toast.LENGTH_SHORT).show()
     }
 }

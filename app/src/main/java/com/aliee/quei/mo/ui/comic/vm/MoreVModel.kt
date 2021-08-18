@@ -1,31 +1,40 @@
 package com.aliee.quei.mo.ui.comic.vm
 
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.viewModelScope
 import com.aliee.quei.mo.base.BaseViewModel
-import com.aliee.quei.mo.base.response.StatusResourceObserver
+import com.aliee.quei.mo.base.response.Status
 import com.aliee.quei.mo.base.response.UIDataBean
 import com.aliee.quei.mo.data.bean.ListBean
 import com.aliee.quei.mo.data.bean.RecommendBookBean
+import com.aliee.quei.mo.data.bean.getByRid
 import com.aliee.quei.mo.data.repository.RecommendRepository
+import com.aliee.quei.mo.data.service.RecommendService
+import com.aliee.quei.mo.net.retrofit.RetrofitClient
+import kotlinx.coroutines.launch
 
 class  MoreVModel : BaseViewModel(){
     private val repository = RecommendRepository()
-    val listLiveData = MediatorLiveData<UIDataBean<List<RecommendBookBean>>>()
+    private val recommendService = RetrofitClient.createService(RecommendService::class.java)
+    val listLiveData = MediatorLiveData<UIDataBean<MutableList<RecommendBookBean>>>()
     val comicListLiveData = MediatorLiveData<UIDataBean<ListBean<RecommendBookBean>>>()
 
     var page = 0
-    fun getByRid(lifecycleOwner: LifecycleOwner,rid : String) {
+    fun getByRid(rid : String) {
         page = 0
-        repository.getRecommend(lifecycleOwner, rid)
-            .subscribe(StatusResourceObserver(listLiveData))
+        viewModelLaunch ({
+            listLiveData.value =  recommendService.getRecommendK(rid).data?.getByRid(rid)
+        },{
+            listLiveData.value = UIDataBean(Status.Error)
+        })
     }
 
 
 
-    fun loadMore(lifecycleOwner: LifecycleOwner) {
-        page ++
-        repository.getListByConversionRate(lifecycleOwner,page,10)
-            .subscribe(StatusResourceObserver(comicListLiveData,silent = true))
+    fun loadMore() {
+        viewModelScope.launch {
+            page ++
+            comicListLiveData.value = repository.getListByConversionRate(page,10)
+        }
     }
 }

@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -194,7 +195,7 @@ public class CacheInterceptor implements Interceptor {
         if (body == null) return "";
         Buffer buffer = new Buffer();
         body.writeTo(buffer);
-        Charset charset = Charset.forName("UTF-8");
+        Charset charset = StandardCharsets.UTF_8;
         MediaType type = body.contentType();
         if (type != null) {
             charset = type.charset();

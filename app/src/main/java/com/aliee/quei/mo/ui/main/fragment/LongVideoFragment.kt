@@ -13,7 +13,6 @@ import android.os.Message
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
@@ -21,12 +20,9 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSONObject
 import com.bumptech.glide.Glide
 import com.dueeeke.videocontroller.component.TitleView
-import com.dueeeke.videoplayer.player.AbstractPlayer
 import com.dueeeke.videoplayer.player.ProgressManager
 import com.dueeeke.videoplayer.player.VideoView
-import com.dueeeke.videoplayer.player.VideoView.SimpleOnStateChangeListener
 import com.dueeeke.videoplayer.player.VideoViewManager
-import com.dueeeke.videoplayer.util.PlayerUtils
 import com.google.gson.Gson
 import com.aliee.quei.mo.R
 import com.aliee.quei.mo.application.ReaderApplication
@@ -35,20 +31,19 @@ import com.aliee.quei.mo.base.response.Status
 import com.aliee.quei.mo.component.*
 import com.aliee.quei.mo.config.AdConfig
 import com.aliee.quei.mo.config.AdEnum
-import com.aliee.quei.mo.config.e
 import com.aliee.quei.mo.data.bean.*
+import com.aliee.quei.mo.net.ApiConstants
 import com.aliee.quei.mo.router.ARouterManager
 import com.aliee.quei.mo.router.Path
 import com.aliee.quei.mo.ui.main.adapter.MainVideoAdapter
 import com.aliee.quei.mo.ui.main.vm.MainVideoModel
 import com.aliee.quei.mo.ui.video.Utils
 import com.aliee.quei.mo.ui.video.VideoShareActivity
-import com.aliee.quei.mo.ui.video.controller.PortraitWhenFullScreenController
 import com.aliee.quei.mo.ui.video.controller.VideoController
 import com.aliee.quei.mo.ui.video.view.*
 import com.aliee.quei.mo.utils.StringUtils
-import com.aliee.quei.mo.utils.TagCountManager
 import com.aliee.quei.mo.utils.extention.click
+import com.aliee.quei.mo.utils.extention.videoPath
 import com.aliee.quei.mo.utils.rxjava.RxBus
 import io.reactivex.annotations.NonNull
 import kotlinx.android.synthetic.main.attach_layout.*
@@ -65,6 +60,14 @@ import kotlinx.android.synthetic.main.video_auto_play_switch.sw_switch
 
 @Route(path = Path.PATH_MAIN_LONG_VIDEO_FRAGMENT)
 class LongVideoFragment : BaseFragment() {
+    override fun scrollToTop() {
+        try {
+            recyclerView.smoothScrollToPosition(0)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     private lateinit var tag: Tag
     private lateinit var mVideoView: IjkVideoView
     private lateinit var mController: VideoController
@@ -149,7 +152,7 @@ class LongVideoFragment : BaseFragment() {
         isShowAutoPlaySwitch = autoAutoPlayConf.enable
         confAutoDialogCount = autoAutoPlayConf.count
 
-        Log.d("tag", "config:${autoAutoPlayConf.toString()}")
+        Log.d("tag", "config:$autoAutoPlayConf")
         if (isShowAutoPlaySwitch == 1) {
             auto_play_switch.visibility = View.VISIBLE
             sw_switch.isChecked = isAutoPlay
@@ -175,11 +178,13 @@ class LongVideoFragment : BaseFragment() {
     private fun videoAd(videos: MutableList<Video>) {
         val adBean = AdConfig.getAd(AdEnum.VIDEO_CHILD_LIST.zid)
         if (adBean==null){
-            adapter.setData(tag, videos)
+            activity!!.runOnUiThread {
+                adapter.setData(tag, videos)
+            }
             return
         }
-        Log.d("tag", "video list:${adBean.toString()}")
-        adBean?.also {
+        Log.d("tag", "video list:$adBean")
+        adBean.also {
             AdConfig.getAdInfo(adBean, { adInfo ->
                 activity!!.runOnUiThread {
                     val option = Gson().fromJson<Option>(adInfo.optionstr, Option::class.java)
@@ -208,27 +213,36 @@ class LongVideoFragment : BaseFragment() {
                     disLoading()
                 }
             }, {
-                adapter.setData(tag, videos)
+                activity!!.runOnUiThread {
+                    adapter.setData(tag, videos)
+                }
             })
         }
     }
 
     override fun initData() {
         tag = Tag(52, "")
-        VM.getVideoDomainType(this)
-        //VM.analyticsVideoTag(this, if (tag.id == -1) 51 else tag.id)
+
+        val thumb = CommonDataProvider.instance.getVideoDomain()
+        if(thumb.isNotEmpty()) {
+            Log.e("video", "cache domain thumb:$thumb")
+            initThumbDomain(thumb)
+        } else {
+            VM.getVideoDomainType()
+        }
 
         refreshVideoVipTip()
-
     }
 
     fun refreshVideoVipTip() {
         val userInfo: UserInfoBean? = CommonDataProvider.instance.getUserInfo()
-        if (userInfo?.discountEndtime!! > System.currentTimeMillis()) {
-            video_tips.visibility = View.VISIBLE
-        } else {
-            video_tips.visibility = View.GONE
-        }
+       if(userInfo?.discountEndtime !=null) {
+           if (userInfo.discountEndtime > System.currentTimeMillis()) {
+               video_tips.visibility = View.VISIBLE
+           } else {
+               video_tips.visibility = View.GONE
+           }
+       }
     }
 
     private fun initRv() {
@@ -253,7 +267,7 @@ class LongVideoFragment : BaseFragment() {
         recyclerView.addOnChildAttachStateChangeListener(object : RecyclerView.OnChildAttachStateChangeListener {
             override fun onChildViewAttachedToWindow(@NonNull view: View) {}
             override fun onChildViewDetachedFromWindow(@NonNull view: View) {
-                Log.d("tag", "view:${view?.toString()}")
+                Log.d("tag", "view:${view.toString()}")
                 viewStatus(view)
             }
         })
@@ -267,10 +281,10 @@ class LongVideoFragment : BaseFragment() {
             //如果不为自动播放，则弹窗提示，点击是 直接播放，点击否也直接播放
             videoId = video.id!!
             if (isAutoPlay) {
-                getVideoUrl(video.id!!)
+                getVideoUrl(video.id)
             } else {
                 if (isFirstPlay) {
-                    showAutoPlayDialog(video.id!!)
+                    showAutoPlayDialog(video.id)
                 } else {
                     Log.d("tag", "showAutoDialogCount:$showAutoDialogCount")
                     //如果在不自动播放的状态下，每10次弹窗
@@ -287,7 +301,7 @@ class LongVideoFragment : BaseFragment() {
         }
         adapter.onAddVideoClick = { position, video ->
             mCurrentAddVideoPos = position
-            VM.addMyVideo(this@LongVideoFragment, video.id!!)
+            VM.addMyVideo(video.id!!)
         }
         adapter.onItemShareClick = { position, video, thumbUrl ->
             VideoShareActivity.toThis(activity!!, video, thumbUrl)
@@ -310,7 +324,7 @@ class LongVideoFragment : BaseFragment() {
      * 自动播放位置控制
      */
     fun autoPlayVideo(view: RecyclerView) {
-        view ?: return
+        view
         var count = view.childCount
         for (i in 0 until count) {
             val itemView = view.getChildAt(i) ?: continue
@@ -340,7 +354,7 @@ class LongVideoFragment : BaseFragment() {
             getVideoList()
         }
         refreshLayout.setOnLoadMoreListener {
-            VM.getLongVideoLoadMore(this)
+            VM.getLongVideoLoadMore()
         }
     }
 
@@ -368,7 +382,7 @@ class LongVideoFragment : BaseFragment() {
                     }
                     VideoView.STATE_PLAYBACK_COMPLETED -> {
                         //记录当前视频完成播放次数
-                        VM.videoEndPlay(this@LongVideoFragment, videoId, videoPlayTime, done = 1)
+                        VM.videoEndPlay(videoId, videoPlayTime, done = 1)
                     }
                 }
             }
@@ -388,7 +402,7 @@ class LongVideoFragment : BaseFragment() {
             override fun saveProgress(url: String?, progress: Long) {
                 if (progress > 0) {
                     videoCurrentPlayTime = StringUtils.formatTime(progress.toInt())
-                    VM.videoEndPlay(this@LongVideoFragment, videoId, videoCurrentPlayTime, done = 0)
+                    VM.videoEndPlay(videoId, videoCurrentPlayTime, done = 0)
                 }
             }
 
@@ -423,11 +437,11 @@ class LongVideoFragment : BaseFragment() {
 
 
     private fun getVideoUrl(videoId: Int) {
-        VM.getVideoDomain(this@LongVideoFragment, videoId, "u_temp_user_0")
+        VM.getVideoPath(videoId, "u_temp_user_0")
     }
 
     private fun getVideoPreView(videoId: Int, tname: String) {
-        VM.getVideoPreView(this, videoId, tname)
+        VM.getVideoPreView(videoId, tname)
     }
 
     /**
@@ -445,7 +459,7 @@ class LongVideoFragment : BaseFragment() {
         val itemView: View = mLinearLayoutManager.findViewByPosition(position) ?: return
         val viewHolder = itemView.tag as MainVideoAdapter.VideoHolder
         mTitleView.setTitle(videoInfo?.name)
-        mController.addControlComponent(viewHolder?.prepareView, true)
+        mController.addControlComponent(viewHolder.prepareView, true)
         Utils.removeViewFormParent(mVideoView)
         viewHolder.playerContainer.addView(mVideoView, 1)
         VideoViewManager.instance().add(mVideoView, "list")
@@ -453,10 +467,10 @@ class LongVideoFragment : BaseFragment() {
         if (isPlay) {
             if (preViewVideoPath.isNotEmpty()) {
                 isPreview = true
-                mVideoView.setUrl("http://vapi.yichuba.com${preViewVideoPath}")
+                mVideoView.setUrl(ApiConstants.VIDEO_API_PATH+ preViewVideoPath)
             } else {
                 isPreview = false
-                mVideoView.setUrl("http://vapi.yichuba.com${videoInfo?.video_path}")
+                mVideoView.setUrl(videoInfo?.video_path?.videoPath())
                 viewHolder.prepareView.setFreeCount(videoInfo!!.freetime)
             }
             viewHolder.prepareView.setPreview(isPreview)
@@ -517,16 +531,14 @@ class LongVideoFragment : BaseFragment() {
                 }
                 Status.Success -> {
                     val videoThumbDomain = it.data!!.`20`[0].domain
-                    CommonDataProvider.instance.saveVideoThumbDomain(videoThumbDomain)
-                    adapter.setVideoThumbDomain(videoThumbDomain)
-                    getVideoList()
+                    initThumbDomain(videoThumbDomain)
                 }
                 Status.Error -> {
 
                 }
             }
         }
-        VM.videoDomain.observe(this, Observer {
+        VM.videoPath.observe(this, Observer {
             when (it?.status) {
                 Status.Success -> {
                     val json = Gson().toJson(it.data!!)
@@ -566,7 +578,7 @@ class LongVideoFragment : BaseFragment() {
                         refreshLayout.finishLoadMore()
                     }
                     val result = adapter.loadMore(it.data!!)
-                    result ?: return@Observer
+                    result
                 }
                 Status.Complete -> {
                     refreshLayout.finishLoadMore()
@@ -642,7 +654,7 @@ class LongVideoFragment : BaseFragment() {
                     Log.d("tag", "msg-videos size- loadMore-:${it.data!!.size}")
                     videos.addAll(it.data!!)
                     val result = adapter.loadMore(it.data!!)
-                    result ?: return@Observer
+                    result
                 }
                 Status.Complete -> {
                     refreshLayout.finishLoadMore()
@@ -665,9 +677,15 @@ class LongVideoFragment : BaseFragment() {
         }
     }
 
+    private fun initThumbDomain(videoThumbDomain: String) {
+        CommonDataProvider.instance.saveVideoThumbDomain(videoThumbDomain)
+        adapter.setVideoThumbDomain(videoThumbDomain)
+        getVideoList()
+    }
+
     fun getVideoList() {
         //  VM.mainVideoList(this, "300")
-        VM.getLongVideoList(this)
+        VM.getLongVideoList()
     }
 
     /**

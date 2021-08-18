@@ -18,6 +18,7 @@ import com.aliee.quei.mo.ui.video.VideoDetailActivity
 import com.aliee.quei.mo.utils.StringUtils
 import com.aliee.quei.mo.utils.extention.loadHtmlImg
 import com.aliee.quei.mo.utils.extention.loadNovelCover
+import com.aliee.quei.mo.utils.extention.videoUrl
 import org.jetbrains.anko.textColor
 
 class VideoGuessLikeAdapter : RecyclerView.Adapter<VideoGuessLikeAdapter.VH>() {
@@ -52,18 +53,18 @@ class VideoGuessLikeAdapter : RecyclerView.Adapter<VideoGuessLikeAdapter.VH>() {
         holder.apply {
             val video = videos[position]
             // var imageUrl = "${domain}${mVideoInfo!!.img_path}".replace(".jpeg",".html")
-            if (video!!.thumbImg.contains("http")){
+            if (video.thumbImg.contains("http")){
                 tv_ad_flag.visibility =View.VISIBLE
                 iv_start.visibility =View.GONE
                 videoTime.visibility = View.GONE
                 videoDis.text = "${video.content}\n${video.name}"
-                videoThumb.loadHtmlImg(video!!.thumbImg)
-                AdConfig.adPreview(video!!.adCallbackUrl!!)
+                videoThumb.loadHtmlImg(video.thumbImg.videoUrl())
+                AdConfig.adPreview(video.adCallbackUrl!!)
                 videoDis.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
                 videoDis.textColor = Color.BLACK
             }else{
-                val imageUrl  ="${url}${video!!.thumbImg}".replace(".jpeg",".html")
-                videoThumb.loadNovelCover(imageUrl)
+                val imageUrl  ="${url?:""}${video.thumbImg}".replace(".jpeg",".html")
+                videoThumb.loadNovelCover(imageUrl.videoUrl())
                 tv_ad_flag.visibility =View.GONE
                 videoTime.visibility =View.VISIBLE
                 videoDis.text = Html.fromHtml(video.name)

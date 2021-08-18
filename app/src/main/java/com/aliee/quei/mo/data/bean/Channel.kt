@@ -12,3 +12,9 @@ data class ChannelInfoBean(
     val refid: Int, // 1
     val version: String? // null
 )
+
+
+data class ChannelHideBean(
+    val id: Int, // 17,32
+    val hideVideo: Int, // 1
+)

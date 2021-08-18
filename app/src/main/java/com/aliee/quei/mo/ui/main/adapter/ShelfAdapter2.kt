@@ -140,7 +140,7 @@ class ShelfAdapter2 : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         notifyDataSetChanged()
     }
 
-    inner class TitleHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {}
+    inner class TitleHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     inner class ShelfHolder2(itemView : View) : RecyclerView.ViewHolder(itemView) {
         val ivCover = itemView.find<ImageView>(R.id.ivCover)

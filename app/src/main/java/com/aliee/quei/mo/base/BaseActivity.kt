@@ -231,8 +231,4 @@ abstract class BaseActivity : AppCompatActivity(), LifecycleOwner, IAnalyzePage 
                 .subscribe({ time(it) }, {}, { over.invoke() })
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-       // Glide.with(applicationContext).pauseRequests();
-    }
 }

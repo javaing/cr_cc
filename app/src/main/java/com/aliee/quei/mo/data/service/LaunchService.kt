@@ -35,26 +35,12 @@ interface LaunchService {
      *
      * 获取影片资源域名
      */
-    @FormUrlEncoded
-    @POST("${ApiConstants.API_PAY_VERSION}cartoon/domain/getVideoDomainType")
-    fun getVideoDomain(@Field("typeString") type: Int): Observable<BaseResponse<VideoDomainType1>>
+//    @FormUrlEncoded
+//    @POST("getVideoDomainType")
+//    fun getVideoDomain(@Field("typeString") type: Int): Observable<BaseResponse<VideoDomainType1>>
 
-    /**
-     * 视频登录
-     */
     @FormUrlEncoded
-    @POST("${ApiConstants.VIDEO_API_PATH}login")
-    //app= 1
-    //tname= u_temp_user_0
-    //refid
-    //linkid=0
-    //recommend
-    //from
-    fun videoLogin(
-                   @Field("tname")tname:String = "u_temp_user_0",
-                   @Field("refid")refid:String = "",
-                   @Field("recommend")recommend:String = "",
-                   @Field("from")from:String = ""
-    ):Observable<BaseResponse<VideoAuth>>
+    @POST("getVideoDomainType")
+    suspend fun getVideoDomainKot(@Field("typeString") type: Int): BaseResponse<VideoDomainType1>
 
 }

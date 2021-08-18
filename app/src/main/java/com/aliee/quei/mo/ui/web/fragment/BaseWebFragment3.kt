@@ -242,8 +242,8 @@ open class BaseWebFragment3 : BaseFragment(), FragmentBackHandler {
         val webSetting = webView.settings
         webSetting.javaScriptEnabled = true
         webSetting.javaScriptCanOpenWindowsAutomatically = true
-        val userAgent: String = webSetting.getUserAgentString()
-        webView.getSettings().setUserAgentString(userAgent + "webview");
+        val userAgent: String = webSetting.userAgentString
+        webView.settings.userAgentString = userAgent + "webview"
         webSetting.allowFileAccess = true
         webSetting.layoutAlgorithm = WebSettings.LayoutAlgorithm.NARROW_COLUMNS
         webSetting.setSupportZoom(false)
@@ -258,7 +258,7 @@ open class BaseWebFragment3 : BaseFragment(), FragmentBackHandler {
         webView.setOnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
                 webView.goBack() // Navigate back to previous web page if there is one
-                return@setOnKeyListener true;
+                return@setOnKeyListener true
             }
 
             false

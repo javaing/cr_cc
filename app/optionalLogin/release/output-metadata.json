@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "dmall3.android",
+  "variantName": "processOptionalLoginReleaseResources",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "versionCode": 7,
+      "versionName": "1.0.7",
+      "outputFile": "cc107_release.apk"
+    }
+  ]
+}

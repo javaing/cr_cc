@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import okhttp3.Headers;
 import okhttp3.Interceptor;
@@ -40,7 +41,7 @@ public final class HttpLoggingInterceptor implements Interceptor {
         RequestBody requestBody = request.body();
         Buffer buffer = new Buffer();
         requestBody.writeTo(buffer);
-        Charset charset = Charset.forName("UTF-8");
+        Charset charset = StandardCharsets.UTF_8;
         MediaType contentType = requestBody.contentType();
         if (contentType != null) {
             contentType.charset(charset);

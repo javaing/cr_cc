@@ -14,7 +14,7 @@ import android.util.DisplayMetrics;
 
 public class ScrollSpeedLinearLayoutManger extends LinearLayoutManager {
     private float MILLISECONDS_PER_INCH = 0.03f;
-    private Context context;
+    private final Context context;
 
     public ScrollSpeedLinearLayoutManger(Context context) {
         super(context);

@@ -72,7 +72,7 @@ class RegisterActivity : BaseActivity(), TextWatcher {
                     CommonDataProvider.instance.setToken(editPhone.text.toString())
                     CommonDataProvider.instance.saveUserTempType(0)
                     if (to == 1) {
-                        ARouterManager.goMainActivity(this, showPage = ARouterManager.TAB_SHOP)
+                        ARouterManager.goContentActivity(this, showPage = ARouterManager.TAB_SHOP)
                     }
                     finish()
                 }

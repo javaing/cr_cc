@@ -45,13 +45,13 @@ object ARouterManager {
                 .navigation(context)
     }
 
-    fun goMainActivity(context: Context, url: String? = null, showPage: Int = 0, showTab: Int = 0) {
-        ARouter.getInstance().build(Path.PATH_MAIN_ACTIVITY)
-                .withInt("showPage", showPage)
-                .withString("url", url)
-                .withInt("showTab", showTab)
-                .navigation(context)
-    }
+//    fun goMainActivity(context: Context, url: String? = null, showPage: Int = 0, showTab: Int = 0) {
+//        ARouter.getInstance().build(Path.PATH_MAIN_ACTIVITY)
+//                .withInt("showPage", showPage)
+//                .withString("url", url)
+//                .withInt("showTab", showTab)
+//                .navigation(context)
+//    }
 
     fun goLaunchActivity(context: Context, url: String? = null) {
         ARouter.getInstance().build(Path.PATH_LAUNCH_ACTIVITY)
@@ -150,11 +150,11 @@ object ARouterManager {
                 .navigation(context) as LongVideoFragment
     }
 
-    fun getNewShopFragment(context: Context, showTab: Int): NewShopFragment {
-        return ARouter.getInstance().build(Path.PATH_NEW_SHOP_FRAGMENT)
-                .withInt("showTab", showTab)
-                .navigation(context) as NewShopFragment
-    }
+//    fun getNewShopFragment(context: Context, showTab: Int): NewShopFragment {
+//        return ARouter.getInstance().build(Path.PATH_NEW_SHOP_FRAGMENT)
+//                .withInt("showTab", showTab)
+//                .navigation(context) as NewShopFragment
+//    }
 
     fun goComicCatalogActivity(context: Context, id: Int?) {
         id ?: return
