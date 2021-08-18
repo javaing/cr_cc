@@ -1,3 +1,3 @@
 # cr_cc
 
-Read A Comimc App
+Read A Comic App
