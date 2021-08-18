@@ -33,9 +33,7 @@ class ShopVModel : BaseViewModel() {
     private val repository = RecommendRepository()
     private val comicRepository = ComicRepository()
     private var launchRepository = LaunchRepository()
-    //private var userInfoRepository = UserInfoRepository()
     private val recommendService = RetrofitClient.createService(RecommendService::class.java)
-    private val userService = RetrofitClient.createService(UserService::class.java)
 
     val shopLiveData = MediatorLiveData<UIDataBean<MutableList<RecommendListBean>>>()
     val moreLiveData = MediatorLiveData<UIDataBean<ListBean<RecommendBookBean>>>()
@@ -58,16 +56,16 @@ class ShopVModel : BaseViewModel() {
                 .subscribe(StatusResourceObserver(historyChapterLiveData))
     }
 
-    fun loadShop(lifecycleOwner: LifecycleOwner) {
-        repository.getRecommendBatch(
-                lifecycleOwner, "${BeanConstants.RecommendPosition.BANNER.rid}," + //banner 17
-                "${BeanConstants.RecommendPosition.HOT_RECOMMEND.rid}," + //推荐 //18
-                "${BeanConstants.RecommendPosition.LATELY_UPDATE.rid}," + //更新 //19
-                "${BeanConstants.RecommendPosition.WEEK_POPULAR.rid}," + //本周人气 //20
-                "${BeanConstants.RecommendPosition.FREE.rid}," + //免费 //21
-                BeanConstants.RecommendPosition.WEEK_TOP10.rid
-        )  //猜你喜欢 // 45
-                .subscribe(StatusResourceObserver(shopLiveData))
+    fun loadShop() {
+        viewModelScope.launch {
+            shopLiveData.value = repository.getRecommendBatch("${BeanConstants.RecommendPosition.BANNER.rid}," + //banner 17
+                        "${BeanConstants.RecommendPosition.HOT_RECOMMEND.rid}," + //推荐 //18
+                        "${BeanConstants.RecommendPosition.LATELY_UPDATE.rid}," + //更新 //19
+                        "${BeanConstants.RecommendPosition.WEEK_POPULAR.rid}," + //本周人气 //20
+                        "${BeanConstants.RecommendPosition.FREE.rid}," + //免费 //21
+                        BeanConstants.RecommendPosition.WEEK_TOP10.rid
+            )  //猜你喜欢 // 45
+        }
     }
 
     var rPage = 0
@@ -94,31 +92,5 @@ class ShopVModel : BaseViewModel() {
         })
     }
 
-    /**
-     * 重试
-     */
-    private var retryTime = 0
 
-    @SuppressLint("CheckResult")
-    fun retryInitData(lifecycleOwner: LifecycleOwner) {
-        viewModelLaunch ({
-            CommonDataProvider.instance.saveUserInfo( userService.getUserInfo().dataConvert() )
-        }, {})
-
-        val preTasks = mutableListOf<Observable<*>>()
-        preTasks.add(launchRepository.getImgDomain(lifecycleOwner))
-        preTasks.add(launchRepository.registerToken(lifecycleOwner))
-        //preTasks.add(userInfoRepository.getUserInfo())
-        Observable.concat(preTasks)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .subscribe({
-                }, {
-                    it.printStackTrace()
-                    retryTime++
-                    if (retryTime < 5) {
-                        retryInitData(lifecycleOwner)
-                    }
-                })
-    }
 }

@@ -34,27 +34,25 @@ class RecommendRepository : BaseRepository() {
     /**
      * 获取首页推荐位的数据
      */
-    fun getRecommendBatch(
-            lifecycleOwner: LifecycleOwner,
+    suspend fun getRecommendBatch(
             ids: String
-    ): Observable<MutableList<RecommendListBean>> {
-        return service.getRecommend(ids)
-                .compose(SchedulersUtil.applySchedulers())
-                .bindUntilEvent(lifecycleOwner, Lifecycle.Event.ON_DESTROY)
-                .compose(handleBean())
-                .map {
-                    val data = it
-
-                    val result = it.keys.map { key ->
-                        val rp = BeanConstants.RecommendPosition.getByRid(key) //
-                        val list: MutableList<RecommendBookBean>? = data[key]?.list
-                        list?.forEach {
-                            it.rid = rp?.rid
-                        }
-                        RecommendListBean(key, rp?.title ?: "", list)
-                    }
-                    result as MutableList<RecommendListBean>
+    ): UIDataBean<MutableList<RecommendListBean>> {
+        return try {
+            val treemap = service.getRecommendK(ids).data as TreeMap<String, RecommendPositionList>
+            val result = treemap.keys.map { key ->
+                val rp = BeanConstants.RecommendPosition.getByRid(key) //
+                val list: MutableList<RecommendBookBean>? = treemap[key]?.list
+                list?.forEach {
+                    it.rid = rp?.rid
                 }
+                RecommendListBean(key, rp?.title ?: "", list)
+            }
+            result as MutableList<RecommendListBean>
+            UIDataBean(Status.Success, result)
+        } catch (e: Exception) {
+            UIDataBean(Status.Error)
+        }
+
     }
 
     suspend fun getListByConversionRate(

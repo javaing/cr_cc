@@ -179,26 +179,31 @@ class AdVModel : BaseViewModel() {
     fun getRotation(adBean: AdBean, successCall: (AdInfo) -> Unit, failed: () -> Unit) {
         Log.d("tag", "adInfo id:${adBean.zid},${adBean.apiUrl}")
         val request = Request.Builder().url(adBean.apiUrl).get().build()
-        OkHttpClient()
-                .newCall(request)
-                .enqueue(object : Callback {
-                    override fun onFailure(call: Call, e: IOException) {
-                        failed.invoke()
-                    }
-
-                    override fun onResponse(call: Call, response: Response) {
-                        if (response.isSuccessful) {
-                            val resp = response.body?.string()
-                            //Log.d("tag", "adInfo --> id${adBean.zid},resp :${resp}")
-                            val adInfo = Gson().fromJson<AdInfo>(resp, AdInfo::class.java)
-                            if (adInfo != null) {
-                                successCall.invoke(adInfo)
-                            }
-                        } else {
+        try {
+            OkHttpClient()
+                    .newCall(request)
+                    .enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
                             failed.invoke()
                         }
-                    }
-                })
+
+                        override fun onResponse(call: Call, response: Response) {
+                            if (response.isSuccessful) {
+                                val resp = response.body?.string()
+                                //Log.d("tag", "adInfo --> id${adBean.zid},resp :${resp}")
+                                val adInfo = Gson().fromJson<AdInfo>(resp, AdInfo::class.java)
+                                if (adInfo != null) {
+                                    successCall.invoke(adInfo)
+                                }
+                            } else {
+                                failed.invoke()
+                            }
+                        }
+                    })
+        } catch (e: Exception) {
+            e.printStackTrace()
+            failed.invoke()
+        }
     }
 
     fun adPreview(url: String) {

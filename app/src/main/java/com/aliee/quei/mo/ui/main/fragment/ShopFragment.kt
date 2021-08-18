@@ -51,7 +51,6 @@ import kotlin.collections.HashMap
 class ShopFragment : BaseFragment() {
     override fun getPageName() = "书城"
     private val VM = ShopVModel()
-    private val launchVM = LaunchVModel()
     private val adVModel = AdVModel()
     private val adapter = ShopAdapter()
 
@@ -214,7 +213,7 @@ class ShopFragment : BaseFragment() {
 //        Log.e("ad", "ad flowQu:$flowQu")
 //        Log.e("ad", "ad flowQiang:$flowQiang")
         if (banner == null || flow90==null || flow90==null || flowQiang==null){
-            VM.loadShop(this)
+            VM.loadShop()
             return
         }
         adVModel.multipleAdApi(banner, flow90, flowQu!!, flowQiang, {
@@ -234,9 +233,9 @@ class ShopFragment : BaseFragment() {
             adMap.clear()
             adMap.putAll(it)
             //Log.d("tag", "ad map:$adMap")
-            VM.loadShop(this)
+            VM.loadShop()
         }, {
-            VM.loadShop(this)
+            VM.loadShop()
         })
     }
 

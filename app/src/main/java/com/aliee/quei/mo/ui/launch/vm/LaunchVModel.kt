@@ -191,6 +191,7 @@ class LaunchVModel : BaseViewModel() {
                 .newCall(request)
                 .enqueue(object : Callback {
                     override fun onFailure(call: Call, e: IOException) {
+                        Log.d("tag", "域名reGetV onFailure失敗")
                         failed.invoke()
                     }
 
@@ -219,6 +220,7 @@ class LaunchVModel : BaseViewModel() {
                             successCall.invoke()
                             return
                         }
+                        Log.d("tag", "域名reGetV onResponse失敗")
                         failed.invoke()
                     }
                 })
@@ -235,6 +237,7 @@ class LaunchVModel : BaseViewModel() {
                 .newCall(request)
                 .enqueue(object : Callback {
                     override fun onFailure(call: Call, e: IOException) {
+                        Log.d("tag", "域名reGet onFailure失敗")
                         failed.invoke()
                     }
 
@@ -275,6 +278,7 @@ class LaunchVModel : BaseViewModel() {
                             }
                             return
                         }
+                        Log.d("tag", "域名reGet onResponse失敗")
                         failed.invoke()
                     }
                 })
@@ -284,7 +288,6 @@ class LaunchVModel : BaseViewModel() {
 
     @SuppressLint("CheckResult")
     fun doLaunch(lifecycleOwner: LifecycleOwner, success: () -> Unit) {
-        //repository = LaunchRepository()
 
         preAll(lifecycleOwner) {
             prepareLiveData.value = UIDataBean(Status.Success)
