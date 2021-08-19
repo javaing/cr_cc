@@ -1,7 +1,5 @@
 package com.aliee.quei.mo.data.repository
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import android.util.Log
 import com.aliee.quei.mo.base.response.Status
 import com.aliee.quei.mo.base.response.UIDataBean
@@ -9,10 +7,6 @@ import com.aliee.quei.mo.data.BeanConstants
 import com.aliee.quei.mo.data.bean.*
 import com.aliee.quei.mo.data.service.RecommendService
 import com.aliee.quei.mo.net.retrofit.RetrofitClient
-import com.aliee.quei.mo.utils.rxjava.SchedulersUtil
-import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindUntilEvent
-import io.reactivex.Observable
-import java.lang.Exception
 import java.util.*
 
 class RecommendRepository : BaseRepository() {

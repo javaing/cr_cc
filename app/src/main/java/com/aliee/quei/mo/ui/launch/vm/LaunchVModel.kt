@@ -308,7 +308,7 @@ class LaunchVModel : BaseViewModel() {
             }
 
             viewModelScope.launch {
-                CommonDataProvider.instance.saveUserInfo( userInfoRepository.getUserInfo() )
+                CommonDataProvider.instance.saveUserInfo( userInfoRepository.getUserInfo().data )
                 CommonDataProvider.instance.categoryConfig = categoryRepository.getCategory().data
             }
 
@@ -356,7 +356,7 @@ class LaunchVModel : BaseViewModel() {
     @SuppressLint("CheckResult")
     fun retryUserInfo(successCall: (userInfo: UserInfoBean) -> Unit) {
         viewModelScope.launch {
-            val userBean = userInfoRepository.getUserInfo()
+            val userBean = userInfoRepository.getUserInfo().data
             if(userBean==null) {
                 userInfoRetry++
                 if (userInfoRetry < 5) {

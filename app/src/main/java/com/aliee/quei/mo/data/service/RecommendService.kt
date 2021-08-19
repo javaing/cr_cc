@@ -2,17 +2,12 @@ package com.aliee.quei.mo.data.service
 
 import com.aliee.quei.mo.data.bean.*
 import com.aliee.quei.mo.net.ApiConstants
-import io.reactivex.Observable
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 import java.util.*
 
 interface RecommendService {
-
-    @FormUrlEncoded
-    @POST("${ApiConstants.API_VERSION}cartoon/recommend/lists")
-    fun getRecommend(@Field("ids") ids: String): Observable<BaseResponse<TreeMap<String, RecommendPositionList>>>
 
     @FormUrlEncoded
     @POST("${ApiConstants.API_VERSION}cartoon/recommend/lists")
@@ -25,7 +20,6 @@ interface RecommendService {
     @FormUrlEncoded
     @POST("${ApiConstants.API_VERSION}cartoon/statiscartoon/minlist")
     suspend fun getComicList(@Field("num") pageSize: Int, @Field("sortField") sortField: String, @Field("page") page: Int, @Field("sort") sort: Int = 1): BaseResponse<List<ComicBookBean>>
-
 
     /**
      * 导流事件接口记录

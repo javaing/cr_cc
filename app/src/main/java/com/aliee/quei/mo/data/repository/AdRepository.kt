@@ -28,7 +28,7 @@ class AdRepository :BaseRepository() {
 
     suspend fun getAdInfo(url:String):UIDataBean<AdInfo>{
         val resp = service.adInfoK(url).string()
-        //Log.d("tag","AdRepository:$resp")
+        Log.d("tag","AdRepository:$resp")
         return UIDataBean(Status.Success, Gson().fromJson(resp,AdInfo::class.java))
     }
 

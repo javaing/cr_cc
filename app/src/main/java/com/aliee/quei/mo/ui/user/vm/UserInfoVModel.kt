@@ -20,27 +20,22 @@ import kotlinx.coroutines.launch
  * Created by Administrator on 2018/4/20 0020.
  */
 class UserInfoVModel : BaseViewModel(){
-    private val userService = RetrofitClient.createService(UserService::class.java)
-    //注意此為Video API
-    private val userVideoService = RetrofitClient.createVideoService(UserService::class.java)
+    private val userInfoRepository = UserInfoRepository()
 
     val getUserInfoLiveData = MediatorLiveData<UIDataBean<UserInfoBean>>()
     val getMemberInfoLiveData = MediatorLiveData<UIDataBean<UserInfoBean>>()
     fun loadUseInfo(){
-        viewModelLaunch ({
-            getUserInfoLiveData.value=userService.getUserInfo().toDataBean()
-        }, {})
+        viewModelScope.launch {
+            getUserInfoLiveData.value=userInfoRepository.getUserInfo()
+        }
     }
 
     fun getMemberInfo(){
-        viewModelLaunch ({
-            val b : BaseResponse<UserInfoBean> = userVideoService.getMemberInfo()
-            val it = b.data
-            CommonDataProvider.instance.saveFreeTime(it?.freetime.toString())
-            getMemberInfoLiveData.value = b.toDataBean()
-        }, {
-            getMemberInfoLiveData.value = UIDataBean(Status.Error)
-        })
+        viewModelScope.launch {
+            val it = userInfoRepository.videoMemberInfo()
+            CommonDataProvider.instance.saveFreeTime(it?.data?.freetime.toString())
+            getMemberInfoLiveData.value = it
+        }
     }
 
 }

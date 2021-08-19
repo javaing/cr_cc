@@ -32,8 +32,7 @@ import kotlinx.coroutines.launch
 class ShopVModel : BaseViewModel() {
     private val repository = RecommendRepository()
     private val comicRepository = ComicRepository()
-    private var launchRepository = LaunchRepository()
-    private val recommendService = RetrofitClient.createService(RecommendService::class.java)
+    private val recommendRepository = RecommendRepository()
 
     val shopLiveData = MediatorLiveData<UIDataBean<MutableList<RecommendListBean>>>()
     val moreLiveData = MediatorLiveData<UIDataBean<ListBean<RecommendBookBean>>>()
@@ -44,11 +43,9 @@ class ShopVModel : BaseViewModel() {
     val shareLinkLiveData = MediatorLiveData<UIDataBean<String>>()
 
     fun appDrainage(uid: Int, utemp: Int) {
-        viewModelLaunch ({
-            appDrainageLiveData.value = recommendService.appDrainage(uid, utemp).toDataBean()
-        },{
-            appDrainageLiveData.value = UIDataBean(Status.Error)
-        })
+        viewModelScope.launch {
+            appDrainageLiveData.value = recommendRepository.appDrainage(uid, utemp)
+        }
     }
 
     fun getHistoryChapter(lifecycleOwner: LifecycleOwner, bookid: Int) {
@@ -79,18 +76,5 @@ class ShopVModel : BaseViewModel() {
             moreLiveData.value = repository.getListByConversionRate(rPage, rPageSize)
         }
     }
-
-    private var imgRetryTime = 0
-    @SuppressLint("CheckResult")
-    fun retryImgDomain(lifecycleOwner: LifecycleOwner) {
-        launchRepository.getImgDomain(lifecycleOwner).subscribe({}, {
-            it.printStackTrace()
-            imgRetryTime++
-            if (imgRetryTime < 5) {
-                retryImgDomain(lifecycleOwner)
-            }
-        })
-    }
-
 
 }

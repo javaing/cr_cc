@@ -17,8 +17,5 @@ interface AdService {
     suspend fun adList(@Field("groupid") groupid : Int) : BaseResponse<MutableList<AdBean>>
 
     @GET
-    fun adInfo(@Url url: String): Observable<ResponseBody>
-
-    @GET
     suspend fun adInfoK(@Url url: String): ResponseBody
 }

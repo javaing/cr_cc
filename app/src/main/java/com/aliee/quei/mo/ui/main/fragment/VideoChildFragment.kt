@@ -644,8 +644,7 @@ class VideoChildFragment : BaseFragment() {
                         refreshLayout.finishLoadMore()
                     }
                     videos.addAll(it.data!!)
-                    val result = adapter.loadMore(it.data!!)
-                    result
+                    adapter.loadMore(it.data!!)
                 }
                 Status.Complete -> {
                     refreshLayout.finishLoadMore()

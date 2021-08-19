@@ -6,6 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.aliee.quei.mo.base.BaseViewModel
+import com.aliee.quei.mo.base.response.StatusResourceObserver
 import com.aliee.quei.mo.base.response.UIDataBean
 import com.aliee.quei.mo.component.CommonDataProvider
 import com.aliee.quei.mo.config.AdConfig
@@ -31,6 +32,7 @@ class AdVModel : BaseViewModel() {
     fun getAdList(groupId: Int) {
         viewModelScope.launch {
             val data = adRepository.getAdList(groupId)
+            Log.e("tag", data.data.toString())
             when(groupId) {
                 2-> adListLiveData.value = data
                 else -> adList1LiveData.value = data

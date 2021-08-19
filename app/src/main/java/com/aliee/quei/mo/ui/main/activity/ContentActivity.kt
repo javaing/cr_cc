@@ -235,16 +235,7 @@ class ContentActivity : BaseActivity() {
             vmK.getUserChannelInfo()
         }
 
-
         getVersionUpdate()
-//        adZoneCheck()
-
-        val chapter: String = ""
-//        WxAdCheck()
-//        VM.getWxAttention(this, installTime, chapter)
-
-//        VM.versionCheck(this)
-
 
         val token = CommonDataProvider.instance.getRegisterToken()
         if (token.isEmpty()) {
@@ -399,16 +390,10 @@ class ContentActivity : BaseActivity() {
                         ARouterManager.goComicDetailActivity(this, bookId)
                         return@Observer
                     }
-                    val channelInfo = it.data ?: return@Observer
-                    val version = BuildConfig.VERSION_NAME
                 }
             }
         })
         vmK.bulletinLiveData.observe(this, Observer {
-            /*val calendar = Calendar.getInstance()
-            val day = calendar[Calendar.DAY_OF_MONTH]
-            var isShow = CommonDataProvider.instance.getBulletinDialogShow()
-            val cacheDay = CommonDataProvider.instance.getSaveShowDay()*/
             when (it?.status) {
                 Status.Success -> {
                     val bean = it.data
@@ -456,7 +441,7 @@ class ContentActivity : BaseActivity() {
                     val list = it.data ?: return@Observer
                     if (list.isEmpty()) return@Observer
                     val adZone = list.toString()
-                    Log.d("MainActivity", "Adzone:" + adZone)
+                    Log.d("tag", "Adzone:" + adZone)
                 }
             }
         })
@@ -464,6 +449,7 @@ class ContentActivity : BaseActivity() {
         vmK.historyLiveData.observe(this, Observer {
             when (it?.status) {
                 Status.Success -> {
+                    Log.e("tag","historyLiveData:ok")
                     val list = it.data ?: return@Observer
                     if (list.isEmpty()) return@Observer
                     val history = list[0]
@@ -569,11 +555,10 @@ class ContentActivity : BaseActivity() {
         adVm.adList1LiveData.observe(this, Observer {
             when (it?.status) {
                 Status.Success -> {
-                    val adList = it.data!!
-                    //     CommonDataProvider.instance.saveAdList(Gson().toJson(adList))
-                    adList.forEach { adBean ->
+                    val adList = it.data
+                    Log.e("tag","广告列表:$adList")
+                    adList?.forEach { adBean ->
                         if (adBean.id == AdEnum.BOTTOM_BAR.zid) {
-                            Log.d("tag","hahahah:$adBean")
                             //下方悬浮广告
                             bottomAd(adBean)
                         } else if (adBean.id == AdEnum.HOME_DIALOG.zid) {

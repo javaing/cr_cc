@@ -1,5 +1,6 @@
 package com.aliee.quei.mo.ui.main.vm
 
+import android.util.Log
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.aliee.quei.mo.base.BaseViewModel
@@ -91,7 +92,7 @@ class MainVModel : BaseViewModel() {
 
     fun videoMemberInfo() {
         viewModelScope.launch {
-            val it = userInfoRepository.videoMemberInfo()
+            val it = userInfoRepository.videoMemberInfo().data
             CommonDataProvider.instance.saveFreeTime(it?.freetime.toString())
         }
     }
@@ -140,7 +141,9 @@ class MainVModel : BaseViewModel() {
 
     fun getBulletin() {
         viewModelScope.launch {
+
             bulletinLiveData.value = checkInRepository.getBulletin()
+            Log.e("tag", bulletinLiveData.value?.data.toString())
         }
     }
 
